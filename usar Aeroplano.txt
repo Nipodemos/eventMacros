@@ -1,0 +1,103 @@
+macro irDeYunoPra {
+    if ($.param1 =~ /izlude|rachel/i) {
+        add_key("aeroplano1","$.param1")
+        do move airplane_01
+
+    } elsif ($.param1 =~ /einbroch|hugel|lighthalzen/i) {
+        add_key("aeroplano2","$.param1")
+        do move airplane
+
+    }
+}
+
+macro irDeEinbrochPra {
+	if ($.param1 =~ /izlude|rachel/i ) {
+	add_key("aeroplano1","$.param1")
+	add_key("aeroplano2", "Yuno")
+	} elsif ($.param1 =~ /([yj]uno|hugel|lighthalzen)/i) add_key("aeroplano2","$.param1")
+	do move airplane
+}
+
+macro irDeRachelPra {
+	if ($.param1 =~ /izlude|[yj]uno/i ) {
+	add_key("aeroplano1","$.param1")
+	} elsif ($.param1 =~ /einbroch|hugel|lighthalzen/i) {
+	add_key("aeroplano1","yuno")
+	add_key("aeroplano2","$.param1")
+	}
+	do move airplane_01
+}
+
+automacro dentroDoAeroplanoInternacional {
+InMap airplane_01
+LocalMsg /Bem-vindo(.*)|Welcome to (.*)/
+exclusive 1
+run-once 1
+call {
+	log a automacro de dentro do aeroplano triggou
+	if (&config(aeroplano1) =~ /izlude/i && $.LocalMsgLastMsg =~ /izlude/i ) do move 243 74
+	if (&config(aeroplano1) =~ /rachel/i && $.LocalMsgLastMsg =~ /rachel/i ) do move 243 74
+	if (&config(aeroplano1) =~ /[yj]uno/i && $.LocalMsgLastMsg /juno/i) do move 243 74
+}
+}
+
+automacro dentroDoAeroplanoDomestico {
+InMap airplane
+LocalMsg /Bem-vindo(.*)|Welcome to (.*)/
+exclusive 1
+call {
+	if (&config(aeroplano2) =~ /hugel/i && $.LocalMsgLastMsg =~ /Hugel/i ) do move 243 74
+	if (&config(aeroplano2) =~ /lighthalzen/i && $.LocalMsgLastMsg =~ /lighthalzen/i ) do move 243 74
+	if (&config(aeroplano2) =~ /einbroch/i && $.LocalMsgLastMsg =~ /einbroch/i ) do move 243 74
+}
+}
+
+automacro chegueiEmEinbroch {
+InMap einbroch
+ConfigKey aeroplano2 einbroch
+exclusive 1
+run-once 1
+call {
+	do conf aeroplano2 none
+	do conf aeroplano1 none
+}
+}
+
+automacro chegueiEmRachel {
+InMap ra_fild12
+ConfigKey aeroplano rachel
+exclusive 1
+run-once 1
+call {
+	do conf aeroplano1 none
+	do conf aeroplano2 none
+	do move rachel
+}
+}
+
+automacro chegueiEmJuno {
+InMap yuno
+ConfigKeyNot aeroplano1 none, aeroplano2 none
+exclusive 1
+call {
+	log destino para aeroplano1 é: &config(aeroplano1)
+	log destino para aeroplano2 é: &config(aeroplano2)
+	if (&config(aeroplano1) =~ /rachel|izlude/i  ) do move airplane_01
+	if (&config(aeroplano2) =~ /hugel|einbroch|lighthalzen/) do move airplane
+	if (&config(aeroplano1) =~ /[yj]uno/i || &config(aeroplano2) =~ /[yj]uno/i ) {
+	do move &rand(150, 154) &rand(182, 186)
+	}
+}
+}
+
+automacro chegueiEmIzlude {
+InMap izlude
+ConfigKey aeroplano1 izlude, aeroplano1 Izlude
+call {
+	log cheguei em izlude, objetivo completo
+}
+}
+sub add_key {
+	my ($key, $value) = @_;
+	configModify($key, $value);
+}

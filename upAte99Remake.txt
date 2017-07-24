@@ -1,0 +1,2092 @@
+#campo dos aprendizes by HenryBK
+
+automacro moveToSprakkiOutside {
+	exclusive 1
+	InMap new_1-1, new_2-1, new_3-1, new_4-1, new_5-1
+	BaseLevel = 1
+	NpcNotNear /Sprakki/
+	QuestInactive 7117
+	call {
+		do move 52 113
+	}
+}
+
+automacro TalkSprakkiOutside {
+	exclusive 1
+	InMap new_1-1, new_2-1, new_3-1, new_4-1, new_5-1
+	BaseLevel = 1
+	NpcNear /Sprakki/
+	QuestInactive 7117
+	call {
+	    [
+		do conf autoMoveOnDeath 1
+		do conf autoMoveOnDeath_x none
+		do conf autoMoveOnDeath_y none
+		do conf autoMoveOnDeath_map none
+		do conf saveMap none
+		do conf saveMap_warpToBuyOrSell 0
+		do conf sellAuto 0
+		do conf storageAuto 0
+		do conf storageAuto_npc none
+		do conf getAuto_0 none
+		do conf autoTalkCont 0
+		do conf sitAuto_idle 0
+		do conf sitAuto_hp_lower 40
+		do conf sitAuto_hp_upper 80
+		do conf itemsTakeAuto 0
+		do conf itemsGatherAuto 0
+		do conf lockMap none
+		do conf attackAuto_inLockOnly 0
+		do conf route_randomWalk 0
+		do conf statsAddAuto 1
+		do conf statsAddAuto_list 15 agi, 20 dex, 25 agi, 20 str, 30 dex, 60 agi, 30 str, 40 dex, 20 vit, 80 agi, 25 luk ,60 dex, 50 str, 40 luk, 90 agi, 60 str, 29 vit
+		do conf statsAddAuto_dontUseBonus 1
+		do conf skillsAddAuto 1
+		do conf skillsAddAuto_list NV_BASIC 9
+		do conf itemsMaxWeight 49
+		do conf itemsMaxWeight_sellOrStore 48
+		do conf itemsMaxNum_sellOrStore 99
+		do iconf 12323 0 0 0
+		do iconf 12324 0 0 0
+		do iconf 569 0 0 0
+		do iconf 7059 50 0 0
+		do iconf 7060 50 0 0
+		do iconf 13040 0 0 0
+		do iconf 1243 0 0 0
+		do iconf 2112 0 0 0
+		do iconf 5055 0 0 0
+		do iconf 2414 0 0 0
+		do iconf 2510 0 0 0
+		do iconf 2352 0 0 0
+		do iconf 1201 0 0 0
+		do iconf 13041 0 0 0
+		do iconf 2393 0 0 0
+		do iconf 2301 0 0 0
+		]
+		do talk $.NpcNearLastBinId
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+	}
+}
+
+automacro moveInside {
+	exclusive 1
+	QuestActive 7117
+	InMap new_1-1, new_2-1, new_3-1, new_4-1, new_5-1
+	priority 1
+	call GotoInside
+}
+
+automacro moveInsideBugged1 {
+	exclusive 1
+	QuestInactive 7117
+	BaseLevel = 2
+	InMap new_1-1, new_2-1, new_3-1, new_4-1, new_5-1
+	priority 1
+	call GotoInside
+}
+
+automacro moveInsideBugged2 {
+	exclusive 1
+	QuestActive 7118
+	BaseLevel = 2
+	InMap new_1-1, new_2-1, new_3-1, new_4-1, new_5-1
+	priority 1
+	call GotoInside
+}
+
+macro GotoInside {
+	$nextMap = nextMap("$.map")
+	do move $nextMap 101 29
+}
+
+automacro moveNextToSprakki {
+	exclusive 1
+	QuestActive 7117
+	NpcNotNear /Sprakki/
+	BaseLevel = 1
+	InMap new_1-2, new_2-2, new_3-2, new_4-2, new_5-2
+	priority 1
+	call GotoSpraki
+}
+
+automacro moveNextToSprakkiBugged1 {
+	exclusive 1
+	QuestInactive 7117
+	BaseLevel = 2
+	NpcNotNear /Sprakki/
+	InMap new_1-2, new_2-2, new_3-2, new_4-2, new_5-2
+	priority 1
+	call GotoSpraki
+}
+
+automacro moveNextToSprakkiBugged2 {
+	exclusive 1
+	QuestActive 7118
+	BaseLevel = 2
+	NpcNotNear /Sprakki/
+	InMap new_1-2, new_2-2, new_3-2, new_4-2, new_5-2
+	priority 1
+	call GotoSpraki
+}
+
+macro GotoSpraki {
+	do move 101 29
+}
+
+automacro talkSprakkiBugged1 {
+	exclusive 1
+	QuestInactive 7117
+	BaseLevel = 2
+	NpcNear /Sprakki/
+	InMap new_1-2, new_2-2, new_3-2, new_4-2, new_5-2
+	priority 0
+	call SprakiiBuggedTalk
+}
+
+automacro talkSprakkiBugged2 {
+	exclusive 1
+	QuestActive 7118
+	BaseLevel = 2
+	NpcNear /Sprakki/
+	InMap new_1-2, new_2-2, new_3-2, new_4-2, new_5-2
+	priority 0
+	call SprakiiBuggedTalk
+}
+
+macro SprakiiBuggedTalk {
+	do talk $.NpcNearLastBinId
+	do talk cont
+	do talk cont
+	do talk resp 0
+	do talk cont
+	do talk cont
+}
+
+automacro talkSprakki {
+	exclusive 1
+	QuestActive 7117
+	BaseLevel = 1
+	NpcNear /Sprakki/
+	InMap new_1-2, new_2-2, new_3-2, new_4-2, new_5-2
+	priority 0
+	call {
+		do talk $.NpcNearLastBinId
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk resp 0
+		do talk cont
+		do talk cont
+	}
+}
+
+automacro moveNextToBrade1 {
+	exclusive 1
+	QuestActive 7118
+	NpcNotNear /Brade/
+	InMap new_1-2, new_2-2, new_3-2, new_4-2, new_5-2
+	priority 2
+	call MoveToBrade
+}
+
+automacro moveNextToBrade2 {
+	exclusive 1
+	QuestActive 7119
+	NpcNotNear /Brade/
+	InMap new_1-2, new_2-2, new_3-2, new_4-2, new_5-2
+	priority 2
+	call MoveToBrade
+}
+
+macro MoveToBrade {
+	do move 103 105
+}
+
+automacro talkBrade {
+	exclusive 1
+	QuestActive 7118
+	BaseLevel = 2
+	NpcNear /Brade/
+	InMap new_1-2, new_2-2, new_3-2, new_4-2, new_5-2
+	priority 0
+	call {
+		do talk $.NpcNearLastBinId
+
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+	}
+}
+
+
+automacro moveNextToBradeBugged {
+	exclusive 1
+	QuestInactive 7118
+	QuestInactive 7119
+	BaseLevel = 3
+	InInventoryID 5055 = 0
+	NpcNotNear /Brade/
+	InMap new_1-2, new_2-2, new_3-2, new_4-2, new_5-2
+	priority 1
+	call MoveToBrade
+}
+
+automacro talkBradeBugged {
+	exclusive 1
+	QuestInactive 7118
+	QuestInactive 7119
+	BaseLevel = 3
+	InInventoryID 5055 = 0
+	NpcNear /Brade/
+	InMap new_1-2, new_2-2, new_3-2, new_4-2, new_5-2
+	priority 0
+	call {
+		do talk $.NpcNearLastBinId
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+	}
+}
+
+automacro equipStuffForBrade {
+	exclusive 1
+	QuestActive 7119
+	IsNotEquippedID topHead 5055, leftHand 2112, robe 2510, shoes 2414, armor 2352, rightHand 1243
+	call {
+		$check = GetIndexAndEquipped("topHead", 5055)
+		if ($check != -1) {
+			do eq $check
+		}
+		$check = GetIndexAndEquipped("robe", 2510)
+		if ($check != -1) {
+			do eq $check
+		}
+		$check = GetIndexAndEquipped("shoes",2414)
+		if ($check != -1) {
+			do eq $check
+		}
+		$check = GetIndexAndEquipped("armor",2352)
+		if ($check != -1) {
+			do eq $check
+		}
+		$check = GetIndexAndEquipped("leftHand",2112)
+		if ($check != -1) {
+			do eq $check
+		}
+		$check = GetIndexAndEquipped("rightHand",1243)
+		if ($check != -1) {
+			do eq $check
+		}
+	}
+}
+
+automacro talkBradeSecond {
+	exclusive 1
+	QuestActive 7119
+	BaseLevel = 3
+	IsEquippedID topHead 5055
+	IsEquippedID leftHand 2112
+	IsEquippedID rightHand 1243
+	IsEquippedID robe 2510
+	IsEquippedID armor 2352
+	IsEquippedID shoes 2414
+	NpcNear /Brade/
+	call {
+		do talk $.NpcNearLastBinId
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+	}
+}
+
+automacro BradeBuggedNo7120MoveJinha {
+	exclusive 1
+	QuestInactive 7119
+	QuestInactive 7120
+	BaseLevel = 4
+	InInventoryID 12324 > 0
+	IsEquippedID topHead 5055
+	IsEquippedID leftHand 2112
+	IsEquippedID rightHand 1243
+	IsEquippedID robe 2510
+	IsEquippedID armor 2352
+	IsEquippedID shoes 2414
+	SkillLevel NV_FIRSTAID = 0
+	NpcNotNear /Jinha/
+	call MoveJinha
+}
+
+automacro moveToGirlSkill {
+	exclusive 1
+	QuestActive 7120
+	NpcNotNear /Jinha/
+	SkillLevel NV_FIRSTAID = 0
+	priority 0
+	call MoveJinha
+}
+
+macro MoveJinha {
+	do move 107 108
+}
+
+automacro BradeBuggedNo7120TalkJinha {
+	exclusive 1
+	QuestInactive 7119
+	QuestInactive 7120
+	BaseLevel = 4
+	InInventoryID 12324 > 0
+	IsEquippedID topHead 5055
+	IsEquippedID leftHand 2112
+	IsEquippedID rightHand 1243
+	IsEquippedID robe 2510
+	IsEquippedID armor 2352
+	IsEquippedID shoes 2414
+	SkillLevel NV_FIRSTAID = 0
+	NpcNear /Jinha/
+	call TalkJinha
+}
+
+automacro talkGirlSkill {
+	exclusive 1
+	QuestActive 7120
+	NpcNear /Jinha/
+	SkillLevel NV_FIRSTAID = 0
+	priority 0
+	call TalkJinha
+}
+
+macro TalkJinha {
+	do talk $.NpcNearLastBinId
+	do talk cont
+	do talk resp 0
+	do talk cont
+	do talk cont
+	do talk cont
+}
+
+automacro BradeBuggedNo7120MoveBrade {
+	exclusive 1
+	QuestInactive 7119
+	QuestInactive 7120
+	BaseLevel = 4
+	InInventoryID 12324 > 0
+	InInventoryID 2393 = 0
+	IsEquippedID topHead 5055
+	IsEquippedID leftHand 2112
+	IsEquippedID rightHand 1243
+	IsEquippedID robe 2510
+	IsEquippedID armor 2352
+	IsEquippedID shoes 2414
+	SkillLevel NV_FIRSTAID = 1
+	NpcNotNear /Brade/
+	call MoveToBrade
+}
+
+automacro BradeBuggedNo7120TalkBrade {
+	exclusive 1
+	QuestInactive 7119
+	QuestInactive 7120
+	BaseLevel = 4
+	InInventoryID 12324 > 0
+	InInventoryID 2393 = 0
+	IsEquippedID topHead 5055
+	IsEquippedID leftHand 2112
+	IsEquippedID rightHand 1243
+	IsEquippedID robe 2510
+	IsEquippedID armor 2352
+	IsEquippedID shoes 2414
+	SkillLevel NV_FIRSTAID = 1
+	NpcNear /Brade/
+	call TalkBradeGetTunic
+}
+
+automacro talkBradeThird {
+	exclusive 1
+	QuestActive 7120
+	SkillLevel NV_FIRSTAID = 1
+	NpcNear /Brade/
+	priority 0
+	call TalkBradeGetTunic
+}
+
+macro TalkBradeGetTunic {
+	do talk $.NpcNearLastBinId
+	do talk cont
+	do talk cont
+	do talk cont
+}
+
+automacro equipStuffForGirl {
+	exclusive 1
+	QuestInactive 7120
+	InInventoryID 2393 = 1
+	InMap new_1-2, new_2-2, new_3-2, new_4-2, new_5-2
+	IsNotEquippedID armor 2393
+	call {
+		$check = GetIndexAndEquipped("armor", 2393)
+		if ($check != -1) {
+			do eq $check
+		}
+	}
+}
+
+automacro moveNextToChoco {
+	exclusive 1
+	IsEquippedID armor 2393
+	InMap new_1-2, new_2-2, new_3-2, new_4-2, new_5-2
+	NpcNotNear /Choco/
+	priority 1
+	call {
+		do move 32 171
+	}
+}
+
+automacro talkChoco {
+	exclusive 1
+	QuestInactive 7120
+	QuestInactive 7121
+	IsEquippedID armor 2393
+	InMap new_1-2, new_2-2, new_3-2, new_4-2, new_5-2
+	NpcNear /Choco/
+	call {
+		do talk $.NpcNearLastBinId
+		do talk cont
+		do talk cont
+		do talk cont
+		add_key('current_npc', 'kafra')
+	}
+}
+
+automacro moveNextToGuys {
+	exclusive 1
+	QuestActive 7121
+	NpcNotNear /(Choco|Kafra|Zonda|Soldado)/
+	priority 0
+	call {
+		do move 32 171
+	}
+}
+
+automacro talkKafra {
+	exclusive 1
+	QuestActive 7121
+	ConfigKey current_npc kafra
+	NpcNear /Kafra/
+	call {
+		do talk $.NpcNearLastBinId
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk resp 4
+		do conf current_npc zonda
+	}
+}
+
+automacro talkZonda {
+	exclusive 1
+	QuestActive 7121
+	ConfigKey current_npc zonda
+	NpcNear /Zonda/
+	call {
+		do talk $.NpcNearLastBinId
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do conf current_npc soldado
+	}
+}
+
+automacro talkSoldado {
+	exclusive 1
+	QuestActive 7121
+	ConfigKey current_npc soldado
+	NpcNear /Soldado/
+	call {
+		do talk $.NpcNearLastBinId
+		do talk cont
+		do talk cont
+		do talk cont
+		do conf current_npc choco
+	}
+}
+
+automacro talkChocoAgain {
+	exclusive 1
+	QuestActive 7121
+	ConfigKey current_npc choco
+	NpcNear /Choco/
+	call {
+		do talk $.NpcNearLastBinId
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do conf current_npc kafra
+
+	}
+}
+
+automacro moveBradeGrounds {
+	exclusive 1
+	QuestInactive 7122
+	InInventoryID 13040 = 0
+	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
+	NpcNotNear /Brade/
+	priority 1
+	call moveBradeGrounds
+}
+
+automacro talkBradeonGroundsGetQuest {
+	exclusive 1
+	QuestInactive 7122
+	InInventoryID 13040 = 0
+	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
+	NpcNear /Brade/
+	call {
+		do talk $.NpcNearLastBinId
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do conf route_randomWalk 1
+		do conf itemsTakeAuto 2
+		$potName = GetNamenyNameID(569)
+		do conf useSelf_item_0 $potName
+		do conf useSelf_item_0_disabled 0
+		do conf useSelf_item_0_hp < 60%
+		do conf getAuto_0 $potName
+		do conf getAuto_0_minAmount 20
+		do conf getAuto_0_maxAmount 200
+		do conf getAuto_0_passive 0
+		do mconf 1063 0 0 0
+		do mconf 1002 1 0 0
+		do mconf 1113 0 0 0
+		do conf attackAuto 2
+	}
+}
+
+automacro moveBradeCompleteQuest {
+	exclusive 1
+	QuestHuntCompleted 7122 1002
+	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
+	NpcNotNear /Brade/
+	priority 1
+	call moveBradeGrounds
+}
+
+macro moveBradeGrounds {
+	do mconf 1063 0 0 0
+	do mconf 1002 0 0 0
+	do mconf 1113 0 0 0
+	do conf attackAuto 0
+	do move 99 31
+}
+
+automacro talkBradeonGroundsCompleteQuest {
+	exclusive 1
+	QuestHuntCompleted 7122 1002
+	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
+	NpcNear /Brade/
+	call {
+		do talk $.NpcNearLastBinId
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		add_key("quest_atual" , "lunaticos")
+	}
+}
+
+automacro equipStuffForBradeGrounds {
+	exclusive 1
+	QuestInactive 7122
+	InInventoryID 13040 = 1
+	IsNotEquippedID rightHand 13040
+	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
+	call {
+		$check = GetIndexAndEquipped("rightHand", 13040)
+		if ($check != -1) {
+			do eq $check
+		}
+	}
+}
+
+automacro LastBradeBug {
+	NpcMsg /Você ainda está fazendo o curso do instrutor Brade/
+	exclusive 1
+	priority 0
+	call {
+		call moveBradeGrounds
+		do talk &npc(/Brade/)
+		pause 0.5
+		do talk cont
+		pause 0.5
+		do talk cont
+		pause 0.5
+		do talk cont
+		pause 0.5
+		do talk cont
+		pause 0.5
+		do talk cont
+		pause 0.5
+		do talk cont
+		add_key("quest_atual" , "lunaticos")
+	}
+}
+
+
+# Quest de lunaticos , pickys e salgueiros by Nipodemos
+# Inspirada na macro de 1 a 99 do CALF
+automacro começar quest lunaticos {
+ConfigKey quest_atual lunaticos
+exclusive 1
+QuestInactive 7124
+InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
+run-once 1
+call {
+	log ======== Indo pegar quest para lunaticos
+	do move &rand(103,105) &rand(36,38)
+	pause 2
+	do talk &npc(/Mago/)
+	do talk cont
+	do talk resp 2
+	do talk cont
+	do talk cont
+}
+}
+
+automacro caçando lunaticos {
+QuestActive 7124
+InMap new_1-3, new_2-3, new_3-3
+run-once 1
+call {
+	[
+	do mconf 1063 1 0 0 #lunatico
+	do mconf 1002 0 0 0 #poring
+	do mconf 1113 0 0 0 #drops
+	do conf attackAuto 2
+	]
+	log ======== Indo matar lunaticos
+	call voltarAtacar
+}
+}
+
+automacro lockMap setado quando nao deveria {
+	ConfigKeyNot lockMap none
+	exclusive 1
+	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
+	call {
+	do conf lockMap none
+	do conf attackAuto_inLockOnly 0
+
+	}
+
+}
+
+automacro matei lunaticos {
+QuestHuntCompleted 7124 1063
+exclusive 1
+InMap new_1-3, new_2-3, new_3-3
+call {
+	[
+	call pararDeAtacar
+	do mconf 1063 0 0 0 #lunatico
+	do mconf 1002 0 0 0 #poring
+	do mconf 1113 0 0 0 #drops
+	]
+	do move &rand(103,105) &rand(36,38)
+	pause 2
+	log ======== terminando quest de lunaticos
+	do talk &npc(/Mago/)
+	do talk cont
+	do talk resp 2
+	do talk cont#Mago
+	do conf quest_atual pickys_e_salgueiros
+}
+}
+
+automacro começar quest pickys e salgueiros{
+ConfigKey quest_atual pickys_e_salgueiros
+NpcNear /Espadachim/
+QuestInactive 7123, 7127
+exclusive 1
+run-once 1
+InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
+call {
+	log ======== Indo pegar quest para  Picks
+	pause 2
+	do talk &npc(/Espadachim/)
+	do talk cont
+	do talk resp 2
+	do talk cont
+	do talk cont
+	do talk cont
+	pause 3
+	log ======== Indo pegar quest para  Salgueiro
+	do talk &npc(/Gatuno/)
+	do talk cont
+	do talk resp 2
+	do talk cont
+	do talk cont
+}
+}
+
+automacro começar quest pickys e salgueiros bugged {
+ConfigKey quest_atual pickys_e_salgueiros
+NpcNotNear /Espadachim/
+exclusive 1
+run-once 1
+QuestInactive 7123, 7127
+call {
+	do move &rand(103,105) &rand(36,38)
+}
+}
+automacro mudar para treino mais pesado bugged {
+	QuestActive 7123
+	QuestActive 7127
+	exclusive 1
+	NpcNotNear /Treinador/
+	InMap new_1-3, new_2-3, new_3-3
+	call {
+	do move &rand(103,105) &rand(36,38)
+
+}
+}
+automacro mudar para treino mais pesado {
+	QuestActive 7123
+	QuestActive 7127
+	exclusive 1
+	NpcNear /Treinador/
+	InMap new_1-3, new_2-3, new_3-3
+	call {
+		do move &rand(103,105) &rand(36,38)
+		pause 3
+		log ======== mudando pra mapa onde tem pickys e salgueiros
+		do talk &npc(/Treinador/) #Treinador
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk resp 1
+		do talk cont
+	}
+}
+
+automacro caçando pickys e Salgueiro {
+QuestActive 7123, 7127
+InMap new_4-3, new_5-3
+run-once 1
+exclusive 1
+call {
+	[
+	call voltarAtacar
+	do mconf 1004 0 0 0 #zangao
+	do mconf 1007 0 0 0 #fabre
+	do mconf 1049 1 0 0 #Picky
+	do mconf 1010 1 0 0 #Salgueiro
+	log ======== Indo matar pickys e salgueiros
+	]
+}
+}
+
+automacro se morrer enquanto mata pickys_e_salgueiros {
+QuestActive 7123, 7127
+CurrentHP >= 50%
+IsInCoordinate 95 21
+InMap new_1-3, new_2-3, new_3-3
+exclusive 1
+call {
+	do mconf 1063 0 0 0 #lunatico
+	call pararDeAtacar
+	do move &rand(103,105) &rand(36,38)
+	log ======== mudando pra mapa onde tem pickys e salgueiros
+	do talk &npc(/Treinador/) #Treinador
+	do talk cont
+	do talk cont
+	do talk cont
+	do talk resp 1
+	do talk cont
+	call voltarAtacar
+}
+}
+
+automacro matei pickys {
+QuestHuntCompleted 7123 1049
+exclusive 1
+InMap new_4-3, new_5-3
+run-once 1
+call {
+	[
+	do mconf 1004 0 0 0 #zangao
+	do mconf 1007 0 0 0 #fabre
+	do mconf 1049 0 0 0 #Picky
+	do mconf 1010 1 0 0 #Salgueiro
+	call pararDeAtacar
+	]
+	do move &rand(103,105) &rand(36,38)
+	pause 2
+	do talk &npc(/Espadachim/)
+	do talk cont
+	do talk resp 2
+	call voltarAtacar
+
+}
+}
+automacro matei salgueiros {
+QuestHuntCompleted 7127 1010
+exclusive 1
+InMap new_4-3, new_5-3
+run-once 1
+call {
+	[
+	do mconf 1004 0 0 0 #zangao
+	do mconf 1007 0 0 0 #fabre
+	do mconf 1049 0 0 0 #Picky
+	do mconf 1010 0 0 0 #Salgueiro
+	call pararDeAtacar
+	]
+	pause 2
+	do move &rand(103,105) &rand(36,38)
+	do talk &npc(/Gatuno/)
+	do talk cont
+	do talk resp 2
+	log ======== Completei todas as Quests
+	do conf quest_atual todas_completadas
+}
+}
+automacro continuar upando ate 12 {
+ConfigKey quest_atual todas_completadas
+BaseLevel < 12
+exclusive 1
+run-once 1
+InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
+call {
+	[
+	do mconf 1004 1 0 0 #zangao
+	do mconf 1007 1 0 0 #fabre
+	do mconf 1049 1 0 0 #Picky
+	do mconf 1010 1 0 0 #Salgueiro
+	do mconf 1063 1 0 0 #lunatico
+	do mconf 1002 1 0 0 #poring
+	do mconf 1113 1 0 0 #drops
+	call voltarAtacar
+	]
+	log ======== Vou continuar upando até chegar nivel 12
+}
+}
+
+automacro se morrer enquanto upa ate lvl 12 {
+ConfigKey quest_atual todas_completadas
+CurrentHP >= 50%
+IsInCoordinate 95 21
+InMap new_1-3, new_2-3, new_3-3
+exclusive 1
+call {
+	call pararDeAtacar
+	do move &rand(103,105) &rand(36,38)
+	log ======== mudando pra mapa onde tem pickys e salgueiros
+	do talk &npc(/Treinador/) #Treinador
+	do talk cont
+	do talk cont
+	do talk cont
+	do talk resp 1
+	do talk cont
+	call voltarAtacar
+}
+}
+
+automacro endleveling {
+	exclusive 1
+	JobLevel 10
+	BaseLevel > 11
+	ConfigKey quest_atual todas_completadas
+	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
+	priority 1
+	call {
+		do move &rand(103,105) &rand(36,38)
+		do talk &npc(/Gatuno/)
+		do talk cont
+		do talk resp 1
+		do talk cont
+		do talk cont
+		do talk resp 1
+		do talk resp 0
+		log ======== Agora vou virar gatuno!!!
+		do conf quest_atual none
+	}
+}
+automacro virandoGatunoBugged {
+BaseLevel = 12
+InMap moc_prydb1
+SkillLevel NV_BASIC != 9
+FreeSkillPoints >= 1
+run-once 1
+exclusive 1
+call {
+	$pontos = $.FreeSkillPointsLast
+	log ======== As Habilidades básicas nao foram distribuídas!!!
+	log Temos $.FreeSkillPointsLast pontos livres
+	log ======== Vamos mudar isso
+	while ($pontos != 0 ) as loop
+	do skills add NV_BASIC
+	$pontos--
+	end loop
+	do conf skillsAddAuto 1
+	do conf skillsAddAuto_list NV_BASIC 9
+	}
+}
+
+#virar gatuno na pirâmide e ir para o grupo Eden
+automacro virando gatuno {
+BaseLevel = 12
+InMap moc_prydb1
+SkillLevel NV_BASIC = 9
+run-once 1
+exclusive 1
+call {
+	call pararDeAtacar
+	do move &rand(44,46) &rand(127,129)
+	do talknpc 42 133 c r1 c r1 c c c c  #Mestre Gatuno
+	do pconf 1243 0 #1243#Adaga_do_Aprendiz#
+	do pconf 2112 0 #2112#Vembrassa_do_Aprendiz#
+	do pconf 2414 0 #2414#Sandálias_do_Aprendiz#
+	do pconf 2510 0 #2510#Capuz_do_Aprendiz#
+	do pconf 2532 0 #2352#Traje_do_Aprendiz#
+	do pconf 5055 0 #5055#Chapéu_de_Ovo_do_Aprendiz#
+	do iconf 13041 0 0 0 #13041#Main Gauche de Iniciante#
+	$check = GetIndexAndEquipped("rightHand",1243) #Adaga_do_Aprendiz#
+			if ($check != -1) do drop $check
+	$check = GetIndexAndEquipped("leftHand",2112)#Vembrassa_do_Aprendiz#
+			if ($check != -1) do drop $check
+	$check = GetIndexAndEquipped("shoes",2414) #Sandálias_do_Aprendiz#
+			if ($check != -1) do drop $check
+	$check = GetIndexAndEquipped("robe",2510) #Capuz_do_Aprendiz#
+			if ($check != -1) do drop $check
+	$check = GetIndexAndEquipped("armor",2352) #Chapéu_de_Ovo_do_Aprendiz#
+			if ($check != -1) do drop $check
+	$check = GetIndexAndEquipped("topHead",5055) #Chapéu_de_Ovo_do_Aprendiz#
+			if ($check != -1) do drop $check
+	$check = GetIndexAndEquipped("rightHand",13041) # main gauche de iniciante
+			if ($check != -1) do eq $check
+	do talknpc 53 126 c c r0 c #Oficial do Eden
+	do talk &npc(/Eden/)
+	do talk resp 0
+}
+}
+
+automacro registrandoNoEden {
+BaseLevel = 12
+InInventoryID 6219 = 0 # Emblema do grupo valhalla
+exclusive 1
+run-once 1
+call {
+	do move &rand(33,35) &rand(25,27) #posição excelente no Eden
+	do talknpc 27 35 c r1 c r0 t=kk c c c c t=kk c c c c r5 #Lenore Inscrição Eden
+}
+}
+
+automacro IniciandoQuestsEden12 {
+InInventory "Emblema do Grupo Valhalla" = 1
+BaseLevel >= 12
+BaseLevel <= 18
+exclusive 1
+JobID 6 #gatuno
+run-once 1
+ConfigKeyNot quest_eden em_curso
+ConfigKeyNot quest_eden terminando
+IsNotEquippedID armor 15009
+call {
+	call pararDeAtacar
+	do move &rand(33,35) &rand(25,27) #posição otima no Eden
+	#do talknpc 25 35 c r1 c c c c c r0 c r0 c c c c c c #Boya
+	do talk &npc(/Boya/)
+	do talk resp 1
+	do talk resp 0
+	do talk resp 0
+	if (&config(saveMap) != morocc) call SetSaveInMorocc
+	add_key ("quest_eden","em_curso")
+}
+}
+
+automacro IniciandoQuestEden26 {
+BaseLevel >= 26
+BaseLevel <= 32
+JobID 6 #gatuno
+exclusive 1
+run-once 1
+ConfigKeyNot quest_eden em_curso
+ConfigKeyNot quest_eden terminando
+IsNotEquippedID armor 15010
+call {
+	call pararDeAtacar
+	do move moc_para01 &rand(33,35) &rand(25,27)
+	#do talknpc 25 35 c c r1 c c c c c c #Boya
+	do talk &npc(/Boya/)
+	do talk resp 1
+	if (&config(saveMap) != payon) call SetSaveInPayon
+	add_key ("quest_eden","em_curso")
+}
+}
+
+automacro IniciandoQuestEden40 {
+BaseLevel >= 40
+BaseLevel <= 49
+JobID 6 #gatuno
+exclusive 1
+run-once 1
+ConfigKeyNot quest_eden em_curso
+ConfigKeyNot quest_eden terminando
+IsNotEquippedID armor 15011
+call {
+	call pararDeAtacar
+	do move moc_para01 &rand(33,35) &rand(25,27)
+	#do talknpc 25 35 c r0 c c c c c c #Boya
+	do talk &npc(/Boya/)
+	talk resp 0
+	if (&config(saveMap) != prontera) call SetSaveInProntera
+	add_key ("quest_eden","em_curso")
+}
+}
+
+automacro Eden60Começo {
+BaseLevel >= 60
+BaseLevel <= 69
+exclusive 1
+JobID 17 #arruaceiro
+run-once 1
+ConfigKeyNot quest_eden em_curso
+ConfigKeyNot quest_eden terminando
+IsNotEquippedID armor 15031
+call {
+	call pararDeAtacar
+	do conf lockMap none
+	do move moc_para01 &rand(33,35) &rand(25,27)
+	#do talknpc 23 35 c r0 c c c c c r1 c c c c c c #Uru
+	do talk &npc(/Ur/)
+	do talk resp 0
+	do talk resp 1
+	add_key ("quest_eden","em_curso")
+	if (&config(saveMap) != comodo) call SetSaveInComodo
+}
+}
+
+automacro Eden70Começo {
+BaseLevel = 70
+exclusive 1
+JobID 17 #arruaceiro
+ConfigKeyNot quest_eden em_curso
+ConfigKeyNot quest_eden terminando
+run-once 1
+call {
+	do conf lockMap none
+	call pararDeAtacar
+	do move moc_para01 &rand(33,35) &rand(25,27)
+	#do talknpc 23 35 c r0 c c c c c #Uru
+	do talk &npc(/Ur/)
+	do talk resp 0
+	add_key("quest_eden","em_curso")
+	if (&config(saveMap) != geffen) call SetSaveInGeffen
+}
+}
+
+automacro Eden80Começo {
+BaseLevel = 80
+ConfigKeyNot quest_eden em_curso
+ConfigKeyNot quest_eden terminando
+JobID 17 # arruaceiro
+exclusive 1
+run-once 1
+call {
+	call pararDeAtacar
+	do conf lockMap none
+	do move moc_para01 &rand(33,35) &rand(25,27)
+	#do talknpc 23 35 c r0 c c c c #Uru
+	do talk &npc(/Ur/)
+	talk resp 0
+	add_key("quest_eden","em_curso")
+}
+}
+
+automacro Eden80IndoAteOAeroplano {
+QuestActive 7223
+exclusive 1
+run-once 1
+NotInMap airplane
+NotInMap airplane_01
+NotInMap einbroch
+call {
+do eventMacro irDeYunoPra --einbroch
+}
+}
+
+automacro Eden80Einbroch {
+QuestActive 7223
+InMap einbroch
+ConfigKeyNot saveMap einbroch
+run-once 1
+exclusive 1
+call SetSaveInEinbroch
+}
+automacro salvoEmEinbrochComecandoQuest {
+ConfigKey saveMap einbroch
+exclusive 1
+QuestActive 7223
+call {
+do move ein_fild08 &rand(164,166) &rand(364,366)
+#do talknpc 172 359 c c c c c #membro do grupo eden Girhen
+do talk &npc(/den/g)
+do conf lockMap ein_fild09
+}
+}
+
+
+automacro irNoMapa {
+QuestActive 7128, 7138, 7147, 7124, 7219
+exclusive 1
+priority 5
+call {
+	#7128 : eden 12
+	#7138 : eden 26
+	#7147 : eden 40
+	#7214 : eden 60
+	#7219 : eden 70
+	switch ($.QuestActiveLastID) {
+
+	case (= 7128) { #eden 12
+		do move moc_fild11 &rand(181,183) &rand(254,256)
+		#do talknpc 180 253 c c r1 c c c #Cão Falante Condores
+		do talk &npc(/Cão/)
+		do talk resp 1
+		do mconf Filhote de Lobo 0 0 0
+		do mconf Escorpião 0 0 0
+		do mconf Condor 0 0 0
+		do conf lockMap moc_fild11
+	}
+	case (= 7138) { #eden 26
+		do move pay_arche &rand(44,46) &rand(132,134)
+		#do talknpc 41 136 c c c c c c c c #Coral
+		do talk &npc(/Coral/)
+		do mconf Esqueleto 0 0 0
+		do mconf Poporing 0 0 0
+		do mconf Zumbi 0 0 0
+		do conf lockMap pay_dun00
+	}
+	case (= 7147) { #eden 40
+		do move in_orcs01 &rand(34,36) &rand(162,164)
+		#do talknpc 38 175 c c c c c c c #Absalom#para07
+		do talk &npc(/Absalom/)
+		do mconf Guerreiro Orc 0 0 0
+		do mconf Filhote de Orc 0 0 0
+		do mconf Senhora Orc 0 0 0
+		do conf lockMap gef_fild10
+	}
+
+    case (= 7214) { #eden 60
+    	do move comodo &rand(174,176) &rand(344,346)
+    	#do talknpc 173 354 c c c c c #Mémbro do grupo Éden#2n
+    	do talk &npc(/den/g)
+		do conf lockMap beach_dun02
+    }
+
+    case (= 7219) { #eden 70
+    do move glast_01 &rand(200,202) &rand(125,127)
+    #do talknpc 195 131 c r0 c c c c c c #membro do grupo eden Johan
+    do talk &npc(/den/g)
+    do talk resp 0
+	do conf lockMap gl_church
+    }
+    #A quest do eden lvl 80 requer um tratameno especial
+    #por isso nao vai ser colocada aqui
+}
+}
+}
+
+automacro Eden12Caçar {
+	QuestHuntOngoing 7129 1009, 7130 1107, 7131 1001
+	exclusive 1
+	timeout 60
+	call caçarMonstros
+}
+
+automacro Eden26Caçar {
+	QuestHuntOngoing 7139 1076, 7140 1031
+	exclusive 1
+	timeout 180
+	call caçarMonstros
+}
+
+automacro Eden40Caçar {
+	QuestHuntOngoing 7148 1686, 7149 1023, 7150 1273
+	exclusive 1
+  	timeout 300
+	call caçarMonstros
+}
+
+automacro Eden60Caçar {
+	QuestHuntOngoing 7215 1278, 7216 1278
+	exclusive 1
+	timeout 300
+	call caçarMonstros
+}
+
+automacro Eden70Caçar {
+	QuestHuntOngoing 7220 1192, 7221 1117
+	exclusive 1
+	timeout 300
+	call caçarMonstros
+}
+
+automacro Eden80Caçar {
+  QuestHuntOngoing 7224 1619, 7226 1621, 7227 1622
+  exclusive 1
+  timeout 300
+  call {
+	switch (QuestHuntOngoingLastQuestID) {
+	  case (= 7224) {
+	    do conf lockMap ein_fild09
+	  }
+	  case (= 7226) {
+	    do conf lockMap ein_fild04
+	  }
+	}
+	call caçarMonstros
+}
+}
+
+macro caçarMonstros {
+	[
+	call voltarAtacar
+	do mconf $.QuestHuntOngoingLastMobID 2 0 0
+	]
+}
+automacro Eden60JuntarFolhasEOmbreiras {
+QuestActive 7217
+exclusive 1
+timeout 120
+call juntando
+}
+
+macro juntando {
+do iconf Ombreira 5 1 0
+do iconf Folha Afiada 7 1 0
+$ombreira = &invamount (Ombreira)
+$folha = &invamount (Folha Afiada)
+if ($ombreira < 5 ) goto Ombreira
+if ($ombreira >= 5 && $folha < 7 ) goto Folha
+if ($ombreira >= 5 && $folha >= 7 ) goto Juntei
+
+
+:Ombreira
+log Pegar Ombreiras
+do conf lockMap um_fild02
+call voltarAtacar
+stop
+
+
+:Folha
+log Pegar Folhas
+do conf lockMap um_fild01
+call voltarAtacar
+stop
+
+
+:Juntei
+log Vamos No NPC já temos os Itens.
+call pararDeAtacar
+do move um_fild01 &rand(36,38) &rand(277,279)
+do talknpc 34 280 c  #Romeo#2nd02
+stop
+}
+
+automacro Eden12FinalizarCaças {
+QuestHuntCompleted 7129 1009, 7130 1107, 7131 1001
+exclusive 1
+call {
+	call pararDeAtacar
+	do mconf $.QuestHuntCompletedLastMobID 0 0 0
+	do move moc_fild11 &rand(181,183) &rand(254,256)
+  	do talk &npc(/Cão/)
+	release Eden12Caçar
+}
+}
+
+automacro Eden26FinalizarCaças {
+ QuestHuntCompleted 7139 1076, 7140 1031
+ exclusive 1
+ call {
+	call pararDeAtacar
+	do mconf $.QuestHuntCompletedLastMobID 0 0 0
+	do move pay_arche &rand(44,46) &rand(132,134)
+	#do talknpc 41 136 c c c c c #Coral
+	do talk &npc(/Coral/)
+	release Eden26Caçar
+  }
+}
+
+automacro Eden40FinalizarCaças {
+QuestHuntCompleted 7148 1686, 7149 1023, 7150 1273
+exclusive 1
+call {
+	call pararDeAtacar
+	do mconf $.QuestHuntCompletedLastMobID 0 0 0
+	do move in_orcs01 &rand(34,36) &rand(162,164)
+	#do talknpc 38 175 c c #Absalom#para07
+	do talk &npc(/Absalom/)
+	release Eden40Caçar
+}
+}
+
+automacro Eden60FinalizarCaças {
+QuestHuntCompleted 7215 1278, 7216 1278
+exclusive 1
+call {
+	do mconf $.QuestHuntCompletedLastMobID 0 0 0
+	switch ($.QuestHuntCompletedLastQuestID) {
+
+	case (7215) { #golem1
+		do move comodo &rand(174,176) &rand(344,346)
+		#do talknpc 173 354 c c c c c #Mémbro do grupo Éden#2n
+		do talk &npc(/den/g)
+		release Eden60Caçar
+	}
+	case (7216) { #golem2
+		do move um_fild01 &rand(36,38) &rand(277,279)
+		#do talknpc 34 280 c c c c #Romeo#2nd02
+		do talk &npc(/Romeo/)
+		release Eden60Caçar
+	}
+    }
+  }
+}
+
+automacro Eden70FinalizarCaças {
+QuestHuntCompleted 7220 1192, 7221 1117
+exclusive 1
+call {
+	do mconf $.QuestHuntCompletedLastMobID 0 0 0
+	do move glast_01 @rand(200,202) @rand(125,127)
+	#do talknpc 195 131 c c c #membro do grupo eden Johan
+	do talk &npc(/den/g)
+	release Eden70Caçar
+  }
+}
+
+automacro Eden80FinalizarCaças {
+QuestHuntCompleted 7224 1619, 7226 1621, 7227 1622
+exclusive 1
+call {
+	do mconf $.QuestHuntCompletedLastMobID 0 0 0
+	do move ein_fild08 &rand(164,166) &rand(364,366)
+	#do talknpc 172 359 c c c c c c #membro do grupo eden Girhen
+	do talk &npc(/den/g)
+	release Eden80Caçar
+}
+}
+
+automacro voltarDoMapa {
+QuestActive 7132, 7141, 7151, 7128, 7222, 7228
+exclusive 1
+call {
+	#7132 : eden 12
+	#7141 : eden 26
+	#7151 : eden 40
+	#7128 : eden 60
+	#7122 : eden 70
+	#7228 : eden 80
+	log Completei as Caças!
+	log vamo lá pegar meus equips de direito!
+	do conf lockMap none
+	call pararDeAtacar
+	do move moc_para01 &rand(33,35) &rand(25,27)
+	switch ($.QuestActiveLastID) {
+
+	case (= 7132) { #eden 12
+		#do talknpc 25 35 c c c #Boya
+		do talk &npc(/Boya/)
+		add_key ("quest_eden", "terminando")
+    	do mconf Filhote de Lobo 1 0 0
+  		do mconf Escorpião 1 0 0
+  		do mconf Condor 1 0 0
+    	release EdenPegandoEquips12e26e40
+		}
+
+	case (= 7141) { #eden 26
+		#do talknpc 25 35 c c #Boya
+    	do talk &npc(/Boya/)
+		add_key ("quest_eden", "terminando")
+    	do mconf Esqueleto 1 0 0
+    	do mconf Poporing 1 0 0
+    	do mconf Zumbi 1 0 0
+    	release EdenPegandoEquips12e26e40
+		}
+
+	case (= 7151) { #eden 40
+		#do talknpc 25 35 c c #Boya
+    	do talk &npc(/Boya/)
+		add_key ("quest_eden", "terminando")
+    	do mconf Guerreiro Orc 1 0 0
+    	do mconf Filhote de Orc 1 0 0
+    	do mconf Senhora Orc 1 0 0
+    	release EdenPegandoEquips12e26e40
+		}
+
+    case (= 7128) { #eden 60
+    	#do talknpc 23 35 c c c #Uru
+    	do talk &npc(/Ur/)
+    	add_key ("quest_eden", "terminando")
+    	release EdenPegandoEquips60e70e80
+    	}
+
+    case (= 7222) { #eden 70
+    	#do talknpc 23 35 c c  #Uru
+    	do talk &npc(/Ur/)
+    	add_key ("quest_eden", "terminando")
+    	release EdenPegandoEquips60e70e80
+    	}
+
+    case (= 7228) { #eden 80
+    	#do talknpc 23 35 c c  #Uru
+    	do talk &npc(/Ur/)
+    	add_key("quest_eden", "terminando")
+    	release EdenPegandoEquips60e70e80
+    	}
+	}
+}
+}
+
+automacro EdenPegandoEquips12e26e40 {
+ConfigKey quest_eden terminando
+BaseLevel >= 12
+BaseLevel <= 59
+exclusive 1
+call {
+	do move moc_para01 &rand(112,114) &rand(31,33)
+	do talk &npc(/Mihael/)
+	do talk resp 0
+	do talk resp 1
+
+	switch ($.lvl) {
+
+	case (<= 25) { #eden 12
+		#do talknpc 112 96 c r0 c r1 c c c c #Administrador Mihael
+		$check = GetIndexAndEquipped("robe", 2560) #Capa Valhalla
+			if ($check != -1) do eq $check
+		$check = GetIndexAndEquipped("topHead", 5583) #Chapeu valhalla
+			if ($check != -1) do eq $check
+		$check = GetIndexAndEquipped("shoes", 2456) #Botas Valhalla Iniciante
+			if ($check != -1) do eq $check
+		$check = GetIndexAndEquipped("armor", 15009) #Uniforme Valhalla Iniciante
+			if ($check != -1) do eq $check
+		do conf quest_eden none
+		stop
+	}
+
+	case (<= 39) { #eden 26
+		#do talknpc 112 96 c r0 c c c c c r1 c c #Administrador Mihael
+		$check = GetIndexAndEquipped("shoes",2457) #Botas Valhalla Intermediárias
+			if ($check != -1) do eq $check
+		$check = GetIndexAndEquipped("rightHand",13051) #Adaga Valhalla Iniciante
+			if ($check != -1) do eq $check
+		$check = GetIndexAndEquipped("armor",15010) #Uniforme Valhalla Intermediário
+			if ($check != -1) do eq $check
+		do conf quest_eden none
+		stop
+	}
+	case (<= 59) { # eden 40
+		#do talknpc 112 96 c r0 c c c r1 c c #Administrador Mihael
+		$check = GetIndexAndEquipped("shoes",2458) #Botas Valhalla Avançadas
+			if ($check != -1) do eq $check
+		$check = GetIndexAndEquipped("rightHand",13051) #Adaga Valhalla Intermediária
+			if ($check != -1) do eq $check
+		$check = GetIndexAndEquipped("armor",15011) #Uniforme Valhalla Avançado
+			if ($check != -1) do eq $check
+		do conf quest_eden none
+		stop
+	}
+      }
+   }
+}
+
+automacro EdenPegandoEquips60e70e80 {
+  ConfigKey quest_eden terminando
+  exclusive 1
+  call {
+	do move moc_para01 &rand(112,114) &rand(31,33)
+  switch ($.lvl) {
+    case (<= 69) { #eden 60
+		#do talknpc 111 83 c r2 c c r1 #Ferreiro Torhen#2nd10
+		do talk &npc(/Ferreiro/)
+		talk resp 2
+		talk resp 1
+		$check = GetIndexAndEquipped("robe", 2571) #Capa II do Grupo Eden
+		if ($check != -1) do eq $check
+		$check = GetIndexAndEquipped("topHead", 18514) #Chapéu_II_do_Grupo_Éden#
+		if ($check != -1) do eq $check
+		$check = GetIndexAndEquipped("shoes", 2473) ##Botas_IV_do_Grupo_Éden#
+		if ($check != -1) do eq $check
+		$check = GetIndexAndEquipped("armor", 15031) #Armadura_do_Grupo_Éden#
+		if ($check != -1) do eq $check
+		$check = GetIndexAndEquipped("rightHand",13066)#Adaga_III_do_Grupo_Éden#
+		if ($check != -1) do eq $check
+		#do talknpc 112 96 c r2 c c r4 c r0 c #Administrador Mihael(encanto de destreza do chapéu valhalla)
+		do talk &npc(/Mihael/)
+		talk resp 2
+		talk resp 4
+		talk resp 0
+		do conf quest_eden none
+    	}
+    case (<= 79) { #eden 70
+		$check = GetIndexAndEquipped("rightHand",13051)#Adaga Valhalla Intermediária
+			if ($check != -1) do eq $check
+		#do talknpc 112 79 c r0 c c r2 c c r0 c #Especialista BK#2nd11
+		do talk &npc(/BK/)
+		talk resp 0
+		talk resp 2
+		talk resp 0
+		$check = GetIndexAndEquipped("rightHand",13066)#Adaga_III_do_Grupo_Éden#
+			if ($check != -1) do eq $check
+		do conf quest_eden none
+    }
+    case (<= 89) { #eden 80
+		$check = GetIndexAndEquipped("rightHand",13051)#Adaga Valhalla Intermediária
+			if ($check != -1) do eq $check
+		#do talknpc 112 79 c r0 c c c c r2 c #Especialista BK#2nd11
+		do talk &npc(/BK/)
+		do talk resp 0
+		do talk resp 2
+		$check = GetIndexAndEquipped("rightHand",13066)#Adaga_III_do_Grupo_Éden#
+			if ($check != -1) do eq $check
+		do conf quest_eden none
+    }
+  }
+  }
+}
+
+automacro upAteLv26 {
+ConfigKeyNot quest_eden em_curso
+ConfigKeyNot quest_eden terminando
+ConfigKeyNot lockMap pay_fild07
+BaseLevel >= 12
+BaseLevel < 26
+exclusive 1
+JobID 6 #gatuno
+priority 5
+call {
+	do conf lockMap pay_fild07
+	call voltarAtacar
+	if (&config(saveMap) != payon) call SetSaveInPayon
+}
+}
+
+automacro upAteLv40 {
+ConfigKeyNot quest_eden em_curso
+ConfigKeyNot quest_eden terminando
+ConfigKeyNot lockMap gef_fild02
+BaseLevel >= 26
+BaseLevel < 40
+exclusive 1
+JobID 6 #gatuno
+run-once 1
+call {
+	do conf lockMap gef_fild02
+	call voltarAtacar
+	if (&config(saveMap) != geffen) call SetSaveInGeffen
+}
+}
+
+automacro upAteLv60 {
+ConfigKeyNot quest_eden em_curso
+ConfigKeyNot quest_eden terminando
+ConfigKeyNot lockMap um_fild02
+JobID 6, 17
+BaseLevel >= 40
+BaseLevel < 60
+exclusive 1
+run-once 1
+call {
+	do conf lockMap um_fild02
+	call voltarAtacar
+	if (&config(saveMap) != comodo) call SetSaveInComodo
+}
+}
+
+automacro upAteLv70 {
+BaseLevel >= 60
+BaseLevel < 70
+JobID 17
+ConfigKeyNot quest_eden em_curso
+ConfigKeyNot quest_eden terminando
+ConfigKeyNot lockMap moc_fild17
+call {
+	do conf lockMap moc_fild17
+	call voltarAtacar
+	if( &config(saveMap) != comodo) call SetSaveInMorocc
+}
+}
+
+automacro upAteLv80 {
+BaseLevel >= 70
+BaseLevel < 80
+ConfigKeyNot quest_eden em_curso
+ConfigKeyNot quest_eden terminando
+ConfigKeyNot lockMap gl_church
+JobID 17
+exclusive 1
+call {
+	call voltarAtacar
+	do conf lockMap gl_church
+	if (&config(saveMap) != geffen) call SetSaveInGeffen
+}
+}
+
+automacro IndoPraRachelPraUpAteLv95 {
+ConfigKeyNot quest_eden em_curso
+ConfigKeyNot quest_eden terminando
+ConfigKeyNot lockMap ra_fild12
+BaseLevel >= 80
+BaseLevel < 90
+NotInMap rachel
+NotInMap ra_fild12
+JobID 17
+exclusive 1
+run-once 1
+call {
+	do eventMacro irDeYunoPra --rachel
+}
+}
+automacro salvandoEmRachelPraUpAteLv95 {
+ConfigKeyNot saveMap rachel
+InMap rachel
+ConfigKeyNot quest_eden em_curso
+ConfigKeyNot quest_eden terminando
+BaseLevel >= 80
+BaseLevel < 90
+JobID 17
+exclusive 1
+run-once 1
+call SetSaveInRachel
+}
+
+automacro upAteLv95 {
+ConfigKeyNot quest_eden em_curso
+ConfigKeyNot quest_eden terminando
+ConfigKeyNot lockMap ra_fild12
+BaseLevel >= 80
+BaseLevel < 96
+exclusive 1
+ConfigKey saveMap rachel
+call {
+	call voltarAtacar
+	do conf lockMap ra_fild12
+}
+}
+
+automacro upAteLv99 {
+ConfigKeyNot quest_eden em_curso
+ConfigKeyNot quest_eden terminando
+BaseLevel < 99
+BaseLevel >= 95
+ConfigKeyNot lockMap ve_fild03
+call {
+	call voltarAtacar
+	do conf lockMap ve_fild03
+	if &config(saveMap != rachel) call SetSaveInRachel
+}
+}
+
+automacro toLv99 {
+BaseLevel = 99
+exclusive 1
+timeout 15
+JobID 17 #arruaceiro
+call {
+	log CHEGUEI NO LVL 99 FINALMENTE !!!!!!!
+	log CARA ISSO LEVOU TEMPO PARA CAR**HO
+}
+}
+macro pararDeAtacar {
+	[
+	do conf route_randomWalk 0
+	do conf attackAuto 0
+	]
+}
+macro voltarAtacar {
+	[
+	do conf route_randomWalk 1
+	do conf attackAuto 2
+	]
+}
+
+automacro ConfigWasWrong {
+    exclusive 1
+    overrideAI 1
+    priority -5
+    ConfigKeyNot autoTalkCont 1, attackAuto_inLockOnly 0
+    call {
+        log Tem uma config que está errada
+        log A config é $.ConfigKeyNotLastKey
+        log O valor que quero é $.ConfigKeyNotLastWantedValue
+        log Mas o valor atual é $.ConfigKeyNotLastKeyValue
+        log O index é $.ConfigKeyNotLastMemberIndex
+        log Mudando valor da config $.ConfigKeyNotLastKey de $.ConfigKeyNotLastKeyValue para $.ConfigKeyNotLastWantedValue
+        do conf $.ConfigKeyNotLastKey $.ConfigKeyNotLastWantedValue
+    }
+}
+
+macro irDeYunoPra {
+    if ($.param1 =~ /izlude|rachel/i) {
+        add_key("aeroplano1","$.param1")
+        do move airplane_01
+
+    } elsif ($.param1 =~ /einbroch|hugel|lighthalzen/i) {
+        add_key("aeroplano2","$.param1")
+        do move airplane
+
+    }
+}
+
+macro irDeEinbrochPra {
+	if ($.param1 =~ /izlude|rachel/i ) {
+	add_key("aeroplano1","$.param1")
+	add_key("aeroplano2", "Yuno")
+	} elsif ($.param1 =~ /([yj]uno|hugel|lighthalzen)/i) add_key("aeroplano2","$.param1")
+	do move airplane
+}
+
+macro irDeRachelPra {
+	if ($.param1 =~ /izlude|[yj]uno/i ) {
+	add_key("aeroplano1","$.param1")
+	} elsif ($.param1 =~ /einbroch|hugel|lighthalzen/i) {
+	add_key("aeroplano1","yuno")
+	add_key("aeroplano2","$.param1")
+	}
+	do move airplane_01
+}
+
+automacro dentroDoAeroplanoInternacional {
+InMap airplane_01
+LocalMsg /Bem-vindo a (.*)/
+exclusive 1
+run-once 1
+call {
+	log a automacro de dentro do aeroplano triggou
+  #$chegouEmIzlude = Bem-vindos a izlude. Façam uma boa viagem.
+  #$chegouEmRachel = Bem-vindos a Rachel. Façam uma boa viagem.
+  #$chegouEmYuno = Bem-vindos a Juno. Façam uma boa viagem.
+  if (&config(aeroplano1) =~ /izlude/i && $.LocalMsgLastMsg =~ /izlude/i ) do move 243 74
+  if (&config(aeroplano1) =~ /rachel/i && $.LocalMsgLastMsg =~ /rachel/i ) do move 243 74
+  if (&config(aeroplano1) =~ /[yj]uno/i && $.LocalMsgLastMsg /juno/i) do move 243 74
+}
+}
+
+automacro dentroDoAeroplanoDomestico {
+InMap airplane
+LocalMsg /Bem-vindo..\s(.*)/
+exclusive 1
+call {
+	if (&config(aeroplano2) =~ /hugel/i && $.LocalMsgLastMsg =~ /Hugel/) do move 243 74
+	if (&config(aeroplano2) =~ /lighthalzen/i && $.LocalMsgLastMsg =~ /lighthalzen ) do move 243 74
+	if (&config(aeroplano2) =~ /einbroch/i && $.LocalMsgLastMsg =~ /einbroch/ ) do move 243 74
+}
+}
+
+automacro chegueiEmEinbroch {
+InMap einbroch
+ConfigKey aeroplano2 einbroch
+exclusive 1
+run-once 1
+call {
+	do conf aeroplano2 none
+	do conf aeroplano1 none
+}
+}
+
+automacro chegueiEmRachel {
+InMap ra_fild12
+ConfigKey aeroplano rachel
+exclusive 1
+run-once 1
+call {
+	do conf aeroplano1 none
+	do conf aeroplano2 none
+	do move rachel
+}
+}
+
+automacro chegueiEmJuno {
+InMap yuno
+ConfigKeyNot aeroplano1 none, aeroplano2 none
+exclusive 1
+call {
+	log destino para aeroplano1 é: &config(aeroplano1)
+	log destino para aeroplano2 é: &config(aeroplano2)
+	if (&config(aeroplano1) =~ /rachel|izlude/i  ) do move airplane_01
+	if (&config(aeroplano2) =~ /hugel|einbroch|lighthalzen/) do move airplane
+	if (&config(aeroplano1) =~ /[yj]uno/i || &config(aeroplano2) =~ /[yj]uno/i ) {
+	do move &rand(150, 154) &rand(182, 186)
+	}
+}
+}
+
+automacro chegueiEmIzlude {
+InMap izlude
+ConfigKey aeroplano1 izlude, aeroplano1 Izlude
+call {
+	log cheguei em izlude, objetivo completo
+}
+}
+
+#Save configurations
+macro SetSaveInEinbroch {
+	add_key("saveMap_wanted", "einbroch")
+	add_key("saveMap_kafra_position", "242 205")
+	add_key("saveMap_sellNpc_position", "einbroch 224 207")
+
+	add_key("saveMap_save_sequence", "c r0")
+	add_key("saveMap_storage_sequence", "c r1")
+	add_key("In_saveMap_sequence", "true")
+}
+macro SetSaveInAldebaran {
+    add_key("saveMap_wanted", "aldebaran")
+    add_key("saveMap_kafra_position", "143 119")
+    add_key("saveMap_sellNpc_position", "aldebaran 165 107")
+
+    add_key("saveMap_save_sequence", "c r0")
+    add_key("saveMap_storage_sequence", "c r1")
+    add_key("In_saveMap_sequence", "true")
+}
+
+macro SetSaveInJuno {
+    add_key("saveMap_wanted", "yuno")
+    add_key("saveMap_kafra_position", "152 187")
+    add_key("saveMap_sellNpc_position", "yuno_in01 25 34")
+
+    add_key("saveMap_save_sequence", "c r0")
+    add_key("saveMap_storage_sequence", "c r1 ")
+    add_key("In_saveMap_sequence", "true")
+}
+
+macro SetSaveInRachel {
+    add_key("saveMap_wanted", "rachel")
+    add_key("saveMap_kafra_position", "109 138")
+    add_key("saveMap_sellNpc_position", "rachel 65 80")
+
+    add_key("saveMap_save_sequence", "c r0")
+    add_key("saveMap_storage_sequence", "c r1")
+    add_key("In_saveMap_sequence", "true")
+}
+
+ macro SetSaveInComodo {
+    add_key("saveMap_wanted", "comodo")
+    add_key("saveMap_kafra_position", "195 150")
+    add_key("saveMap_sellNpc_position", "cmd_in01 79 182")
+
+    add_key("saveMap_save_sequence", "c r0")
+    add_key("saveMap_storage_sequence", "c r1 ")
+    add_key("In_saveMap_sequence", "true")
+}
+
+macro SetSaveInProntera {
+
+    add_key("saveMap_wanted", "prontera")
+    add_key("saveMap_kafra_position", "151 29")
+    add_key("saveMap_sellNpc_position", "prontera 113 42")
+
+    add_key("saveMap_save_sequence", "c r0")
+    add_key("saveMap_storage_sequence", "c r1")
+    add_key("In_saveMap_sequence", "true")
+}
+
+macro SetSaveInPayon {
+	add_key("saveMap_wanted", "payon")
+	add_key("saveMap_kafra_position", "181 104")
+	add_key("saveMap_sellNpc_position", "payon_in01 5 49")
+
+	add_key("saveMap_save_sequence", "c r0")
+	add_key("saveMap_storage_sequence", "c r1")
+	add_key("In_saveMap_sequence", "true")
+}
+
+macro SetSaveInSewb {
+	add_key("saveMap_wanted", "prt_fild05")
+	add_key("saveMap_kafra_position", "290 224")
+	add_key("saveMap_sellNpc_position", "prt_fild05 290 221")
+
+	add_key("saveMap_save_sequence", "c r0")
+	add_key("saveMap_storage_sequence", "c r1")
+	add_key("In_saveMap_sequence", "true")
+}
+
+macro SetSaveInGeffen {
+	add_key("saveMap_wanted", "geffen")
+	add_key("saveMap_kafra_position", "120 62")
+	add_key("saveMap_sellNpc_position", "geffen_in 74 144")
+
+	add_key("saveMap_save_sequence", "c r0")
+	add_key("saveMap_storage_sequence", "c r1")
+	add_key("In_saveMap_sequence", "true")
+}
+
+macro SetSaveInMorocc {
+	add_key("saveMap_wanted", "morocc")
+	add_key("saveMap_kafra_position", "156 97")
+	add_key("saveMap_sellNpc_position", "morocc_in 141 67")
+
+	add_key("saveMap_save_sequence", "c r0 ")
+	add_key("saveMap_storage_sequence", "c r1")
+	add_key("In_saveMap_sequence", "true")
+}
+
+#### Kafra Save
+automacro set_savemap_variables {
+	exclusive 1
+	run-once 1
+	ConfigKey In_saveMap_sequence true
+	priority -4
+	call {
+		$saveMap = &config(saveMap_wanted)
+	}
+}
+
+automacro moveLocKafraOutside {
+	exclusive 1
+	ConfigKey In_saveMap_sequence true
+	ConfigKeyNot saveMap_wanted none
+	ConfigKeyNot saveMap $saveMap
+	NotInMap $saveMap
+	call move_to_near_kafra
+}
+
+automacro moveLocKafraInside {
+	exclusive 1
+	ConfigKeyNot saveMap $saveMap
+	ConfigKeyNot saveMap_wanted none
+	NpcNotNear /(Kafra Employee|Funcionária Kafra)/
+	InMap $saveMap
+	call move_to_near_kafra
+}
+
+macro move_to_near_kafra {
+	do move $saveMap &config(saveMap_kafra_position) &random("1","2","3","4","5","6")
+}
+
+automacro talkKafraEmployee {
+	ConfigKey In_saveMap_sequence true
+	ConfigKeyNot saveMap $saveMap
+	ConfigKeyNot saveMap_wanted none
+	InMap $saveMap
+	NpcNear /(Kafra Employee|Funcionária Kafra)/
+	delay 2
+	timeout 20
+	call {
+		log talking to kafra at '&arg("$.NpcNearLastPos", 1) &arg("$.NpcNearLastPos", 2)' using sequence '&config(saveMap_save_sequence)'
+		do talknpc &arg("$.NpcNearLastPos", 1) &arg("$.NpcNearLastPos", 2) &config(saveMap_save_sequence)
+	}
+}
+
+automacro SavedAtKafra {
+	exclusive 1
+	priority -5
+	NpcMsgName /O seu Ponto de Retorno foi salvo/ /(Kafra Employee|Funcionária Kafra)/
+	ConfigKeyNot saveMap $saveMap
+	ConfigKey In_saveMap_sequence true
+	InMap $saveMap
+	call {
+		do conf saveMap $saveMap
+		do conf storageAuto_npc $saveMap &config(saveMap_kafra_position)
+		do conf storageAuto 1
+		do conf sellAuto 1
+		do conf sellAuto_npc &config(saveMap_sellNpc_position)
+		do conf storageAuto_npc_type 3
+		do conf storageAuto_npc_steps &config(saveMap_storage_sequence)
+
+		do conf In_saveMap_sequence false
+		do conf saveMap_save_sequence none
+		do conf saveMap_storage_sequence none
+		do conf saveMap_wanted none
+		do conf saveMap_kafra_position none
+		do conf saveMap_sellNpc_position none
+		release set_savemap_variables
+	}
+}
+
+
+sub GetIndexAndEquipped {
+	my ($type, $id) = @_;
+	my $Item = $char->inventory->getByNameID($id);
+	my $EquipIndex = $Item->{invIndex};
+	if (my $equipItem = $char->{equipment}{$1}) {
+		if ($equipItem->{nameID} == $id) {
+			return -1;
+		} else {
+			return $EquipIndex;
+		}
+	} else {
+		return $EquipIndex;
+	}
+}
+
+sub GetNamenyNameID {
+	my $name = $items_lut{$_[0]};
+	return $name;
+}
+
+sub nextMap {
+	my $map = $_[0];
+	if ($map =~ /^new_(\d)-(\d)$/) {
+		return "new_".$1."-".($2+1);
+	} else {
+		return 0;
+	}
+}
+
+sub add_key {
+	my ($key, $value) = @_;
+	configModify($key, $value);
