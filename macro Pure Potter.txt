@@ -1,0 +1,18 @@
+automacro create {
+	IsInMapAndCoordinate prontera 150 150
+	CurrentSP > 15%
+	InInventory "Manual de Criação: Vol.1: Poções Comuns" > 0
+	InInventory "Erva Azul" > 0
+	InInventory "Garrafa de Poção" > 0
+	InInventory "Vasilha de Mistura" > 0
+	InInventory "Scell" > 0
+	call pharmacy
+	run-once 1
+}
+
+macro pharmacy {
+	do ss 228 10
+	pause 0.25
+	do send 8E 01 F9 01 00 00 00 00 00 00
+	release create
+}
