@@ -1118,11 +1118,13 @@ call {
 }
 
 automacro Eden70Começo {
-BaseLevel = 70
+BaseLevel >= 70
+BaseLevel <= 79
 exclusive 1
 JobID 17 #arruaceiro
 ConfigKeyNot quest_eden em_curso
 ConfigKeyNot quest_eden terminando
+ConfigKeyNot quest_eden terminado
 run-once 1
 call {
 	do conf lockMap none
@@ -1137,9 +1139,11 @@ call {
 }
 
 automacro Eden80Começo {
-BaseLevel = 80
+BaseLevel >= 80
+BaseLevel <= 89
 ConfigKeyNot quest_eden em_curso
 ConfigKeyNot quest_eden terminando
+ConfigKeyNot quest_eden terminado
 JobID 17 # arruaceiro
 exclusive 1
 run-once 1
@@ -1556,6 +1560,8 @@ call {
 
 automacro EdenPegandoEquips60e70e80 {
   ConfigKey quest_eden terminando
+	BaseLevel >= 60
+	BaseLevel <= 89
   exclusive 1
   call {
 	do move moc_para01 &rand(112,114) &rand(31,33)
@@ -1581,6 +1587,7 @@ automacro EdenPegandoEquips60e70e80 {
 		talk resp 4
 		talk resp 0
 		do conf quest_eden none
+	stop
     	}
     case (<= 79) { #eden 70
 		$check = GetIndexAndEquipped("rightHand",13051)#Adaga Valhalla Intermediária
@@ -1592,7 +1599,8 @@ automacro EdenPegandoEquips60e70e80 {
 		talk resp 0
 		$check = GetIndexAndEquipped("rightHand",13066)#Adaga_III_do_Grupo_Éden#
 			if ($check != -1) do eq $check
-		do conf quest_eden none
+		do conf quest_eden terminado
+	stop
     }
     case (<= 89) { #eden 80
 		$check = GetIndexAndEquipped("rightHand",13051)#Adaga Valhalla Intermediária
@@ -1603,7 +1611,8 @@ automacro EdenPegandoEquips60e70e80 {
 		do talk resp 2
 		$check = GetIndexAndEquipped("rightHand",13066)#Adaga_III_do_Grupo_Éden#
 			if ($check != -1) do eq $check
-		do conf quest_eden none
+		do conf quest_eden terminado
+	stop
     }
   }
   }
