@@ -64,13 +64,13 @@ automacro TalkSprakkiOutside {
 		do iconf 2301 0 0 0
 		]
 		do talk $.NpcNearLastBinId
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
 	}
 }
 
@@ -161,11 +161,11 @@ automacro talkSprakkiBugged2 {
 
 macro SprakiiBuggedTalk {
 	do talk $.NpcNearLastBinId
-	do talk cont
-	do talk cont
+	#do talk cont
+	#do talk cont
 	do talk resp 0
-	do talk cont
-	do talk cont
+	#do talk cont
+	#do talk cont
 }
 
 automacro talkSprakki {
@@ -177,12 +177,12 @@ automacro talkSprakki {
 	priority 0
 	call {
 		do talk $.NpcNearLastBinId
-		do talk cont
-		do talk cont
-		do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
 		do talk resp 0
-		do talk cont
-		do talk cont
+		#do talk cont
+		#do talk cont
 	}
 }
 
@@ -218,19 +218,19 @@ automacro talkBrade {
 	call {
 		do talk $.NpcNearLastBinId
 
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
 	}
 }
 
@@ -258,16 +258,16 @@ automacro talkBradeBugged {
 	priority 0
 	call {
 		do talk $.NpcNearLastBinId
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
 	}
 }
 
@@ -316,17 +316,17 @@ automacro talkBradeSecond {
 	NpcNear /Brade/
 	call {
 		do talk $.NpcNearLastBinId
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
 	}
 }
 
@@ -388,11 +388,11 @@ automacro talkGirlSkill {
 
 macro TalkJinha {
 	do talk $.NpcNearLastBinId
-	do talk cont
+	#do talk cont
 	do talk resp 0
-	do talk cont
-	do talk cont
-	do talk cont
+	#do talk cont
+	#do talk cont
+	#do talk cont
 }
 
 automacro BradeBuggedNo7120MoveBrade {
@@ -442,9 +442,9 @@ automacro talkBradeThird {
 
 macro TalkBradeGetTunic {
 	do talk $.NpcNearLastBinId
-	do talk cont
-	do talk cont
-	do talk cont
+	#do talk cont
+	#do talk cont
+	#do talk cont
 }
 
 automacro equipStuffForGirl {
@@ -481,9 +481,9 @@ automacro talkChoco {
 	NpcNear /Choco/
 	call {
 		do talk $.NpcNearLastBinId
-		do talk cont
-		do talk cont
-		do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
 		add_key('current_npc', 'kafra')
 	}
 }
@@ -505,19 +505,19 @@ automacro talkKafra {
 	NpcNear /Kafra/
 	call {
 		do talk $.NpcNearLastBinId
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
 		do talk resp 4
 		do conf current_npc zonda
 	}
@@ -530,11 +530,11 @@ automacro talkZonda {
 	NpcNear /Zonda/
 	call {
 		do talk $.NpcNearLastBinId
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
 		do conf current_npc soldado
 	}
 }
@@ -546,9 +546,9 @@ automacro talkSoldado {
 	NpcNear /Soldado/
 	call {
 		do talk $.NpcNearLastBinId
-		do talk cont
-		do talk cont
-		do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
 		do conf current_npc choco
 	}
 }
@@ -560,11 +560,11 @@ automacro talkChocoAgain {
 	NpcNear /Choco/
 	call {
 		do talk $.NpcNearLastBinId
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
 		do conf current_npc kafra
 
 	}
@@ -588,11 +588,11 @@ automacro talkBradeonGroundsGetQuest {
 	NpcNear /Brade/
 	call {
 		do talk $.NpcNearLastBinId
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
 		do conf route_randomWalk 1
 		do conf itemsTakeAuto 2
 		$potName = GetNamenyNameID(569)
@@ -633,14 +633,14 @@ automacro talkBradeonGroundsCompleteQuest {
 	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
 	NpcNear /Brade/
 	call {
-		do talk $.NpcNearLastBinId
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
-		do talk cont
+		do talk $.NpcN||earLastBinId
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
 		add_key("quest_atual" , "lunaticos")
 	}
 }
@@ -667,17 +667,17 @@ automacro LastBradeBug {
 		call moveBradeGrounds
 		do talk &npc(/Brade/)
 		pause 0.5
-		do talk cont
+		#do talk cont
 		pause 0.5
-		do talk cont
+		#do talk cont
 		pause 0.5
-		do talk cont
+		#do talk cont
 		pause 0.5
-		do talk cont
+		#do talk cont
 		pause 0.5
-		do talk cont
+		#do talk cont
 		pause 0.5
-		do talk cont
+		#do talk cont
 		add_key("quest_atual" , "lunaticos")
 	}
 }
@@ -696,10 +696,10 @@ call {
 	do move &rand(103,105) &rand(36,38)
 	pause 2
 	do talk &npc(/Mago/)
-	do talk cont
+	#do talk cont
 	do talk resp 2
-	do talk cont
-	do talk cont
+	#do talk cont
+	#do talk cont
 }
 }
 
@@ -746,9 +746,9 @@ call {
 	pause 2
 	log ======== terminando quest de lunaticos
 	do talk &npc(/Mago/)
-	do talk cont
+	#do talk cont
 	do talk resp 2
-	do talk cont#Mago
+	#do talk cont#Mago
 	do conf quest_atual pickys_e_salgueiros
 }
 }
@@ -764,18 +764,18 @@ call {
 	log ======== Indo pegar quest para  Picks
 	pause 2
 	do talk &npc(/Espadachim/)
-	do talk cont
+	#do talk cont
 	do talk resp 2
-	do talk cont
-	do talk cont
-	do talk cont
+	#do talk cont
+	#do talk cont
+	#do talk cont
 	pause 3
 	log ======== Indo pegar quest para  Salgueiro
 	do talk &npc(/Gatuno/)
-	do talk cont
+	#do talk cont
 	do talk resp 2
-	do talk cont
-	do talk cont
+	#do talk cont
+	#do talk cont
 }
 }
 
@@ -811,11 +811,11 @@ automacro mudar para treino mais pesado {
 		pause 3
 		log ======== mudando pra mapa onde tem pickys e salgueiros
 		do talk &npc(/Treinador/) #Treinador
-		do talk cont
-		do talk cont
-		do talk cont
+		#do talk cont
+		#do talk cont
+		#do talk cont
 		do talk resp 1
-		do talk cont
+		#do talk cont
 	}
 }
 
@@ -848,11 +848,11 @@ call {
 	do move &rand(103,105) &rand(36,38)
 	log ======== mudando pra mapa onde tem pickys e salgueiros
 	do talk &npc(/Treinador/) #Treinador
-	do talk cont
-	do talk cont
-	do talk cont
+	#do talk cont
+	#do talk cont
+	#do talk cont
 	do talk resp 1
-	do talk cont
+	#do talk cont
 	call voltarAtacar
 }
 }
@@ -873,7 +873,7 @@ call {
 	do move &rand(103,105) &rand(36,38)
 	pause 2
 	do talk &npc(/Espadachim/)
-	do talk cont
+	#do talk cont
 	do talk resp 2
 	call voltarAtacar
 
@@ -895,7 +895,7 @@ call {
 	pause 2
 	do move &rand(103,105) &rand(36,38)
 	do talk &npc(/Gatuno/)
-	do talk cont
+	#do talk cont
 	do talk resp 2
 	log ======== Completei todas as Quests
 	do conf quest_atual todas_completadas
@@ -933,11 +933,11 @@ call {
 	do move &rand(103,105) &rand(36,38)
 	log ======== mudando pra mapa onde tem pickys e salgueiros
 	do talk &npc(/Treinador/) #Treinador
-	do talk cont
-	do talk cont
-	do talk cont
+	#do talk cont
+	#do talk cont
+	#do talk cont
 	do talk resp 1
-	do talk cont
+	#do talk cont
 	call voltarAtacar
 }
 }
@@ -952,10 +952,10 @@ automacro endleveling {
 	call {
 		do move &rand(103,105) &rand(36,38)
 		do talk &npc(/Gatuno/)
-		do talk cont
+		#do talk cont
 		do talk resp 1
-		do talk cont
-		do talk cont
+		#do talk cont
+		#do talk cont
 		do talk resp 1
 		do talk resp 0
 		log ======== Agora vou virar gatuno!!!
@@ -1565,7 +1565,7 @@ automacro EdenPegandoEquips60e70e80 {
   exclusive 1
   call {
 	do move moc_para01 &rand(112,114) &rand(31,33)
-  switch ($.lvl) {
+	switch ($.lvl) {
     case (<= 69) { #eden 60
 		#do talknpc 111 83 c r2 c c r1 #Ferreiro Torhen#2nd10
 		do talk &npc(/Ferreiro/)
@@ -1587,8 +1587,8 @@ automacro EdenPegandoEquips60e70e80 {
 		talk resp 4
 		talk resp 0
 		do conf quest_eden none
-	stop
-    	}
+		stop
+    }
     case (<= 79) { #eden 70
 		$check = GetIndexAndEquipped("rightHand",13051)#Adaga Valhalla Intermediária
 			if ($check != -1) do eq $check
@@ -1600,7 +1600,7 @@ automacro EdenPegandoEquips60e70e80 {
 		$check = GetIndexAndEquipped("rightHand",13066)#Adaga_III_do_Grupo_Éden#
 			if ($check != -1) do eq $check
 		do conf quest_eden terminado
-	stop
+		stop
     }
     case (<= 89) { #eden 80
 		$check = GetIndexAndEquipped("rightHand",13051)#Adaga Valhalla Intermediária
@@ -1612,7 +1612,7 @@ automacro EdenPegandoEquips60e70e80 {
 		$check = GetIndexAndEquipped("rightHand",13066)#Adaga_III_do_Grupo_Éden#
 			if ($check != -1) do eq $check
 		do conf quest_eden terminado
-	stop
+		stop
     }
   }
   }
@@ -1821,28 +1821,25 @@ macro irDeRachelPra {
 
 automacro dentroDoAeroplanoInternacional {
 InMap airplane_01
-LocalMsg /Bem-vindo a (.*)/
+LocalMsg /Bem-vindo(.*)|Welcome to (.*)/
 exclusive 1
 run-once 1
 call {
 	log a automacro de dentro do aeroplano triggou
-  #$chegouEmIzlude = Bem-vindos a izlude. Façam uma boa viagem.
-  #$chegouEmRachel = Bem-vindos a Rachel. Façam uma boa viagem.
-  #$chegouEmYuno = Bem-vindos a Juno. Façam uma boa viagem.
-  if (&config(aeroplano1) =~ /izlude/i && $.LocalMsgLastMsg =~ /izlude/i ) do move 243 74
-  if (&config(aeroplano1) =~ /rachel/i && $.LocalMsgLastMsg =~ /rachel/i ) do move 243 74
-  if (&config(aeroplano1) =~ /[yj]uno/i && $.LocalMsgLastMsg /juno/i) do move 243 74
+	if (&config(aeroplano1) =~ /izlude/i && $.LocalMsgLastMsg =~ /izlude/i ) do move 243 74
+	if (&config(aeroplano1) =~ /rachel/i && $.LocalMsgLastMsg =~ /rachel/i ) do move 243 74
+	if (&config(aeroplano1) =~ /[yj]uno/i && $.LocalMsgLastMsg /juno/i) do move 243 74
 }
 }
 
 automacro dentroDoAeroplanoDomestico {
 InMap airplane
-LocalMsg /Bem-vindo..\s(.*)/
+LocalMsg /Bem-vindo(.*)|Welcome to (.*)/
 exclusive 1
 call {
-	if (&config(aeroplano2) =~ /hugel/i && $.LocalMsgLastMsg =~ /Hugel/) do move 243 74
-	if (&config(aeroplano2) =~ /lighthalzen/i && $.LocalMsgLastMsg =~ /lighthalzen ) do move 243 74
-	if (&config(aeroplano2) =~ /einbroch/i && $.LocalMsgLastMsg =~ /einbroch/ ) do move 243 74
+	if (&config(aeroplano2) =~ /hugel/i && $.LocalMsgLastMsg =~ /Hugel/i ) do move 243 74
+	if (&config(aeroplano2) =~ /lighthalzen/i && $.LocalMsgLastMsg =~ /lighthalzen/i ) do move 243 74
+	if (&config(aeroplano2) =~ /einbroch/i && $.LocalMsgLastMsg =~ /einbroch/i ) do move 243 74
 }
 }
 
@@ -2018,7 +2015,7 @@ automacro moveLocKafraInside {
 	ConfigKeyNot saveMap $saveMap
 	ConfigKeyNot saveMap_wanted none
 	NpcNotNear /(Kafra Employee|Funcionária Kafra)/
-	InMap $saveMap
+	InMap $saveMap Class from general
 	call move_to_near_kafra
 }
 
