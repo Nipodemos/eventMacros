@@ -695,7 +695,7 @@ call {
 	log ======== Indo pegar quest para lunaticos
 	do move &rand(103,105) &rand(36,38)
 	pause 2
-	do talk &npc(/Mago/)
+	do talk &npc(/Mago|Mage/)
 	#do talk cont
 	do talk resp 2
 	#do talk cont
@@ -703,7 +703,7 @@ call {
 }
 }
 
-automacro caçando lunaticos {
+automacro caçandoLunaticos {
 QuestActive 7124
 InMap new_1-3, new_2-3, new_3-3
 run-once 1
@@ -745,7 +745,7 @@ call {
 	do move &rand(103,105) &rand(36,38)
 	pause 2
 	log ======== terminando quest de lunaticos
-	do talk &npc(/Mago/)
+	do talk &npc(/Mago|Mage/)
 	#do talk cont
 	do talk resp 2
 	#do talk cont#Mago
@@ -755,7 +755,7 @@ call {
 
 automacro começar quest pickys e salgueiros{
 ConfigKey quest_atual pickys_e_salgueiros
-NpcNear /Espadachim/
+NpcNear /Espadachim|Swordman/
 QuestInactive 7123, 7127
 exclusive 1
 run-once 1
@@ -763,7 +763,7 @@ InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
 call {
 	log ======== Indo pegar quest para  Picks
 	pause 2
-	do talk &npc(/Espadachim/)
+	do talk &npc(/Espadachim|Swordman/)
 	#do talk cont
 	do talk resp 2
 	#do talk cont
@@ -771,7 +771,7 @@ call {
 	#do talk cont
 	pause 3
 	log ======== Indo pegar quest para  Salgueiro
-	do talk &npc(/Gatuno/)
+	do talk &npc(/Gatuno|Thief/)
 	#do talk cont
 	do talk resp 2
 	#do talk cont
@@ -781,7 +781,7 @@ call {
 
 automacro começar quest pickys e salgueiros bugged {
 ConfigKey quest_atual pickys_e_salgueiros
-NpcNotNear /Espadachim/
+NpcNotNear /Espadachim|Swordman/
 exclusive 1
 run-once 1
 QuestInactive 7123, 7127
@@ -789,17 +789,25 @@ call {
 	do move &rand(103,105) &rand(36,38)
 }
 }
-automacro mudar para treino mais pesado bugged {
-	QuestActive 7123
+automacro changeToHeavierTraining {
+QuestActive 7123
 	QuestActive 7127
 	exclusive 1
-	NpcNotNear /Treinador/
+	NpcNear /Trainer/
 	InMap new_1-3, new_2-3, new_3-3
 	call {
-	do move &rand(103,105) &rand(36,38)
+		do move &rand(103,105) &rand(36,38)
+		pause 3
+		log ======== mudando pra mapa onde tem pickys e salgueiros
+		do talk &npc(/Treinador|Trainer/) #Treinador
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		do talk resp 0
+		#do talk cont
+		do talk resp /5/
+}
 
-}
-}
 automacro mudar para treino mais pesado {
 	QuestActive 7123
 	QuestActive 7127
@@ -835,7 +843,25 @@ call {
 	]
 }
 }
-
+automacro ifDieWhileKillPickyAndWillow {
+QuestActive 7123, 7127
+CurrentHP >= 50%
+IsInCoordinate 95 21
+InMap new_1-3, new_2-3, new_3-3
+exclusive 1
+call {
+		do move &rand(103,105) &rand(36,38)
+		pause 3
+		log ======== mudando pra mapa onde tem pickys e salgueiros
+		do talk &npc(/Treinador|Trainer/) #Treinador
+		#do talk cont
+		#do talk cont
+		#do talk cont
+		do talk resp 0
+		#do talk cont
+		do talk resp /5/
+}
+}
 automacro se morrer enquanto mata pickys_e_salgueiros {
 QuestActive 7123, 7127
 CurrentHP >= 50%
@@ -872,7 +898,7 @@ call {
 	]
 	do move &rand(103,105) &rand(36,38)
 	pause 2
-	do talk &npc(/Espadachim/)
+	do talk &npc(/Espadachim|Swordman/)
 	#do talk cont
 	do talk resp 2
 	call voltarAtacar
@@ -1408,12 +1434,11 @@ call {
    }
 }
 
-automacro EdenPegandoEquips60e70e80 {
-  ConfigKey quest_eden terminando
-	BaseLevel >= 60
-	BaseLevel <= 69
-  exclusive 1
-  call {
+automacro EdenPegandoEquips60 {
+	ConfigKey quest_eden terminando
+	BaseLevel 60..69
+	exclusive 1
+	call {
 		do move moc_para01 &rand(112,114) &rand(31,33)
 		#do talknpc 111 83 c r2 c c r1 #Ferreiro Torhen#2nd10
 		do talk &npc(/Ferreiro/)
@@ -1442,8 +1467,7 @@ automacro upAteLv26 {
 ConfigKeyNot quest_eden em_curso
 ConfigKeyNot quest_eden terminando
 ConfigKeyNot lockMap pay_fild07
-BaseLevel >= 12
-BaseLevel < 26
+BaseLevel 12..26
 exclusive 1
 JobID 6 #gatuno
 priority 5
@@ -1458,8 +1482,7 @@ automacro upAteLv40 {
 ConfigKeyNot quest_eden em_curso
 ConfigKeyNot quest_eden terminando
 ConfigKeyNot lockMap gef_fild02
-BaseLevel >= 26
-BaseLevel < 40
+BaseLevel 26..40
 exclusive 1
 JobID 6 #gatuno
 run-once 1
@@ -1475,8 +1498,7 @@ ConfigKeyNot quest_eden em_curso
 ConfigKeyNot quest_eden terminando
 ConfigKeyNot lockMap um_fild02
 JobID 6, 17
-BaseLevel >= 40
-BaseLevel < 60
+BaseLevel 40..59
 exclusive 1
 run-once 1
 call {
@@ -1487,8 +1509,7 @@ call {
 }
 
 automacro upAteLv70 {
-BaseLevel >= 60
-BaseLevel < 70
+BaseLevel 60..69
 JobID 17
 ConfigKeyNot quest_eden em_curso
 ConfigKeyNot quest_eden terminando
@@ -1501,8 +1522,7 @@ call {
 }
 
 automacro upAteLv80 {
-BaseLevel >= 70
-BaseLevel < 80
+BaseLevel 70..79
 ConfigKeyNot quest_eden em_curso
 ConfigKeyNot quest_eden terminando
 ConfigKeyNot lockMap gl_church
@@ -1519,8 +1539,7 @@ automacro IndoPraRachelPraUpAteLv95 {
 ConfigKeyNot quest_eden em_curso
 ConfigKeyNot quest_eden terminando
 ConfigKeyNot lockMap ra_fild12
-BaseLevel >= 80
-BaseLevel < 90
+BaseLevel 80..94
 NotInMap rachel
 NotInMap ra_fild12
 JobID 17
@@ -1535,8 +1554,7 @@ ConfigKeyNot saveMap rachel
 InMap rachel
 ConfigKeyNot quest_eden em_curso
 ConfigKeyNot quest_eden terminando
-BaseLevel >= 80
-BaseLevel < 90
+BaseLevel 80..94
 JobID 17
 exclusive 1
 run-once 1
@@ -1547,8 +1565,7 @@ automacro upAteLv95 {
 ConfigKeyNot quest_eden em_curso
 ConfigKeyNot quest_eden terminando
 ConfigKeyNot lockMap ra_fild12
-BaseLevel >= 80
-BaseLevel < 96
+BaseLevel 80..94
 exclusive 1
 ConfigKey saveMap rachel
 call {
@@ -1560,8 +1577,7 @@ call {
 automacro upAteLv99 {
 ConfigKeyNot quest_eden em_curso
 ConfigKeyNot quest_eden terminando
-BaseLevel < 99
-BaseLevel >= 95
+BaseLevel 95..99
 ConfigKeyNot lockMap ve_fild03
 call {
 	call voltarAtacar
