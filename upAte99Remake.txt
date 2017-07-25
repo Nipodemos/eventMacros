@@ -1117,82 +1117,8 @@ call {
 }
 }
 
-automacro Eden70Começo {
-BaseLevel >= 70
-BaseLevel <= 79
-exclusive 1
-JobID 17 #arruaceiro
-ConfigKeyNot quest_eden em_curso
-ConfigKeyNot quest_eden terminando
-ConfigKeyNot quest_eden terminado
-run-once 1
-call {
-	do conf lockMap none
-	call pararDeAtacar
-	do move moc_para01 &rand(33,35) &rand(25,27)
-	#do talknpc 23 35 c r0 c c c c c #Uru
-	do talk &npc(/Ur/)
-	do talk resp 0
-	add_key("quest_eden","em_curso")
-	if (&config(saveMap) != geffen) call SetSaveInGeffen
-}
-}
-
-automacro Eden80Começo {
-BaseLevel >= 80
-BaseLevel <= 89
-ConfigKeyNot quest_eden em_curso
-ConfigKeyNot quest_eden terminando
-ConfigKeyNot quest_eden terminado
-JobID 17 # arruaceiro
-exclusive 1
-run-once 1
-call {
-	call pararDeAtacar
-	do conf lockMap none
-	do move moc_para01 &rand(33,35) &rand(25,27)
-	#do talknpc 23 35 c r0 c c c c #Uru
-	do talk &npc(/Ur/)
-	talk resp 0
-	add_key("quest_eden","em_curso")
-}
-}
-
-automacro Eden80IndoAteOAeroplano {
-QuestActive 7223
-exclusive 1
-run-once 1
-NotInMap airplane
-NotInMap airplane_01
-NotInMap einbroch
-call {
-do eventMacro irDeYunoPra --einbroch
-}
-}
-
-automacro Eden80Einbroch {
-QuestActive 7223
-InMap einbroch
-ConfigKeyNot saveMap einbroch
-run-once 1
-exclusive 1
-call SetSaveInEinbroch
-}
-automacro salvoEmEinbrochComecandoQuest {
-ConfigKey saveMap einbroch
-exclusive 1
-QuestActive 7223
-call {
-do move ein_fild08 &rand(164,166) &rand(364,366)
-#do talknpc 172 359 c c c c c #membro do grupo eden Girhen
-do talk &npc(/den/g)
-do conf lockMap ein_fild09
-}
-}
-
-
 automacro irNoMapa {
-QuestActive 7128, 7138, 7147, 7124, 7219
+QuestActive 7128, 7138, 7147, 7124
 exclusive 1
 priority 5
 call {
@@ -1200,7 +1126,6 @@ call {
 	#7138 : eden 26
 	#7147 : eden 40
 	#7214 : eden 60
-	#7219 : eden 70
 	switch ($.QuestActiveLastID) {
 
 	case (= 7128) { #eden 12
@@ -1238,16 +1163,6 @@ call {
     	do talk &npc(/den/g)
 		do conf lockMap beach_dun02
     }
-
-    case (= 7219) { #eden 70
-    do move glast_01 &rand(200,202) &rand(125,127)
-    #do talknpc 195 131 c r0 c c c c c c #membro do grupo eden Johan
-    do talk &npc(/den/g)
-    do talk resp 0
-	do conf lockMap gl_church
-    }
-    #A quest do eden lvl 80 requer um tratameno especial
-    #por isso nao vai ser colocada aqui
 }
 }
 }
@@ -1279,31 +1194,6 @@ automacro Eden60Caçar {
 	timeout 300
 	call caçarMonstros
 }
-
-automacro Eden70Caçar {
-	QuestHuntOngoing 7220 1192, 7221 1117
-	exclusive 1
-	timeout 300
-	call caçarMonstros
-}
-
-automacro Eden80Caçar {
-  QuestHuntOngoing 7224 1619, 7226 1621, 7227 1622
-  exclusive 1
-  timeout 300
-  call {
-	switch (QuestHuntOngoingLastQuestID) {
-	  case (= 7224) {
-	    do conf lockMap ein_fild09
-	  }
-	  case (= 7226) {
-	    do conf lockMap ein_fild04
-	  }
-	}
-	call caçarMonstros
-}
-}
-
 macro caçarMonstros {
 	[
 	call voltarAtacar
@@ -1410,40 +1300,14 @@ call {
   }
 }
 
-automacro Eden70FinalizarCaças {
-QuestHuntCompleted 7220 1192, 7221 1117
-exclusive 1
-call {
-	do mconf $.QuestHuntCompletedLastMobID 0 0 0
-	do move glast_01 @rand(200,202) @rand(125,127)
-	#do talknpc 195 131 c c c #membro do grupo eden Johan
-	do talk &npc(/den/g)
-	release Eden70Caçar
-  }
-}
-
-automacro Eden80FinalizarCaças {
-QuestHuntCompleted 7224 1619, 7226 1621, 7227 1622
-exclusive 1
-call {
-	do mconf $.QuestHuntCompletedLastMobID 0 0 0
-	do move ein_fild08 &rand(164,166) &rand(364,366)
-	#do talknpc 172 359 c c c c c c #membro do grupo eden Girhen
-	do talk &npc(/den/g)
-	release Eden80Caçar
-}
-}
-
 automacro voltarDoMapa {
-QuestActive 7132, 7141, 7151, 7128, 7222, 7228
+QuestActive 7132, 7141, 7151, 7128, 
 exclusive 1
 call {
 	#7132 : eden 12
 	#7141 : eden 26
 	#7151 : eden 40
 	#7128 : eden 60
-	#7122 : eden 70
-	#7228 : eden 80
 	log Completei as Caças!
 	log vamo lá pegar meus equips de direito!
 	do conf lockMap none
@@ -1485,20 +1349,6 @@ call {
     	#do talknpc 23 35 c c c #Uru
     	do talk &npc(/Ur/)
     	add_key ("quest_eden", "terminando")
-    	release EdenPegandoEquips60e70e80
-    	}
-
-    case (= 7222) { #eden 70
-    	#do talknpc 23 35 c c  #Uru
-    	do talk &npc(/Ur/)
-    	add_key ("quest_eden", "terminando")
-    	release EdenPegandoEquips60e70e80
-    	}
-
-    case (= 7228) { #eden 80
-    	#do talknpc 23 35 c c  #Uru
-    	do talk &npc(/Ur/)
-    	add_key("quest_eden", "terminando")
     	release EdenPegandoEquips60e70e80
     	}
 	}
@@ -1561,12 +1411,10 @@ call {
 automacro EdenPegandoEquips60e70e80 {
   ConfigKey quest_eden terminando
 	BaseLevel >= 60
-	BaseLevel <= 89
+	BaseLevel <= 69
   exclusive 1
   call {
-	do move moc_para01 &rand(112,114) &rand(31,33)
-	switch ($.lvl) {
-    case (<= 69) { #eden 60
+		do move moc_para01 &rand(112,114) &rand(31,33)
 		#do talknpc 111 83 c r2 c c r1 #Ferreiro Torhen#2nd10
 		do talk &npc(/Ferreiro/)
 		talk resp 2
@@ -1587,34 +1435,6 @@ automacro EdenPegandoEquips60e70e80 {
 		talk resp 4
 		talk resp 0
 		do conf quest_eden none
-		stop
-    }
-    case (<= 79) { #eden 70
-		$check = GetIndexAndEquipped("rightHand",13051)#Adaga Valhalla Intermediária
-			if ($check != -1) do eq $check
-		#do talknpc 112 79 c r0 c c r2 c c r0 c #Especialista BK#2nd11
-		do talk &npc(/BK/)
-		talk resp 0
-		talk resp 2
-		talk resp 0
-		$check = GetIndexAndEquipped("rightHand",13066)#Adaga_III_do_Grupo_Éden#
-			if ($check != -1) do eq $check
-		do conf quest_eden terminado
-		stop
-    }
-    case (<= 89) { #eden 80
-		$check = GetIndexAndEquipped("rightHand",13051)#Adaga Valhalla Intermediária
-			if ($check != -1) do eq $check
-		#do talknpc 112 79 c r0 c c c c r2 c #Especialista BK#2nd11
-		do talk &npc(/BK/)
-		do talk resp 0
-		do talk resp 2
-		$check = GetIndexAndEquipped("rightHand",13066)#Adaga_III_do_Grupo_Éden#
-			if ($check != -1) do eq $check
-		do conf quest_eden terminado
-		stop
-    }
-  }
   }
 }
 
