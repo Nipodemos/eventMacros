@@ -1,0 +1,41 @@
+automacro virarCavaleiro {
+JobLevel >= 40
+ConfigKeyNot quest_atual cavaleiro
+exclusive 1
+JobID 1
+call {
+log Vamos começar a quest
+do move prt_in 88 101
+do talk /Chefe/
+do talk resp 0
+do talk resp 0
+add_key ("quest_atual", "cavaleiro)
+}
+}
+
+automacro virarCavaleiro2 {
+JobLevel >= 40
+ConfigKey quest_atual cavaleiro
+exclusive 1
+JobID 1
+call {
+do talk &npc(/Dedicado/)
+do talk resp 0
+}
+}
+
+automacro responder perguntas {
+exclusive 1
+call {
+do talk npc(/Honroso/)
+do talk resp 0
+do talk resp /Flambergue/
+do talk resp /Provocar/
+do talk resp /lança/
+do talk resp /Zéfiro/
+do talk resp /80/
+do talk resp /caça/
+do talk resp /Proteger/
+do talk resp /Honra/
+}
+}

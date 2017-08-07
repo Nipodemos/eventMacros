@@ -1,0 +1,94 @@
+﻿automacro semSP {
+CurrentSP < 21%
+timeout 30
+call {
+	log Estou sem SP
+}
+}
+
+automacro Cultivate {
+InMap prt_fild08 
+InInventoryID 921 >= 1
+CharCurrentWeight < 50%
+CurrentSP > 20%
+JobID 4078
+ConfigKey fazenda cultivar
+exclusive 1
+call {
+	do move 331 134
+	$Count = 0
+	while ($Count < 40) as exampleloop
+		do sl 491 330 134 1 
+		do ss "153"
+		$Count++
+		log Já fizemos isso $Count vezes
+	end exampleloop
+	do conf char 3 #sorc
+	log pausando 7 segundos
+	pause 7
+	add_key ("fazenda", "matar")
+	do charselect
+}
+}
+
+automacro CultivateOuCatarBugado {
+JobID 4074
+ConfigKey fazenda cultivar, fazenda catar
+exclusive 1
+call {
+	log Está na parte de $.ConfigKeyLastValue mas o sorc ainda tá logado
+	log vamos mudar isso
+	do conf char 5 #bio
+	pause 7
+	do charselect
+	}
+}
+
+automacro matar {
+JobID 4074
+ConfigKey fazenda matar
+InMap prt_fild08
+exclusive 1
+call {
+	do move 329 134
+	do sl 2449 329 134 5
+	pause 12 #tempo que leva pra conjurar a onda
+	do conf char 5 #bio
+	log pausando 7 segundos
+	pause 7
+	add_key ("fazenda", "catar")
+	do charselect
+   }
+}
+
+automacro matarBugado {
+JobID 4078
+ConfigKey fazenda matar
+exclusive 1
+call {
+	log Está na parde de $.ConfigKeyLastValue mas o Bio ainda ta logado
+	log vamos mudar isso
+	do conf char 3 #sorc
+	pause 7
+	do charselect
+}
+}
+
+automacro catar {
+InMap prt_fild08
+CharCurrentWeight < 50%
+JobID 4078
+ConfigKey fazenda catar
+macro_delay 1.5
+exclusive 1
+call {
+	do move 329 134
+	do ss 1013
+	add_key ("fazenda", "cultivar")
+}
+}
+
+sub add_key {
+	my ( $key, $value ) = @_;
+	configModify( $key, $value );
+}

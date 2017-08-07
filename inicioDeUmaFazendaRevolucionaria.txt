@@ -1,0 +1,30 @@
+automacro plantarPlanta {
+	InInventory "Caule" > 0
+	InMap prt_fild08
+	exclusive 1
+	call {
+		do move coordenada específica
+		do 
+	}
+}
+
+automacro plantarCogumelo {
+	InInventory "Esporo de Cogumelo" > 0
+	InMap prt_fild08
+	exclusive 1
+	repeat 40
+	call {
+		do sl 491 330 134 1 
+		
+	}
+}
+
+automacro matarCogumelo {
+	MobNearDist /^Cogumelo/ = 1
+	InMap prt_fild08
+	exclusive 1
+	call {
+		do ss "153"
+	}
+}
+

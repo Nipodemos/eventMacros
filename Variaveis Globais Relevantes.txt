@@ -1,4 +1,4 @@
-0 => 'Novice',
+	0 => 'Novice',
 	1 => 'Swordsman',
 	2 => 'Mage',
 	3 => 'Archer',
