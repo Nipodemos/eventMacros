@@ -1,4 +1,4 @@
-#campo dos aprendizes by HenryBK
+﻿#campo dos aprendizes by HenryBK
 
 automacro moveToSprakkiOutside {
 	exclusive 1
@@ -518,6 +518,25 @@ automacro talkBradeonGroundsGetQuest {
 	}
 }
 
+#automacro usarPocaoDeApreniz {
+#	ConfigKeyNot useSelf_item_0 Poção de Aprendiz
+#	InInventoryID 569 > 0
+#	exclusive 1
+#	call {
+#		log parece que tenho poção de aprendiz, mas ainda não foi configurado pra ser usado
+#		log mudando isso
+#		$potName = GetNamenyNameID(569)
+#		do conf useSelf_item_0 $potName
+#		do conf useSelf_item_0_disabled 0
+#		do conf useSelf_item_0_hp < 60%
+#		do conf getAuto_0 $potName
+#		do conf getAuto_0_minAmount 20
+#		do conf getAuto_0_maxAmount 200
+#		do conf getAuto_0_passive 0
+#		log pronto
+#	}
+#}
+
 automacro moveBradeCompleteQuest {
 	exclusive 1
 	QuestHuntCompleted 7122 1002
@@ -559,16 +578,29 @@ automacro equipStuffForBradeGrounds {
 }
 
 automacro LastBradeBug {
-	NpcMsg /Você ainda está fazendo o curso do instrutor Brade/
+	NpcMsg /Você ainda está no processo de treinamento/
 	exclusive 1
 	priority 0
 	call {
+		log Acabou de ocorrer um bug na sequencia do campo de treinamento
+		log Resolvendo isso
 		call moveBradeGrounds
 		do talk &npc(/Brade/)
 		add_key("quest_atual" , "lunaticos")
 	}
 }
 
+automacro questLunaticoBugged {
+	QuestHuntCompleted 7122 1002
+	ConfigKey quest_atual lunaticos
+	exclusive 1
+	call {
+		log Acabou de ocorrer um bug na sequencia do campo de treinamento
+		log Resolvendo isso
+		call moveBradeGrounds
+		do talk &npc(/Brade/)		
+	}
+}
 
 # Quest de lunaticos , pickys e salgueiros by Nipodemos
 # Inspirada na macro de 1 a 99 do CALF
@@ -620,12 +652,14 @@ automacro lockMap setado quando nao deveria {
 	}
 	
 }
+
 macro moverPertoDosNpc {
 	log indo pra perto dos Npcs
 	call pararDeAtacar
 	do move &rand(103,105) &rand(36,38)
 	pause 1
 }
+
 automacro mateiLunaticosIndoAteoNpc {
 	QuestHuntCompleted 7124 1063
 	exclusive 1
@@ -666,7 +700,7 @@ automacro começarQuestPicky {
 	run-once 1
 	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
 	call {
-		log ======== Indo pegar quest para  Picks
+		log Indo pegar quest para  Picks
 		pause 2
 		do talk $.NpcNearLastBinId
 		do talk resp 2
@@ -694,7 +728,7 @@ automacro começarQuestSalgueiro {
 	run-once 1
 	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
 	call {
-		log ======== Indo pegar quest para  Salgueiro
+		log Indo pegar quest para  Salgueiro
 		do talk $.NpcNearLastBinId
 		do talk resp 2
 		add_key ("quest_atual", "none")
@@ -710,7 +744,7 @@ automacro changeToHeavierTraining {
 	call {
 		do move &rand(103,105) &rand(36,38)
 		pause 3
-		log ======== mudando pra mapa onde tem pickys e salgueiros
+		log mudando pra mapa onde tem pickys e salgueiros
 		do talk $.NpcNearLastBinId #Treinador
 		do talk resp 0
 		do talk resp /5/
@@ -733,7 +767,7 @@ automacro treinoMaisPesado {
 	NpcNear /Treinador/
 	InMap new_1-3, new_2-3, new_3-3
 	call {
-		log ======== mudando pra mapa onde tem pickys e salgueiros
+		log mudando pra mapa onde tem pickys e salgueiros
 		do talk $.NpcNearLastBinId #Treinador
 		do talk resp 1
 	}
@@ -757,45 +791,11 @@ automacro caçandoSalgueiro {
 
 macro sePreparandoPraMatar {
 	call voltarAtacar
-	do mconf
 	do mconf 1113 0 0 0 #drops
 	do mconf 1004 0 0 0 #zangao
 	do mconf 1007 0 0 0 #fabre
 	do mconf $.QuestHuntOngoingLastMobID 1 0 0 
 	log ======== Indo matar pickys e salgueiros
-}
-
-automacro ifDieWhileKillPickyAndWillow {
-	QuestActive 7123, 7127
-	CurrentHP >= 50%
-	IsInCoordinate 95 21
-	InMap new_1-3, new_2-3, new_3-3
-	exclusive 1
-	call {
-		do move &rand(103,105) &rand(36,38)
-		pause 3
-		log ======== mudando pra mapa onde tem pickys e salgueiros
-		do talk &npc(/Trainer/) #Treinador
-		do talk resp 0
-		do talk resp /5/
-	}
-}
-
-automacro se morrer enquanto mata pickys_e_salgueiros {
-	QuestActive 7123, 7127
-	CurrentHP >= 50%
-	IsInCoordinate 95 21
-	InMap new_1-3, new_2-3, new_3-3
-	exclusive 1
-	call {
-		do mconf 1063 0 0 0 #lunatico
-		call pararDeAtacar
-		do move &rand(103,105) &rand(36,38)
-		log ======== mudando pra mapa onde tem pickys e salgueiros
-		do talk &npc(/Treinador/) #Treinador
-		do talk resp 1
-		call voltarAtacar
-	}
 }
 
 automacro mateiPickysIndoAteNpc {
@@ -845,6 +845,22 @@ automacro mateiSalgueiros {
 		do conf quest_atual todas_completadas
 	}
 }
+
+automacro completeiTodasAsQuests {
+	JobLevel = 10
+	BaseLevel < 12
+	ConfigKeyNot quest_atual todas_completadas
+	QuestInactive 7127
+	QuestInactive 7123
+	QuestInactive 7124
+	exclusive 1
+	run-once 1
+	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
+	call {
+		do conf quest_atual todas_completadas
+	}
+}
+
 automacro continuarUpandoAte12 {
 	ConfigKey quest_atual todas_completadas
 	QuestInactive 7127
@@ -884,27 +900,16 @@ automacro continuar upando ate 12 bugged {
 			case (= 7124) {
 				do conf quest_atual lunaticos
 			}
+			case (= 7123) {
+				do conf quest_atual pickys
+			}
 			else {
-				do conf quest_atual pickys_e_salgueiros
+				do conf quest_atual salgueiros
 			}
 		}
 	}
 }
-automacro ifDieWhileLevelingto12 {
-	ConfigKey quest_atual todas_completadas
-	CurrentHP >= 50%
-	IsInCoordinate 95 21
-	InMap new_1-3, new_2-3, new_3-3
-	exclusive 1
-	call {
-		call pararDeAtacar
-		do move &rand(103,105) &rand(36,38)
-		log ======== mudando pra mapa onde tem pickys e salgueiros
-		do talk &npc(/Trainer/) #Treinador
-		do talk resp 0
-		do talk resp /5/
-	}
-}
+
 
 automacro seMorrerEnquantoUpaAteLv12 {
 	ConfigKey quest_atual todas_completadas
@@ -912,37 +917,79 @@ automacro seMorrerEnquantoUpaAteLv12 {
 	IsInCoordinate 95 21
 	InMap new_1-3, new_2-3, new_3-3
 	exclusive 1
-	call {
-		call pararDeAtacar
-		do move &rand(103,105) &rand(36,38)
-		log ======== mudando pra mapa onde tem pickys e salgueiros
-		do talk &npc(/Treinador/) #Treinador
-		do talk resp 1
-		call voltarAtacar
-	}
+	call mudarDeMapa
+}
+
+automacro se morrer enquanto mata pickys_e_salgueiros {
+	QuestActive 7123, 7127
+	CurrentHP >= 50%
+	IsInCoordinate 95 21
+	InMap new_1-3, new_2-3, new_3-3
+	exclusive 1
+	call mudarDeMapa
+}
+
+macro mudarDeMapa {
+	do mconf 1063 0 0 0 #lunatico
+	call pararDeAtacar
+	do move &rand(103,105) &rand(36,38)
+	log ======== mudando pra mapa onde tem pickys e salgueiros
+	do talk &npc(/Treinador/) #Treinador
+	do talk resp 1
+	call voltarAtacar
+}
+
+automacro ifDieWhileKillPickyAndWillow {
+	QuestActive 7123, 7127
+	CurrentHP >= 50%
+	IsInCoordinate 95 21
+	InMap new_1-3, new_2-3, new_3-3
+	exclusive 1
+	call changeMap
+}
+
+automacro ifDieWhileLevelingto12 {
+	ConfigKey quest_atual todas_completadas
+	CurrentHP >= 50%
+	IsInCoordinate 95 21
+	InMap new_1-3, new_2-3, new_3-3
+	exclusive 1
+	call changeMap
+}
+
+macro changeMap {
+	call pararDeAtacar
+	do move &rand(103,105) &rand(36,38)
+	log ======== mudando pra mapa onde tem pickys e salgueiros
+	do talk &npc(/Trainer/) #Treinador
+	do talk resp 0
+	do talk resp /5/
+	call voltarAtacar
 }
 
 automacro endlevelingIrAteNpc {
 	exclusive 1
 	JobLevel 10
 	BaseLevel > 11
-	ConfigKey quest_atual todas_completadas
+	QuestInactive 7123
+	QuestInactive 7124
+	QuestInactive 7127
 	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
 	priority 1
 	NpcNotNear /Thief|Gatuno/
-	call {
-		do move &rand(103,105) &rand(36,38)
-	}
+	call moverPertoDosNpc
 }
 
 automacro endleveling {
 	exclusive 1
 	JobLevel 10
 	BaseLevel > 11
-	ConfigKey quest_atual todas_completadas
+	QuestInactive 7123
+	QuestInactive 7124
+	QuestInactive 7127
 	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
-	NpcNear /Thief|Gatuno/
 	priority 1
+	NpcNear /Thief|Gatuno/
 	call {
 		do talk $.NpcNearLastBinId
 		do talk resp 1
@@ -960,9 +1007,9 @@ automacro virandoGatunoBugged {
 	exclusive 1
 	call {
 		$pontos = $.SkillLevelLastLevel
-		log ======== As Habilidades básicas nao foram distribuídas!!!
+		log As Habilidades básicas nao foram distribuídas!!!
 		log A skill ta lvl $.SkillLevelLastLevel
-		log ======== Vamos mudar isso
+		log Mudando isso
 		while ($pontos < 9 ) as loop
 		do skills add NV_BASIC
 		$pontos++
@@ -1606,18 +1653,19 @@ automacro EdenEquipando60 {
 #convertido pra eventMacro por Nipodemos
 
 automacro virarArruaceiro1 {
-	JobID 6 #gatuno 6 #gatuno
+	JobID 6 #gatuno
 	JobLevel = 50
 	priority 2
-	run-once 1
+	exclusive 1
 	QuestInactive 2017
 	QuestInactive 2018
+	QuestInactive 2022
 	QuestInactive 2023
 	QuestInactive 2024
 	QuestInactive 2026
-	ConfigKeyNot virarArruaceiro true
 	call {
 		call pararDeAtacar
+		do conf lockMap none
 		add_key ("virarArruaceiro","true")
 		do move in_rogue 370 119
 		#do talknpc 363 122 c r0 r0 r0 r2 r3 r1 r3 r2 r1 r0 r1 c c c #Arruaceira da Guilda
@@ -1871,16 +1919,17 @@ automacro jaSouArruaceiro {
 	run-once 1
 	IsNotEquippedID armor 15011
 	call {
-		$check = GetIndexAndEquipped("shoes",2458)#Botas Valhalla Avançadas
+		$check = GetIndexAndEquipped("shoes",2458) #Botas Valhalla Avançadas
 		if ($check != -1) do eq $check
-		$check = GetIndexAndEquipped("rightHand",13051)#Adaga Valhalla Intermediária
+		$check = GetIndexAndEquipped("rightHand",13051) #Adaga Valhalla Intermediária
 		if ($check != -1) do eq $check
-		$check = GetIndexAndEquipped("armor",15011)#Uniforme Valhalla Avançado
+		$check = GetIndexAndEquipped("armor",15011) #Uniforme Valhalla Avançado
 		if ($check != -1) do eq $check
-		$check = GetIndexAndEquipped("robe",2560)#Capa Valhalla#
+		$check = GetIndexAndEquipped("robe",2560 )#Capa Valhalla#
 		if ($check != -1) do eq $check
-		$check = GetIndexAndEquipped("topHead",5583)#Chapéu Valhalla#
+		$check = GetIndexAndEquipped("topHead",5583) #Chapéu Valhalla#
 		if ($check != -1) do eq $check
+		add_key ("virarArruaceiro","false")
 	}
 }
 
@@ -1978,7 +2027,7 @@ automacro upAteLv60 {
 	ConfigKeyNot quest_eden terminando
 	ConfigKeyNot lockMap um_fild02
 	ConfigKeyNot In_saveMap_sequence true
-	ConfigKeyNot quest_atual arruaceiro
+	ConfigKeyNot virarArruaceiro true
 	JobID 6, 17
 	BaseLevel 40..59
 	exclusive 1
@@ -2440,7 +2489,7 @@ automacro movendoPraKafraDentroDaCidade {
 }
 
 macro move_to_near_Kafra {
-	log estou indo para a kafra em $saveMap &config(saveMap_kafra_position
+	log estou indo para a kafra em $saveMap &config(saveMap_kafra_position)
 	do move $saveMap &config(saveMap_kafra_position) &random("1","2","3","4","5")
 }
 

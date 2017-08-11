@@ -1,0 +1,61 @@
+automacro reelIn {
+	NpcMsg /towards me/
+	exclusive 1
+	call {
+	do talk resp /reel/
+	}
+}
+
+automacro holdingSteady {
+	NpcMsg /holdingSteady/
+	exclusive 1
+	call {
+	do talk resp /Hold/
+	}
+}
+
+automacro playOutTheLine {
+	NpcMsg /pulling away/
+	exclusive 1
+	call {
+	do talk resp /Play out/
+	}
+}
+
+automacro primeiraPesca {
+	InInventory "Meat" > 0
+	exclusive 1
+	NpcNotNear /Ripple/
+	ConfigKeyNot pescaria 1Feito
+	call {
+	call pescar "izlu2dun" "157 63" "1Feito"
+	}
+}
+
+automacro segundaPesca {
+	InInventory "Meat" > 0
+	exclusive 1
+	ConfigKey pescaria 1Feito
+	ConfigKeyNot pescaria 2Feito
+	call {
+	call pescar "izlu2dun" "165 164" "2Feito"
+	}
+}
+
+automacro terceiraPesca {
+	InInventory "Meat" > 0
+	exclusive 1
+	ConfigKey pescaria 2Feito
+	ConfigKeyNot pescaria 3Feito
+	call {
+	call pescar "izlu2dun" "107 200" "3Feito"
+	}
+}
+
+macro pescar {
+	do move $.param1 $.param2 &rand ( 1,6 )
+	do talk &npc ( $.param2 )
+	do talk resp 0
+	do talk resp /Meat/
+	do conf -f pescaria $.param3
+}

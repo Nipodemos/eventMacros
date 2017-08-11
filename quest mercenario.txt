@@ -1,0 +1,201 @@
+﻿
+
+automacro comecarQuestIndoAteOMapa {
+	JobID 6
+	JobLevel = 50
+	exclusive 1
+	CurrentHP > 80%
+	run-once 1
+	NotInMap in_moc_16
+	call {
+	do move moc_fild17
+	do move moc_fild16
+	do move in_moc_16
+	}
+}
+
+automacro Primeira Parte {
+JobLevel = 50
+exclusive 1
+IsInMapAndCoordinate in_moc_16 18 11
+run-once 1
+call {
+do conf route_randomWalk 0
+do move 20 27
+pause 2
+do talknpc 19 33 c r0 
+}
+}
+
+automacro Segunda Parte {
+JobLevel = 50
+QuestActive 8001
+NpcNotNear /Guilds/ 
+exclusive 1
+#IsInMapAndCoordinate in_moc_16 19 76
+run-once 1
+call {
+do move 26 88
+}
+}
+
+automacro falar com guilsdman {
+	NpcMsg /you must be an/
+	exclusive 1
+	call {
+		do talk resp 0
+	}
+}
+
+automacro Terceira Parte {
+JobLevel = 50
+QuestActive 8002
+exclusive 1
+NpcNotNear /Guilds/
+#IsInMapAndCoordinate in_moc_16 19 144
+run-once 1
+call {
+do move 20 158
+pause 2
+do talknpc 21 170
+}
+}
+
+automacro TerceiraParteBugada {
+	QuestActive 8002
+	NpcNear /Guilds/
+	exclusive 1
+	call {
+	do move 26 88
+	}
+}
+automacro Quarta Parte {
+JobLevel = 50
+exclusive 1
+IsInMapAndCoordinate in_moc_16 181 183
+run-once 1
+call {
+do move 183 168
+pause 2
+do move 182 169
+pause 2
+do move 181 167
+}
+}
+
+automacro Quinta Parte {
+JobLevel = 50
+exclusive 1
+IsInMapAndCoordinate in_moc_16 167 113
+run-once 1
+call {
+do move 149 79
+}
+}
+
+automacro Kafra morocc {
+JobLevel = 1
+exclusive 1
+IsInMapAndCoordinate morocc
+run-once 1
+call {
+do move 159 103
+pause 1
+do talknpc 156 97 c r2 c r0
+}
+}
+
+automacro Prontera {
+JobLevel = 1
+exclusive 1
+IsInMapAndCoordinate prontera
+run-once 1
+call {
+do move 151 39
+pause 1
+do talknpc 151 29 c r2 c r1
+}
+}
+
+automacro Geffen {
+JobLevel = 1
+exclusive 1
+IsInMapAndCoordinate geffen
+run-once 1
+call {
+do move 121 62
+pause 1
+do talknpc 120 62 c r2 c r1
+}
+}
+
+automacro Aldebaran {
+JobLevel = 1
+exclusive 1
+IsInMapAndCoordinate aldebaran
+run-once 1
+call {
+do move 141 114
+pause 1
+do talknpc 143 119 c r0
+pause 5
+do quit
+}
+}
+
+automacro Pergunta1 {
+NpcMsg /could kill you at any time and it would be so easy/
+exclusive 1
+call {
+do talk resp 0
+}
+}
+
+automacro Pergunta2 {
+NpcMsg /what do you think is the/
+exclusive 1
+call {
+do talk resp 0
+}
+}
+
+automacro Pergunta3 {
+NpcMsg /than you are now?/
+exclusive 1
+call {
+do talk resp 0
+}
+}
+
+automacro Pergunta4 {
+NpcMsg /if you could become an/
+exclusive 1
+call {
+do talk resp 1
+}
+}
+
+automacro Pergunta5 {
+NpcMsg /Is that all/
+exclusive 1
+call {
+do talk resp 1
+}
+}
+
+
+automacro Pergunta7 {
+NpcMsg /you wish to continue/
+exclusive 1
+call {
+do talk resp 0
+}
+}
+
+automacro Pergunta8 {
+NpcMsg /Please choose a weapon/
+exclusive 1
+call {
+do talk resp 1
+}
+}
