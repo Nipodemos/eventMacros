@@ -1,109 +1,147 @@
-macro yunopra {
-	log $.param1
+#Digite no console do eventMacro junopra --cidade
+#Pode ser tambem einbrochpra
+#ou rachelpra
+#se o nome estiver certo, ele vai mover-se pra cidade desejada
+macro junopra {
+	log Vamos ir de Juno para $.param1
 	#Se a cidade for izlude ou rachel , ele pega o aeroplano respectivo
-	if ( $.map != yuno ) do move yuno
-    if ( $.param1 =~ /izlude|rachel/i ) {
-        [
-		add_key("aeroplano1","$.param1")
-		add_key("aeroplano2", "none")
-        ]
-		do move airplane_01
-	#Se a cidade for einbroch,hugel,lighthalzen , ele pega o outro aeroplano 
-    } elsif ( $.param1 =~ /einbroch|hugel|lighthalzen/i ) {
-        add_key ("aeroplano1" , "none")
-		add_key("aeroplano2","$.param1")
-        do move airplane
-    } else {
-	[
-	log Você digitou um nome inválido, por favor tente novamente
-	log Os valores podem ser izlude , rachel , juno ou yuno , 
-	log hugel , lighthalzen ou einbroch
-	log pode ser com letra maiuscula ou sem
-	]
-	stop
+	if ( $.param1 =~ /izlude/i ) {
+		do conf -f aeroplano1 izlude
+		do conf -f aeroplano2 none
+	} elsif ( $.param1 =~ /rachel/i ) {
+		do conf -f aeroplano1 rachel
+		do conf -f aeroplano2 none
+	} elsif ( $.param1 =~ /hugel/i ) {
+		do conf -f aeroplano1 none
+		do conf -f aeroplano2 hugel
+	} elsif ( $.param1 =~ /lighthalzen/i ) {
+		do conf -f aeroplano1 none
+		do conf -f aeroplano2 lighthalzen
+	} elsif ( $.param1 =~ /einbroch/i ) {
+		do conf -f aeroplano1 none
+		do conf -f aeroplano2 eibroch
+	} elsif ( $.param1 =~ /[jy]uno/) {
+		log VOCÊ QUER IR DE JUNO PRA JUNO?
+	log PORQUE VOCÊ FARIA ISSO?
+	} else {
+		[
+		log Você digitou um nome inválido, por favor tente novamente
+		log Os valores podem ser:
+		log izlude , rachel , juno ou yuno 
+		log hugel , lighthalzen ou einbroch
+		log Escreva como quiser, desde que escreva certo
+		]
+		stop
 	}
+	$aeroplano1 = &config(aeroplano1)
+	$aeroplano2 = &config(aeroplano2)
+	if ($.map = airplane || $.map = airplane_01) {
+	log ja estamos no aeroplano, só esperar agora
+	} else {
+		if ( $.map != yuno ) do move yuno
+	}
+	log $aeroplano1, $aeroplano2
 }
 
 macro einbrochpra {
+	log Vamos ir de Eibroch para $.param1
 	#se a cidade for juno hugel ou lighthalzen ele só pega 1 aeroplano
 	# se for outra cidade, ele pega os dois aeroplanos
-	if ($.param1 =~ /izlude|rachel/i ) {
-	add_key("aeroplano1","$.param1")
-	add_key("aeroplano2", "yuno")
-	} elsif ( $.param1 =~ /([yj]uno|hugel|lighthalzen)/i ) {
-	add_key("aeroplano2","$.param1")
-	add_key("aeroplano1", "none")
+	if ( $.param1 =~ /izlude/i ) {
+		do conf -f aeroplano1 izlude
+		do conf -f aeroplano2 juno
+	} elsif ($.param1 =~ /rachel/i ) {
+		do conf -f aeroplano1 rachel
+		do conf -f aeroplano2 juno
+	} elsif ( $.param1 =~ /hugel/i ) {
+		do conf -f aeroplano1 none
+		do conf -f aeroplano2 hugel
+	} elsif ( $.param1 =~ /lighthalzen/i ) {
+		do conf -f aeroplano1 none
+		do conf -f aeroplano2 lighthalzen
+	} elsif ($.param1 =~ /einbroch/i ) {
+		log VOCÊ QUER IR DE EIBROCH PRA EINBROCH?
+	log PORQUE VOCÊ FARIA ISSO?
+	} elsif ( $.param1 =~ /[jy]uno/) {
+		do conf -f aeroplano1 none
+		do conf -f aeroplano2 juno
 	} else {
-	[
-	log Você digitou um nome inválido, por favor tente novamente
-	log Os valores podem ser izlude , rachel , juno ou yuno , 
-	log hugel , lighthalzen ou einbroch
-	log pode ser com letra maiuscula ou sem
-	]
-	stop
+		[
+		log Você digitou um nome inválido, por favor tente novamente
+		log Os valores podem ser izlude , rachel , juno ou yuno , 
+		log hugel , lighthalzen ou einbroch
+		log pode ser com letra maiuscula ou sem
+		]
+		stop
 	}
-	do move airplane
+	$aeroplano1 = &config(aeroplano1)
+	$aeroplano2 = &config(aeroplano2)
+	if ($.map = airplane || $.map = airplane_01) {
+	log ja estamos no aeroplano, só esperar agora
+	} else {
+		do move airplane
+	}
+	log $aeroplano1, $aeroplano2
 }
 
 macro rachelpra {
+	log Vamos ir de Rachel para $.param1
 	#se a cidade for izlude ou juno ele só pega 1 aeroplano
 	# se for outra cidade, ele pega os dois aeroplanos
-	do move ra_fild12 294 208
-	do talk cont
-	do talk resp 0
-	if ( $.param1 =~ /izlude|[yj]uno/i ) {
-	add_key("aeroplano1","$.param1")
-	add_key("aeroplano2", "none")
-	} elsif ( $.param1 =~ /einbroch|hugel|lighthalzen/i ) {
-	add_key("aeroplano1","yuno")
-	add_key("aeroplano2","$.param1")
+	if ( $.param1 =~ /izlude/i ) {
+		do conf -f aeroplano1 izlude
+		do conf -f aeroplano2 none
+	} elsif ($.param1 =~ /rachel/i ) {
+		log VOCÊ QUER IR DE RACHEL PRA RACHEL?
+	log PORQUE VOCÊ FARIA ISSO?
+	} elsif ( $.param1 =~ /hugel/i ) {
+		do conf -f aeroplano1 juno
+		do conf -f aeroplano2 hugel
+	} elsif ( $.param1 =~ /lighthalzen/i ) {
+		do conf -f aeroplano1 juno
+		do conf -f aeroplano2 lighthalzen
+	} elsif ($.param1 =~ /einbroch/i ) {
+		do conf -f aeroplano1 juno
+		do conf -f aeroplano2 eibroch
+	} elsif ( $.param1 =~ /[jy]uno/) {
+		do conf -f aeroplano1 juno
+		do conf -f aeroplano2 none
 	} else {
-	[
-	log Você digitou um nome inválido, por favor tente novamente
-	log Os valores podem ser izlude , rachel , juno ou yuno , 
-	log hugel , lighthalzen ou einbroch
-	log pode ser com letra maiuscula ou sem
-	]
-	stop
+		[
+		log Você digitou um nome inválido, por favor tente novamente
+		log Os valores podem ser izlude , rachel , juno ou yuno , 
+		log hugel , lighthalzen ou einbroch
+		log pode ser com letra maiuscula ou sem
+		]
+		stop
+	}
+	$aeroplano1 = &config(aeroplano1)
+	$aeroplano2 = &config(aeroplano2)
+	if ( $.map = airplane || $.map = airplane_01) {
+	log ja estamos no aeroplano, só esperar agora
+	} else {
+		do move ra_fild12 294 208
+		do talk resp 0
+		log $aeroplano1, $aeroplano2
 	}
 }
 
 automacro dentroDoAeroplanoInternacional {
-InMap airplane_01
-LocalMsg /Bem-vindo(.*)|Welcome to (.*)/
-exclusive 1
-call {
-	#detecta se é o aeroplano pousou na cidade desejada, se não for, ele nao faz nada
-	if (&config(aeroplano1) =~ /izlude/i && $.LocalMsgLastMsg =~ /izlude/i ) {
-	do move 243 74
-	} elsif (&config(aeroplano1) =~ /rachel/i && $.LocalMsgLastMsg =~ /rachel/i ) {
-	do move 243 74
-	} elsif (&config(aeroplano1) =~ /[yj]uno/i && $.LocalMsgLastMsg =~ /juno/i) {
-	do move 243 74
-	} else {
-	log não é o destino que quero, esperando... 
-	}
-}
+	InMap airplane_01
+	LocalMsg /Bem-vindos a $aeroplano1|Welcome to $aeroplano1/i
+	exclusive 1
+	call sairDoAeroplano
 }
 
 automacro dentroDoAeroplanoDomestico {
-InMap airplane
-LocalMsg /Bem-vindo(.*)|Welcome to (.*)/
-exclusive 1
-call {
-	#detecta se é o aeroplano pousou na cidade desejada, se não for, ele nao faz nada
-	if (&config(aeroplano2) =~ /hugel/i && $.LocalMsgLastMsg =~ /Hugel/i ) {
+	InMap airplane
+	LocalMsg /Bem-vindos a $aeroplano2|Welcome to $aeroplano2/i
+	exclusive 1
+	call sairDoAeroplano
+}
+
+macro sairDoAeroplano {
 	do move 243 74
-	} elsif (&config(aeroplano2) =~ /lighthalzen/i && $.LocalMsgLastMsg =~ /lighthalzen/i ) {
-	do move 243 74
-	} elsif (&config(aeroplano2) =~ /einbroch/i && $.LocalMsgLastMsg =~ /einbroch/i ) {
-	do move 243 74
-	} elsif (&config(aeroplano2) =~ /[yj]uno/i && $.LocalMsgLastMsg =~ /juno/i) {
-	do move 243 74
-	} else {
-	log não é o destino que quero, esperando... 
-	}
-	}
 }
 
 #Se estivermos na cidade, e o local desejado for essa cidade, ele completa o objetivo
@@ -111,46 +149,46 @@ call {
 #ele só está se locomovendo pra fazer qualquer outra coisa aleatoria que nao tem nada
 # a ver com esse macro
 automacro chegueiEmEinbroch {
-InMap einbroch
-ConfigKey aeroplano2 einbroch, aeroplano2 Einbroch, aeroplano2 EINBROCH
-run-once 1
-exclusive 1
-call objetivoCompleto
+	InMap einbroch
+	ConfigKey aeroplano2 einbroch
+	run-once 1
+	exclusive 1
+	call objetivoCompleto
 }
 
 automacro chegueiEmHugel { 
-InMap hugel
-ConfigKey aeroplano2 hugel aeroplano2 Hugel, aeroplano2 HUGEL
-run-once 1
-exclusive 1
-call objetivoCompleto
+	InMap hugel
+	ConfigKey aeroplano2 hugel 
+	run-once 1
+	exclusive 1
+	call objetivoCompleto
 }
 
 automacro chegueiEmIzlude {
-InMap izlude
-ConfigKey aeroplano1 izlude, aeroplano1 Izlude, aeroplano1 IZLUDE
-run-once 1
-exclusive 1
-call objetivoCompleto
+	InMap izlude
+	ConfigKey aeroplano1 izlude
+	run-once 1
+	exclusive 1
+	call objetivoCompleto
 }
 
 automacro chegueiEmLighthalzen {
-InMap lighthalzen
-ConfigKey aeroplano2 lighthalzen, aeroplano2 Lighthalzen, aeroplano2 LIGHTHALZEN
-run-once 1
-exclusive 1
-call objetivoCompleto
+	InMap lighthalzen
+	ConfigKey aeroplano2 lighthalzen
+	run-once 1
+	exclusive 1
+	call objetivoCompleto
 }
 
 automacro chegueiEmRachel {
-InMap ra_fild12
-ConfigKey aeroplano1 rachel, aeroplano1 Rachel, aeroplano1 RACHEL
-run-once 1
-exclusive 1
-call {
-	call objetivoCompleto
-	do move rachel
-}
+	InMap ra_fild12
+	ConfigKey aeroplano1 rachel
+	run-once 1
+	exclusive 1
+	call {
+		do move rachel
+		call objetivoCompleto
+	}
 }
 
 macro objetivoCompleto {
@@ -161,30 +199,25 @@ macro objetivoCompleto {
 }
 
 automacro chegueiEmJuno {
-InMap yuno
-ConfigKeyNot aeroplano1 none, aeroplano2 none
-exclusive 1
-call {
-	# é aqui que ocorre a mágica, quando chega em juno
-	# ele detecta se precisa pegar outro aeroplano ou não
-	# se ele precisar ele vai
-	# se não precisar ele vai pra proximo da kafra e completa o objetivo
-	log destino para aeroplano1 é: &config(aeroplano1)
-	log destino para aeroplano2 é: &config(aeroplano2)
-	if (&config(aeroplano1) =~ /rachel|izlude/i  ) {
-	do move airplane_01
-	} elsif ( &config(aeroplano2) =~ /hugel|einbroch|lighthalzen/i ) {
-	do move airplane
-	} elsif ( &config(aeroplano1) =~  /[yj]uno/i || &config(aeroplano2) =~ /[yj]uno/i ) {
-	do move &rand(150, 154) &rand(182, 186)
-	call objetivoCompleto
-	} else {
-	log Tem algo errado, provavelmente um bug
+	InMap yuno
+	ConfigKeyNot aeroplano1 none, aeroplano2 none
+	exclusive 1
+	call {
+		# é aqui que ocorre a mágica, quando chega em juno
+		# ele detecta se precisa pegar outro aeroplano ou não
+		# se ele precisar ele vai
+		# se não precisar ele vai pra proximo da kafra e completa o objetivo
+		log destino para aeroplano1 é: &config(aeroplano1)
+		log destino para aeroplano2 é: &config(aeroplano2)
+		if (&config(aeroplano1) =~ /rachel|izlude/i  ) {
+		do move airplane_01
+		} elsif ( &config(aeroplano2) =~ /hugel|einbroch|lighthalzen/i ) {
+		do move airplane
+		} elsif ( &config(aeroplano1) =~  /[yj]uno/i || &config(aeroplano2) =~ /[yj]uno/i ) {
+			do move &rand(150, 154) &rand(182, 186)
+		call objetivoCompleto
+		} else {
+			log Falha em descobrir a rota correta, revise o código
+		}
 	}
-}
-}
-
-sub add_key {
-	my ($key, $value) = @_;
-	configModify($key, $value);
 }

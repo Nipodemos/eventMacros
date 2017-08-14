@@ -1,4 +1,4 @@
-automacro reelIn {
+automacro movingTowardsMe {
 	NpcMsg /towards me/
 	exclusive 1
 	call {
@@ -14,7 +14,7 @@ automacro holdingSteady {
 	}
 }
 
-automacro playOutTheLine {
+automacro pullingAway {
 	NpcMsg /pulling away/
 	exclusive 1
 	call {
@@ -22,7 +22,7 @@ automacro playOutTheLine {
 	}
 }
 
-automacro terminadoDePescar {
+automacro terminouDePescar {
 	NpcMsg /You reeled in/
 	exclusive 1
 	call {

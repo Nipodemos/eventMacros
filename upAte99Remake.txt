@@ -1,4 +1,4 @@
-﻿#campo dos aprendizes by HenryBK
+﻿#campo dos aprendizes by HenryBK and Nipodemos
 
 automacro moveToSprakkiOutside {
 	exclusive 1
@@ -411,7 +411,7 @@ automacro talkChoco {
 	NpcNear /Choco/
 	call {
 		do talk $.NpcNearLastBinId
-		conf -f current_npc kafra
+		do conf -f  current_npc kafra
 	}
 }
 
@@ -1217,8 +1217,7 @@ automacro Eden12salvarNaKafra {
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKeyNot saveMap morocc
 	call {
-		$saveMapDesejado = morocc
-		call SetSaveIn
+		call SetSaveIn "morocc"
 	}
 }
 
@@ -1248,8 +1247,7 @@ automacro Eden26SalvarNaKafra {
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKeyNot saveMap payon
 	call {
-		$saveMapDesejado = payon
-		call SetSaveIn
+		call SetSaveIn "payon"
 	}
 }
 
@@ -1279,8 +1277,7 @@ automacro Eden40SalvarNaKafra {
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKeyNot saveMap prontera
 	call {
-		$saveMapDesejado = prontera
-		call SetSaveIn
+		call SetSaveIn "prontera"
 	}
 }
 
@@ -1309,8 +1306,7 @@ automacro Eden60SalvarNaKafra {
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKeyNot saveMap comodo
 	call {
-		$saveMapDesejado = comodo
-		call SetSaveIn
+		call SetSaveIn "comodo"
 	}
 }
 
@@ -1990,9 +1986,7 @@ automacro upAteLv12Aprendiz {
 		log a que ponto chegamos?
 		log nuss
 		log Tentando resolver isso...
-		$saveMapDesejado = payon
-		$lockMapDesejado = pay_fild01
-		call configurarMapa
+		call configurarMapa "payon" "pay_fild01"
 	}
 }
 
@@ -2008,9 +2002,7 @@ automacro upAteLv12 {
 	priority 5
 	timeout 30
 	call {
-		$saveMapDesejado = payon
-		$lockMapDesejado = pay_fild01
-		call configurarMapa
+		call configurarMapa "payon" "pay_fild01"
 	}
 }
 automacro upAteLv26 {
@@ -2024,9 +2016,7 @@ automacro upAteLv26 {
 	priority 5
 	timeout 30
 	call {
-		$saveMapDesejado = payon
-		$lockMapDesejado = pay_fild08
-		call configurarMapa
+		call configurarMapa "payon" "pay_fild08"
 	}
 }
 
@@ -2041,9 +2031,7 @@ automacro upAteLv35 {
 	priority 5
 	timeout 30
 	call {
-		$saveMapDesejado = payon
-		$lockMapDesejado = pay_fild07
-		call configurarMapa
+		call configurarMapa "payon" "pay_fild07"
 	}
 }
 
@@ -2058,9 +2046,7 @@ automacro upAteLv44 {
 	priority 5
 	timeout 30
 	call {
-		$saveMapDesejado = payon
-		$lockMapDesejado = pay_fild09
-		call configurarMapa
+		call configurarMapa "payon" "pay_fild09"
 	}
 }
 
@@ -2075,9 +2061,7 @@ automacro upAteLv54 {
 	priority 5
 	timeout 30
 	call {
-		$saveMapDesejado = prontera
-		$lockMapDesejado = gef_fild10
-		call configurarMapa
+		call configurarMapa "prontera" "gef_fild10"
 	}
 }
 
@@ -2093,9 +2077,7 @@ automacro upAteLv60 {
 	priority 5
 	timeout 30
 	call {
-		$saveMapDesejado = izlude
-		$lockMapDesejado = iz_dun02
-		call configurarMapa
+		call configurarMapa "izlude" "iz_dun02"
 	}
 }
 
@@ -2109,9 +2091,7 @@ automacro upAteLv70 {
 	priority 5
 	timeout 30
 	call {
-		$saveMapDesejado = morocc
-		$lockMapDesejado = moc_fild17
-		call configurarMapa
+		call configurarMapa "morocc" "moc_fild17"
 	}
 }
 
@@ -2126,9 +2106,7 @@ automacro upAteLv80 {
 	priority 5
 	timeout 30
 	call {
-		$saveMapDesejado = prontera
-		$lockMapDesejado = mjolnir_11
-		call configurarMapa
+		call configurarMapa "prontera" "mjolnir_11"
 	}
 }
 
@@ -2143,9 +2121,7 @@ automacro upAteLv92 {
 	priority 5
 	timeout 30
 	call {
-		$saveMapDesejado = geffen
-		$lockMapDesejado = gef_fild06
-		call configurarMapa
+		call configurarMapa "geffen" "gef_fild06"
 	}
 }
 automacro IndoPraRachelPraUpAteLv99 {
@@ -2177,8 +2153,7 @@ automacro salvandoEmRachelPraUpAteLv99 {
 	exclusive 1
 	run-once 1
 	call {
-		$saveMapDesejado = rachel
-		call SetSaveIn
+		call SetSaveIn "rachel"
 	}
 }
 
@@ -2196,7 +2171,7 @@ automacro upAteLv99 {
 	}
 }
 
-automacro toLv99 {
+automacro estouLv99 {
 	BaseLevel = 99
 	exclusive 1
 	timeout 15
@@ -2208,11 +2183,11 @@ automacro toLv99 {
 }
 
 macro configurarMapa {
-	if ( &config(saveMap) = $saveMapDesejado ) {
-		do conf lockMap $lockMapDesejado
-	call voltarAtacar
+	if ( &config(saveMap) = $.param1 ) {
+		do conf lockMap $.param2
+		call voltarAtacar
 	} else {
-		call SetSaveIn
+		call SetSaveIn $.param1
 	}
 }
 
@@ -2240,7 +2215,6 @@ automacro ConfigEstáErrada {
 		log A config é $.ConfigKeyNotLastKey
 		log O valor que quero é $.ConfigKeyNotLastWantedValue
 		log Mas o valor atual é $.ConfigKeyNotLastKeyValue
-		log O index é $.ConfigKeyNotLastMemberIndex
 		log Mudando valor da config $.ConfigKeyNotLastKey de $.ConfigKeyNotLastKeyValue para $.ConfigKeyNotLastWantedValue
 		do conf $.ConfigKeyNotLastKey $.ConfigKeyNotLastWantedValue
 	}
@@ -2288,12 +2262,22 @@ macro SetSaveIn {
 		case (=~ /geffen/i ) {
 			do conf -f saveMap_wanted geffen
 			do conf -f saveMap_kafra_position 120 62
-			do conf -f saveMap_sellNpc_position geffen_in 74 144)
+			do conf -f saveMap_sellNpc_position geffen_in 74 144
 		}
 		case (=~ /morocc|morroc|morooc/i ) {
-			do conf -f saveMap_wanted morocc)
+			do conf -f saveMap_wanted morocc
 			do conf -f saveMap_kafra_position 156 97
-			do conf -f saveMap_sellNpc_position morocc_in 141 67)
+			do conf -f saveMap_sellNpc_position morocc_in 141 67
+		}
+		case (=~ /izlude/i ) {
+			do conf -f saveMap_wanted izlude
+			do conf -f saveMap_kafra_position 134 88
+			do conf -f saveMap_sellNpc_position 105 99
+		}
+		case ( =~ /veins/i ) {
+			do conf -f saveMap_wanted veins
+			do conf -f saveMap_kafra_position 207 128
+			do conf -f saveMap_sellNpc_position ve_in 243 303
 		}
 		else {
 			log nome da cidade inválido, tente novamente...
@@ -2315,20 +2299,20 @@ macro junopra {
 	log Vamos ir de Juno para $.param1
 	#Se a cidade for izlude ou rachel , ele pega o aeroplano respectivo
 	if ( $.param1 =~ /izlude/i ) {
-		do conf -f aeroplano1","izlude")
-		do conf -f aeroplano2 none")
+		do conf -f aeroplano1 izlude
+		do conf -f aeroplano2 none
 	} elsif ( $.param1 =~ /rachel/i ) {
-		do conf -f aeroplano1","rachel")
-		do conf -f aeroplano2 none")
+		do conf -f aeroplano1 rachel
+		do conf -f aeroplano2 none
 	} elsif ( $.param1 =~ /hugel/i ) {
-		do conf -f aeroplano1 none")
-		do conf -f aeroplano2","hugel")
+		do conf -f aeroplano1 none
+		do conf -f aeroplano2 hugel
 	} elsif ( $.param1 =~ /lighthalzen/i ) {
-		do conf -f aeroplano1 none")
-		do conf -f aeroplano2","lighthalzen")
+		do conf -f aeroplano1 none
+		do conf -f aeroplano2 lighthalzen
 	} elsif ( $.param1 =~ /einbroch/i ) {
-		do conf -f aeroplano1 none")
-		do conf -f aeroplano2 eibroch")
+		do conf -f aeroplano1 none
+		do conf -f aeroplano2 eibroch
 	} elsif ( $.param1 =~ /[jy]uno/) {
 		log VOCÊ QUER IR DE JUNO PRA JUNO?
 	log PORQUE VOCÊ FARIA ISSO?
@@ -2357,23 +2341,23 @@ macro einbrochpra {
 	#se a cidade for juno hugel ou lighthalzen ele só pega 1 aeroplano
 	# se for outra cidade, ele pega os dois aeroplanos
 	if ( $.param1 =~ /izlude/i ) {
-		do conf -f aeroplano1","izlude")
-		do conf -f aeroplano2 juno")
+		do conf -f aeroplano1 izlude
+		do conf -f aeroplano2 juno
 	} elsif ($.param1 =~ /rachel/i ) {
-		do conf -f aeroplano1","rachel")
-		do conf -f aeroplano2 juno")
+		do conf -f aeroplano1 rachel
+		do conf -f aeroplano2 juno
 	} elsif ( $.param1 =~ /hugel/i ) {
-		do conf -f aeroplano1 none")
-		do conf -f aeroplano2","hugel")
+		do conf -f aeroplano1 none
+		do conf -f aeroplano2 hugel
 	} elsif ( $.param1 =~ /lighthalzen/i ) {
-		do conf -f aeroplano1 none")
-		do conf -f aeroplano2","lighthalzen")
+		do conf -f aeroplano1 none
+		do conf -f aeroplano2 lighthalzen
 	} elsif ($.param1 =~ /einbroch/i ) {
 		log VOCÊ QUER IR DE EIBROCH PRA EINBROCH?
 	log PORQUE VOCÊ FARIA ISSO?
 	} elsif ( $.param1 =~ /[jy]uno/) {
-		do conf -f aeroplano1","none")
-		do conf -f aeroplano2 juno")
+		do conf -f aeroplano1 none
+		do conf -f aeroplano2 juno
 	} else {
 		[
 		log Você digitou um nome inválido, por favor tente novamente
@@ -2398,23 +2382,23 @@ macro rachelpra {
 	#se a cidade for izlude ou juno ele só pega 1 aeroplano
 	# se for outra cidade, ele pega os dois aeroplanos
 	if ( $.param1 =~ /izlude/i ) {
-		do conf -f aeroplano1 izlude")
-		do conf -f aeroplano2 none")
+		do conf -f aeroplano1 izlude
+		do conf -f aeroplano2 none
 	} elsif ($.param1 =~ /rachel/i ) {
 		log VOCÊ QUER IR DE RACHEL PRA RACHEL?
 	log PORQUE VOCÊ FARIA ISSO?
 	} elsif ( $.param1 =~ /hugel/i ) {
-		do conf -f aeroplano1 juno")
-		do conf -f aeroplano2 hugel")
+		do conf -f aeroplano1 juno
+		do conf -f aeroplano2 hugel
 	} elsif ( $.param1 =~ /lighthalzen/i ) {
-		do conf -f aeroplano1 juno")
-		do conf -f aeroplano2 lighthalzen")
+		do conf -f aeroplano1 juno
+		do conf -f aeroplano2 lighthalzen
 	} elsif ($.param1 =~ /einbroch/i ) {
-		do conf -f aeroplano1 juno")
-		do conf -f aeroplano2 eibroch")
+		do conf -f aeroplano1 juno
+		do conf -f aeroplano2 eibroch
 	} elsif ( $.param1 =~ /[jy]uno/) {
-		do conf -f aeroplano1 juno")
-		do conf -f aeroplano2 none")
+		do conf -f aeroplano1 juno
+		do conf -f aeroplano2 none
 	} else {
 		[
 		log Você digitou um nome inválido, por favor tente novamente
@@ -2426,7 +2410,7 @@ macro rachelpra {
 	}
 	$aeroplano1 = &config(aeroplano1)
 	$aeroplano2 = &config(aeroplano2)
-	if ($.map = airplane || $.map = airplane_01) {
+	if ( $.map = airplane || $.map = airplane_01) {
 	log ja estamos no aeroplano, só esperar agora
 	} else {
 		do move ra_fild12 294 208
@@ -2495,8 +2479,8 @@ automacro chegueiEmRachel {
 	run-once 1
 	exclusive 1
 	call {
-		call objetivoCompleto
 		do move rachel
+		call objetivoCompleto
 	}
 }
 
