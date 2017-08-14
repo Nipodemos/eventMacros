@@ -90,7 +90,7 @@ sub giveItem {
 sub getItemsFromStorage {
 	
 	for(my $index = 0; $i <=  $char->storage->size(); $index++)  {
-		return if(($char->{'weight'}/$char->{'weight_max'} * 100)} >= 90);
+		return if(($char->{'weight'}/$char->{'weight_max'} * 100) >= 90);
 		my $item = $char->storage->get($index);
 		$messageSender->sendStorageGet($index, $item->{amount});
 		sleep 0.5;

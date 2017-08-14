@@ -48,7 +48,6 @@ automacro confStepFishNaoExiste {
 
 automacro configurar {
 	BaseLevel > 0
-	exclusive 1
 	run-once 1
 	InInventory "Meat" > 0
 	call {

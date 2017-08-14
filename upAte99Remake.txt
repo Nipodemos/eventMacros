@@ -411,7 +411,7 @@ automacro talkChoco {
 	NpcNear /Choco/
 	call {
 		do talk $.NpcNearLastBinId
-		add_key('current_npc', 'kafra')
+		conf -f current_npc kafra
 	}
 }
 
@@ -433,7 +433,7 @@ automacro talkToGuysBugged {
 		log Há um bug, a config $.ConfigKeyNotExistLastKey já deveria existir nesse ponto
 		log Mas ainda não existe
 		log Mudando isso:
-		add_key("current_npc","kafra")
+		do conf -f current_npc kafra
 	}
 }
 
@@ -561,7 +561,7 @@ automacro talkBradeonGroundsCompleteQuest {
 	NpcNear /Brade/
 	call {
 		do talk $.NpcNearLastBinId
-		add_key("quest_atual" , "lunaticos")
+		do conf -f quest_atual lunaticos
 	}
 }
 
@@ -586,7 +586,7 @@ automacro LastBradeBug {
 		log Resolvendo isso
 		call moveBradeGrounds
 		do talk &npc(/Brade/)
-		add_key("quest_atual" , "lunaticos")
+		do conf -f quest_atual lunaticos
 	}
 }
 
@@ -678,7 +678,7 @@ automacro mateiLunaticos {
 		do mconf 1063 0 0 0 #lunatico
 		do talk $.NpcNearLastBinId
 		do talk resp 2
-		add_key ("quest_atual","pickys")
+		do conf -f quest_atual pickys
 	}
 }
 
@@ -704,7 +704,7 @@ automacro começarQuestPicky {
 		pause 2
 		do talk $.NpcNearLastBinId
 		do talk resp 2
-		add_key ("quest_atual","salgueiros")
+		do conf -f quest_atual salgueiros
 	}
 }
 
@@ -731,7 +731,7 @@ automacro começarQuestSalgueiro {
 		log Indo pegar quest para  Salgueiro
 		do talk $.NpcNearLastBinId
 		do talk resp 2
-		add_key ("quest_atual", "none")
+		do conf -f quest_atual none
 	}
 }
 
@@ -1109,7 +1109,7 @@ automacro EdenJoinTalkNpc {
 		do talk text lolol
 		do talk resp 4
 		do iconf 6219 0 0 0
-		add_key ("membroDoEden","sim")
+		do conf -f membroDoEden sim
 	}
 }
 
@@ -1119,7 +1119,7 @@ automacro EdenJoinedBugged {
 	exclusive 1
 	run-once 1
 	call {
-		add_key("membroDoEden","sim")
+		do conf -f membroDoEden sim
 	}
 }
 
@@ -1230,7 +1230,7 @@ automacro Eden12IrNoMapa {
 	ConfigKey saveMap morocc
 	call {
 		#eden 12
-		add_key ("quest_eden","em_curso")
+		do conf -f quest_eden em_curso
 		log Indo Começar quest Eden 12
 		do move moc_fild11 &rand(181,183) &rand(254,256)
 		do talk 0 #cão falante
@@ -1261,7 +1261,7 @@ automacro Eden26IrNoMapa {
 	ConfigKey saveMap payon
 	call {
 		#eden 26
-		add_key ("quest_eden","em_curso")
+		do conf -f quest_eden em_curso
 		log Indo Começar quest Eden 26
 		do move pay_arche &rand(44,46) &rand(132,134)
 		#do talknpc 41 136 c c c c c c c c #Coral
@@ -1292,7 +1292,7 @@ automacro Eden40IrNoMapa {
 	ConfigKey saveMap prontera
 	call {
 		#eden 40
-		add_key ("quest_eden","em_curso")
+		do conf -f quest_eden em_curso
 		log Indo Começar quest Eden 40
 		do move in_orcs01 &rand(34,36) &rand(162,164)
 		do talk 0 #Absalon
@@ -1322,7 +1322,7 @@ automacro Eden60IrNoMapa {
 	ConfigKey saveMap comodo
 	call {
 		#eden 60
-		add_key ("quest_eden","em_curso")
+		do conf -f quest_eden em_curso
 		log Indo Começar quest Eden 60
 		do move comodo &rand(174,176) &rand(344,346)
 		#do talknpc 173 354 c c c c c #Mémbro do grupo Éden#2n
@@ -1531,7 +1531,7 @@ automacro voltarDoMapaDentroDoEden {
 				do talk &npc(/Ur/)
 			}
 		}
-		add_key ("quest_eden", "terminando")
+		do conf -f quest_eden terminando
 	}
 }
 automacro EdenPegandoEquips12e26e40e60IndoProNpc {
@@ -1668,7 +1668,7 @@ automacro virarArruaceiro1 {
 	call {
 		call pararDeAtacar
 		do conf lockMap none
-		add_key ("virarArruaceiro","true")
+		do conf -f virarArruaceiro true
 		do move in_rogue 370 119
 		#do talknpc 363 122 c r0 r0 r0 r2 r3 r1 r3 r2 r1 r0 r1 c c c #Arruaceira da Guilda
 		do talk &npc (363 122)
@@ -1699,7 +1699,7 @@ automacro virarArruaceiroAgain {
 	ConfigKey virarArruaceiro true
 	exclusive 1
 	call {
-		add_key ("virarArruaceiro","false")
+		do conf -f virarArruaceiro false
 		release virarArruaceiro1
 	}
 }								
@@ -1792,7 +1792,7 @@ automacro virarArruaceiro4.0 {
 	JobLevel = 50
 	run-once 1
 	call {	
-		add_key ("questArruaceiro","0")
+		do conf -f questArruaceiro 0
 		do move cmd_fild09 107 195
 		do talk resp 1		
 		do talk resp 2
@@ -1808,7 +1808,7 @@ automacro virarArruaceiro4.1 {
 	JobLevel = 50
 	run-once 1
 	call {
-		add_key ("questArruaceiro","1")[3])
+		do conf -f questArruaceiro 1
 		do move cmd_fild04 304 180
 		pause 1
 		do talk resp 2
@@ -1824,7 +1824,7 @@ automacro virarArruaceiro4.2 {
 	JobLevel = 50
 	run-once 1
 	call {
-		add_key ("questArruaceiro","2")
+		do conf -f questArruaceiro 2
 		do move cmd_fild09 335 143
 		do talk resp 0
 		do talk resp 2
@@ -2132,7 +2132,7 @@ automacro upAteLv80 {
 	}
 }
 
-upAteLv92 {
+automacro upAteLv92 {
 	BaseLevel 80..91
 	ConfigKeyNot quest_eden em_curso
 	ConfigKeyNot quest_eden terminando
@@ -2247,53 +2247,53 @@ automacro ConfigEstáErrada {
 }
 
 macro SetSaveIn {
-	add_key("saveMap_save_sequence", "c r0")
-	add_key("saveMap_storage_sequence", "c r1 ")
-	switch ( $saveMapDesejado ) {
+	do conf -f saveMap_save_sequence c r0
+	do conf -f saveMap_storage_sequence c r1
+	switch ( $.param1 ) {
 		case (=~ /einbroch/i ) {
-			add_key("saveMap_wanted", "einbroch")
-			add_key("saveMap_kafra_position", "242 205")
-			add_key("saveMap_sellNpc_position", "einbroch 224 207")
+			do conf -f saveMap_wanted einbroch
+			do conf -f saveMap_kafra_position 242 205
+			do conf -f saveMap_sellNpc_position einbroch 224 207
 		}
 		case (=~ /aldebaran/i ) {
-			add_key("saveMap_wanted", "aldebaran")
-			add_key("saveMap_kafra_position", "143 119")
-			add_key("saveMap_sellNpc_position", "aldebaran 165 107")
+			do conf -f saveMap_wanted aldebaran
+			do conf -f saveMap_kafra_position 143 119
+			do conf -f saveMap_sellNpc_position aldebaran 165 107
 		}
 		case (=~ /juno/i ) {
-		    add_key("saveMap_wanted", "yuno")
-			add_key("saveMap_kafra_position", "152 187")
-			add_key("saveMap_sellNpc_position", "yuno_in01 25 34")
+		    do conf -f saveMap_wanted yuno
+			do conf -f saveMap_kafra_position 152 187
+			do conf -f saveMap_sellNpc_position yuno_in01 25 34
 		}
 		case (=~ /rachel/i ) {
-			add_key("saveMap_wanted", "rachel")
-			add_key("saveMap_kafra_position", "109 138")
-			add_key("saveMap_sellNpc_position", "rachel 65 80")
+			do conf -f saveMap_wanted rachel
+			do conf -f saveMap_kafra_position 109 138
+			do conf -f saveMap_sellNpc_position rachel 65 80
 		}
 		case (=~ /comodo/i ) {
-		    add_key("saveMap_wanted", "comodo")
-			add_key("saveMap_kafra_position", "195 150")
-			add_key("saveMap_sellNpc_position", "cmd_in01 79 182")
+		    do conf -f saveMap_wanted comodo
+			do conf -f saveMap_kafra_position 195 150
+			do conf -f saveMap_sellNpc_position cmd_in01 79 182
 		}
 		case (=~ /prontera/i ) {
-		    add_key("saveMap_wanted", "prontera")
-			add_key("saveMap_kafra_position", "151 29")
-			add_key("saveMap_sellNpc_position", "prontera 113 42")
+		    do conf -f saveMap_wanted prontera
+			do conf -f saveMap_kafra_position 151 29
+			do conf -f saveMap_sellNpc_position prontera 113 42
 		}
 		case (=~ /payon/i ) {
-			add_key("saveMap_wanted", "payon")
-			add_key("saveMap_kafra_position", "181 104")
-			add_key("saveMap_sellNpc_position", "payon_in01 5 49")
+			do conf -f saveMap_wanted payon
+			do conf -f saveMap_kafra_position 181 104
+			do conf -f saveMap_sellNpc_position payon_in01 5 49
 		}
 		case (=~ /geffen/i ) {
-			add_key("saveMap_wanted", "geffen")
-			add_key("saveMap_kafra_position", "120 62")
-			add_key("saveMap_sellNpc_position", "geffen_in 74 144")
+			do conf -f saveMap_wanted geffen
+			do conf -f saveMap_kafra_position 120 62
+			do conf -f saveMap_sellNpc_position geffen_in 74 144)
 		}
 		case (=~ /morocc|morroc|morooc/i ) {
-			add_key("saveMap_wanted", "morocc")
-			add_key("saveMap_kafra_position", "156 97")
-			add_key("saveMap_sellNpc_position", "morocc_in 141 67")
+			do conf -f saveMap_wanted morocc)
+			do conf -f saveMap_kafra_position 156 97
+			do conf -f saveMap_sellNpc_position morocc_in 141 67)
 		}
 		else {
 			log nome da cidade inválido, tente novamente...
@@ -2303,7 +2303,7 @@ macro SetSaveIn {
 	}
 	log Iniciando seguência de salvamento em &config(saveMap_wanted)
 	$saveMap = &config(saveMap_wanted)
-	add_key("In_saveMap_sequence", "true")
+	do conf -f In_saveMap_sequence true
 	
 }
 
@@ -2315,20 +2315,20 @@ macro junopra {
 	log Vamos ir de Juno para $.param1
 	#Se a cidade for izlude ou rachel , ele pega o aeroplano respectivo
 	if ( $.param1 =~ /izlude/i ) {
-		add_key("aeroplano1","izlude")
-		add_key("aeroplano2", "none")
+		do conf -f aeroplano1","izlude")
+		do conf -f aeroplano2 none")
 	} elsif ( $.param1 =~ /rachel/i ) {
-		add_key("aeroplano1","rachel")
-		add_key("aeroplano2", "none")
+		do conf -f aeroplano1","rachel")
+		do conf -f aeroplano2 none")
 	} elsif ( $.param1 =~ /hugel/i ) {
-		add_key("aeroplano1", "none")
-		add_key("aeroplano2","hugel")
+		do conf -f aeroplano1 none")
+		do conf -f aeroplano2","hugel")
 	} elsif ( $.param1 =~ /lighthalzen/i ) {
-		add_key("aeroplano1", "none")
-		add_key("aeroplano2","lighthalzen")
+		do conf -f aeroplano1 none")
+		do conf -f aeroplano2","lighthalzen")
 	} elsif ( $.param1 =~ /einbroch/i ) {
-		add_key("aeroplano1", "none")
-		add_key("aeroplano2", "eibroch")
+		do conf -f aeroplano1 none")
+		do conf -f aeroplano2 eibroch")
 	} elsif ( $.param1 =~ /[jy]uno/) {
 		log VOCÊ QUER IR DE JUNO PRA JUNO?
 	log PORQUE VOCÊ FARIA ISSO?
@@ -2357,23 +2357,23 @@ macro einbrochpra {
 	#se a cidade for juno hugel ou lighthalzen ele só pega 1 aeroplano
 	# se for outra cidade, ele pega os dois aeroplanos
 	if ( $.param1 =~ /izlude/i ) {
-		add_key("aeroplano1","izlude")
-		add_key("aeroplano2", "juno")
+		do conf -f aeroplano1","izlude")
+		do conf -f aeroplano2 juno")
 	} elsif ($.param1 =~ /rachel/i ) {
-		add_key("aeroplano1","rachel")
-		add_key("aeroplano2", "juno")
+		do conf -f aeroplano1","rachel")
+		do conf -f aeroplano2 juno")
 	} elsif ( $.param1 =~ /hugel/i ) {
-		add_key("aeroplano1", "none")
-		add_key("aeroplano2","hugel")
+		do conf -f aeroplano1 none")
+		do conf -f aeroplano2","hugel")
 	} elsif ( $.param1 =~ /lighthalzen/i ) {
-		add_key("aeroplano1", "none")
-		add_key("aeroplano2","lighthalzen")
+		do conf -f aeroplano1 none")
+		do conf -f aeroplano2","lighthalzen")
 	} elsif ($.param1 =~ /einbroch/i ) {
 		log VOCÊ QUER IR DE EIBROCH PRA EINBROCH?
 	log PORQUE VOCÊ FARIA ISSO?
 	} elsif ( $.param1 =~ /[jy]uno/) {
-		add_key("aeroplano1","none")
-		add_key("aeroplano2", "juno")
+		do conf -f aeroplano1","none")
+		do conf -f aeroplano2 juno")
 	} else {
 		[
 		log Você digitou um nome inválido, por favor tente novamente
@@ -2398,23 +2398,23 @@ macro rachelpra {
 	#se a cidade for izlude ou juno ele só pega 1 aeroplano
 	# se for outra cidade, ele pega os dois aeroplanos
 	if ( $.param1 =~ /izlude/i ) {
-		add_key("aeroplano1", "izlude")
-		add_key("aeroplano2", "none")
+		do conf -f aeroplano1 izlude")
+		do conf -f aeroplano2 none")
 	} elsif ($.param1 =~ /rachel/i ) {
 		log VOCÊ QUER IR DE RACHEL PRA RACHEL?
 	log PORQUE VOCÊ FARIA ISSO?
 	} elsif ( $.param1 =~ /hugel/i ) {
-		add_key("aeroplano1", "juno")
-		add_key("aeroplano2", "hugel")
+		do conf -f aeroplano1 juno")
+		do conf -f aeroplano2 hugel")
 	} elsif ( $.param1 =~ /lighthalzen/i ) {
-		add_key("aeroplano1", "juno")
-		add_key("aeroplano2", "lighthalzen")
+		do conf -f aeroplano1 juno")
+		do conf -f aeroplano2 lighthalzen")
 	} elsif ($.param1 =~ /einbroch/i ) {
-		add_key("aeroplano1", "juno")
-		add_key("aeroplano2", "eibroch")
+		do conf -f aeroplano1 juno")
+		do conf -f aeroplano2 eibroch")
 	} elsif ( $.param1 =~ /[jy]uno/) {
-		add_key("aeroplano1", "juno")
-		add_key("aeroplano2", "none")
+		do conf -f aeroplano1 juno")
+		do conf -f aeroplano2 none")
 	} else {
 		[
 		log Você digitou um nome inválido, por favor tente novamente
@@ -2621,9 +2621,4 @@ sub nextMap {
 	} else {
 		return 0;
 	}
-}
-
-sub add_key {
-	my ( $key, $value ) = @_;
-	configModify( $key, $value );
 }
