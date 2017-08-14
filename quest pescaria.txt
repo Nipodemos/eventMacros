@@ -1,0 +1,132 @@
+automacro reelIn {
+	NpcMsg /towards me/
+	exclusive 1
+	call {
+	do talk resp /reel/
+	}
+}
+
+automacro holdingSteady {
+	NpcMsg /holding steady/
+	exclusive 1
+	call {
+	do talk resp /Hold/
+	}
+}
+
+automacro playOutTheLine {
+	NpcMsg /pulling away/
+	exclusive 1
+	call {
+	do talk resp /Play out/
+	}
+}
+
+automacro terminadoDePescar {
+	NpcMsg /You reeled in/
+	exclusive 1
+	call {
+	if ( &config(StepFish) = none) do conf -f StepFish 1
+	$pescaria = &config(StepFish)
+	$pescaria++
+	if ($pescaria >= 12) do conf StepFish 1
+	do conf -f StepFish $pescaria
+	release configurar
+	}
+}
+
+automacro confStepFishNaoExiste {
+	ConfigKeyNotExist StepFish
+	exclusive 1
+	priority -5
+	call {
+	log a config StepFish ainda nao existe
+	log mudando isso
+	do conf -f StepFish none
+	}
+}
+
+automacro configurar {
+	BaseLevel > 0
+	exclusive 1
+	run-once 1
+	InInventory "Meat" > 0
+	call {
+		if (&config(statsAddAuto) == 1 || &config (skillsAddAuto) == 1 {			
+		do ai auto
+		do conf attackAuto 1
+		do conf lockMap none
+		do conf route_randomWalk 0
+		do conf sellAuto 0
+		do conf storageAuto 0
+		do conf sitAuto_idle 0
+		do conf sitAuto_hp_lower 10
+		do conf sitAuto_hp_upper 70
+		do conf statsAddAuto 0
+		do conf skillsAddAuto 0
+		do conf autoTalkCont 1
+		}
+	call definirLocal
+	}
+}
+
+macro definirLocal {
+	switch (&config ) {
+		case ( = 1 ) {
+		$local = izlu2dun
+		$coordenada = 157 163	
+		}
+		case ( = 2 ) {
+		$local = izlu2dun
+		$coordenada = 165 164
+		}
+		case ( = 3 ) {
+		$local = izlu2dun 
+		$coordenada = 115 189
+		}
+		case ( = 4 ) {
+		$local = izlude
+		$coordenada = 117 224
+		}
+		case ( = 5 ) {
+		$local = izlude
+		$coordenada = 142 230
+		}
+		case ( = 6 ) {
+		$local = prt_fild08	
+		$coordenada = 321 307
+		}
+		case ( = 7 ) {
+		$local = prt_fild08
+		$coordenada = 326 295
+		}
+		case ( = 8 ) {
+		$local = prt_fild08
+		$coordenada = 373 264
+		}
+		case ( = 9 ) {
+		$local = alberta
+		$coordenada = 246 23
+		}
+		case ( = 10 ) {
+		$local = alberta
+		$coordenada = 252 46
+		}
+		case ( = 11 ) {
+		$local = alberta
+		$coordenada = 247 122
+		}
+		else {
+		log a ConfigKey StepFish está errada
+		log o valor dela é &config(StepFish)
+		}
+	}
+	call comecarAPescar
+}
+
+macro comecarAPescar {
+	do move $local $coordenada @rand(2,8)
+	do talk &npc ( $coordenada )
+	do talk resp 0
+	do talk resp /Meat/ 
+}
