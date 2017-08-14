@@ -1,9 +1,0 @@
-automacro pescar {
-	InInventory "Fish Rod" = 1
-	exclusive 1
-	NpcNotNear /Ripple/
-	call {
-	do move 60 121
-	
-	}
-}

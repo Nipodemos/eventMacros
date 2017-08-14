@@ -518,24 +518,24 @@ automacro talkBradeonGroundsGetQuest {
 	}
 }
 
-#automacro usarPocaoDeApreniz {
-#	ConfigKeyNot useSelf_item_0 Poção de Aprendiz
-#	InInventoryID 569 > 0
-#	exclusive 1
-#	call {
-#		log parece que tenho poção de aprendiz, mas ainda não foi configurado pra ser usado
-#		log mudando isso
-#		$potName = GetNamenyNameID(569)
-#		do conf useSelf_item_0 $potName
-#		do conf useSelf_item_0_disabled 0
-#		do conf useSelf_item_0_hp < 60%
-#		do conf getAuto_0 $potName
-#		do conf getAuto_0_minAmount 20
-#		do conf getAuto_0_maxAmount 200
-#		do conf getAuto_0_passive 0
-#		log pronto
-#	}
-#}
+automacro usarPocaoDeApreniz {
+	ConfigKeyNot useSelf_item_0 Poção de Aprendiz
+	InInventory "Poção de Aprendiz" > 0
+	exclusive 1
+	call {
+		log parece que tenho poção de aprendiz, mas ainda não foi configurado pra ser usado
+		log mudando isso
+		$potName = GetNamenyNameID(569)
+		do conf useSelf_item_0 $potName
+		do conf useSelf_item_0_disabled 0
+		do conf useSelf_item_0_hp < 60%
+		do conf getAuto_0 $potName
+		do conf getAuto_0_minAmount 20
+		do conf getAuto_0_maxAmount 200
+		do conf getAuto_0_passive 0
+		log pronto
+	}
+}
 
 automacro moveBradeCompleteQuest {
 	exclusive 1
@@ -1086,6 +1086,7 @@ automacro EdenJoinMoveNpc {
 	InInventoryID 6219 = 0
 	exclusive 1
 	BaseLevel >= 12
+	ConfigKeyNot membroDoEden sim
 	NpcNotNear /Lenore|Lime/
 	JobIDNot 0
 	run-once 1
@@ -1386,7 +1387,7 @@ automacro Eden60JuntarFolhasEOmbreiras {
 		$qtdDeOmbeira = GetNamenyNameID(7196)
 		$qtdDeFolha = GetNamenyNameID(7100)
 		$ombreira = &invamount ( $qtdDeOmbeira )
-		$folha = &invamount (Folha Afiada)
+		$folha = &invamount ($qtdDeFolha)
 		if ( $ombreira < 5 )                 goto Ombreira
 		if ( $ombreira >= 5 && $folha < 7 )  goto Folha
 		if ( $ombreira >= 5 && $folha >= 7 ) goto Juntei
@@ -1563,7 +1564,7 @@ automacro EdenPegandoEquips12e26e40 {
 	}
 }
 
-automacro EdenEquipando12 {
+automacro Eden12Equipando {
 	IsNotEquippedID armor 15009
 	InInventoryID 15009 = 1
 	BaseLevel 12..25 
@@ -1581,7 +1582,7 @@ automacro EdenEquipando12 {
 	}
 }
 
-automacro EdenEquipando26 {
+automacro Eden26Equipando {
 	IsNotEquippedID armor 15010
 	InInventoryID 15010 = 1
 	BaseLevel 26..39
@@ -1597,7 +1598,7 @@ automacro EdenEquipando26 {
 	}
 }
 
-automacro EdenEquipando40 {
+automacro Eden40Equipando {
 	IsNotEquippedID armor 15011
 	InInventoryID 15011 = 1
 	BaseLevel 40..59
@@ -1622,16 +1623,17 @@ automacro EdenPegandoEquips60 {
 	call {
 		#do talknpc 111 83 c r2 c c r1 #Ferreiro Torhen#2nd10
 		do talk $.NpcNearLastBinId
-		talk resp 2
-		talk resp 1
+		do talk resp 2
+		do talk resp 1
 		do conf quest_eden none
 	}
 }
 
-automacro EdenEquipando60 {
+automacro Eden60Equipando {
 	IsNotEquippedID armor 15031
 	InInventoryID 15031 = 1
 	BaseLevel 60..98
+	exclusive 1		
 	call {
 		$check = GetIndexAndEquipped("robe", 2571) #Capa II do Grupo Eden
 		if ($check != -1) do eq $check
@@ -1641,7 +1643,7 @@ automacro EdenEquipando60 {
 		if ($check != -1) do eq $check
 		$check = GetIndexAndEquipped("armor", 15031) #Armadura_do_Grupo_Éden#
 		if ($check != -1) do eq $check
-		$check = GetIndexAndEquipped("rightHand",13066)#Adaga_III_do_Grupo_Éden#
+		$check = GetIndexAndEquipped("rightHand",13066) #Adaga_III_do_Grupo_Éden#
 		if ($check != -1) do eq $check
 	}
 }
@@ -1684,12 +1686,30 @@ automacro virarArruaceiro1 {
 	}
 }
 
+automacro virarArruaceiroAgain {
+	JobID 6 #gatuno 6 #gatuno
+	JobLevel = 50
+	priority 3
+	QuestInactive 2017
+	QuestInactive 2018
+	QuestInactive 2022
+	QuestInactive 2023
+	QuestInactive 2024
+	QuestInactive 2026
+	ConfigKey virarArruaceiro true
+	exclusive 1
+	call {
+		add_key ("virarArruaceiro","false")
+		release virarArruaceiro1
+	}
+}								
 automacro virarArruaceiro2 {
 	JobID 6 #gatuno 6 #gatuno
 	QuestActive 2017
 	exclusive 1
 	run-once 1
 	call {
+		lock virarArruaceiroAgain				   
 		do move in_rogue 372 23
 		do talknpc 376 23 c  #Smith
 	}
@@ -1772,8 +1792,9 @@ automacro virarArruaceiro4.0 {
 	JobLevel = 50
 	run-once 1
 	call {	
-		do eq &inventory (Punhal de Iniciante [3])
+		add_key ("questArruaceiro","0")
 		do move cmd_fild09 107 195
+		do talk resp 1		
 		do talk resp 2
 		do talk resp 1
 		do talk resp 0
@@ -1787,7 +1808,7 @@ automacro virarArruaceiro4.1 {
 	JobLevel = 50
 	run-once 1
 	call {
-		do eq &inventory (Main Gauche de Iniciante [3])
+		add_key ("questArruaceiro","1")[3])
 		do move cmd_fild04 304 180
 		pause 1
 		do talk resp 2
@@ -1803,7 +1824,7 @@ automacro virarArruaceiro4.2 {
 	JobLevel = 50
 	run-once 1
 	call {
-		do eq &inventory (Túnica de Iniciante [1])
+		add_key ("questArruaceiro","2")
 		do move cmd_fild09 335 143
 		do talk resp 0
 		do talk resp 2
@@ -1814,11 +1835,12 @@ automacro virarArruaceiro4.2 {
 
 automacro virarArruaceiro5.0 {
 	QuestActive 2026
-	IsEquippedID rightHand 13040 #Punhal de Iniciante
+	ConfigKey questArruaceiro 0
 	JobLevel = 50
 	NotInMap in_rogue
 	run-once 1
 	call {
+		do conf attackAuto -1
 		do move cmd_fild09 107 195
 		do talk resp 1
 		do talk resp 2
@@ -1828,12 +1850,13 @@ automacro virarArruaceiro5.0 {
 }
 
 automacro virarArruaceiro5.1 {
-	IsEquippedID rightHand 13041 $main gauche de iniciante
+	ConfigKey questArruaceiro 1
 	QuestActive 2026
 	JobLevel = 50
 	exclusive 1
 	run-once 1
 	call {
+		do conf attackAuto -1
 		do move cmd_fild04 304 180
 		do talk resp 2
 		do talk resp 1
@@ -1843,12 +1866,13 @@ automacro virarArruaceiro5.1 {
 }
 
 automacro virarArruaceiro5.2 {
-	IsEquippedID armor 2393 #Túnica de Iniciante
+	ConfigKey questArruaceiro 2
 	QuestActive 2026
 	JobLevel = 50
 	NotInMap in_rogue
 	run-once 1
 	call {
+		do conf attackAuto -1
 		do move cmd_fild09 335 143
 		do talk resp 0
 		do talk resp 2
@@ -1908,7 +1932,7 @@ automacro virarArruaceiro8 {
 	call {
 		do move in_rogue 369 119
 		do talknpc 363 122 c c c
-		conf itemsTakeAuto 1
+		do conf itemsTakeAuto 1
 	}
 }
 
@@ -1917,8 +1941,9 @@ automacro jaSouArruaceiro {
 	InMap in_rogue
 	exclusive 1
 	run-once 1
-	IsNotEquippedID armor 15011
 	call {
+		do conf virarArruaceiro none
+		do conf questArruaceiro none
 		$check = GetIndexAndEquipped("shoes",2458) #Botas Valhalla Avançadas
 		if ($check != -1) do eq $check
 		$check = GetIndexAndEquipped("rightHand",13051) #Adaga Valhalla Intermediária
@@ -1929,7 +1954,7 @@ automacro jaSouArruaceiro {
 		if ($check != -1) do eq $check
 		$check = GetIndexAndEquipped("topHead",5583) #Chapéu Valhalla#
 		if ($check != -1) do eq $check
-		add_key ("virarArruaceiro","false")
+		
 	}
 }
 
@@ -2005,12 +2030,12 @@ automacro upAteLv26 {
 	}
 }
 
-automacro upAteLv40 {
+automacro upAteLv35 {
 	ConfigKeyNot quest_eden em_curso
 	ConfigKeyNot quest_eden terminando
 	ConfigKeyNot lockMap pay_fild07
 	ConfigKeyNot In_saveMap_sequence true
-	BaseLevel 26..39
+	BaseLevel 26..35
 	exclusive 1
 	JobID 6 #gatuno
 	priority 5
@@ -2022,26 +2047,60 @@ automacro upAteLv40 {
 	}
 }
 
+automacro upAteLv44 {
+	BaseLevel 36..43
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	ConfigKeyNot lockMap pay_fild09
+	ConfigKeyNot In_saveMap_sequence true
+	exclusive 1
+	JobID 6 #gatuno
+	priority 5
+	timeout 30
+	call {
+		$saveMapDesejado = payon
+		$lockMapDesejado = pay_fild09
+		call configurarMapa
+	}
+}
+
+automacro upAteLv54 {
+	BaseLevel 44..53
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	ConfigKeyNot lockMap gef_fild10
+	ConfigKeyNot In_saveMap_sequence true
+	exclusive 1
+	JobID 6 #gatuno
+	priority 5
+	timeout 30
+	call {
+		$saveMapDesejado = prontera
+		$lockMapDesejado = gef_fild10
+		call configurarMapa
+	}
+}
+
 automacro upAteLv60 {
 	ConfigKeyNot quest_eden em_curso
 	ConfigKeyNot quest_eden terminando
-	ConfigKeyNot lockMap um_fild02
+	ConfigKeyNot lockMap iz_dun02
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKeyNot virarArruaceiro true
 	JobID 6, 17
-	BaseLevel 40..59
+	BaseLevel 54..59
 	exclusive 1
 	priority 5
 	timeout 30
 	call {
-		$saveMapDesejado = comodo
-		$lockMapDesejado = um_fild02
+		$saveMapDesejado = izlude
+		$lockMapDesejado = iz_dun02
 		call configurarMapa
 	}
 }
 
 automacro upAteLv70 {
-	BaseLevel 60..69
+	BaseLevel 60..70
 	JobID 17
 	ConfigKeyNot quest_eden em_curso
 	ConfigKeyNot quest_eden terminando
@@ -2057,10 +2116,27 @@ automacro upAteLv70 {
 }
 
 automacro upAteLv80 {
-	BaseLevel 70..79
+	BaseLevel 71..79
 	ConfigKeyNot quest_eden em_curso
 	ConfigKeyNot quest_eden terminando
-	ConfigKeyNot lockMap gl_church
+	ConfigKeyNot lockMap mjolnir_11
+	ConfigKeyNot In_saveMap_sequence true
+	JobID 17
+	exclusive 1
+	priority 5
+	timeout 30
+	call {
+		$saveMapDesejado = prontera
+		$lockMapDesejado = mjolnir_11
+		call configurarMapa
+	}
+}
+
+upAteLv92 {
+	BaseLevel 80..91
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	ConfigKeyNot lockMap gef_fild06
 	ConfigKeyNot In_saveMap_sequence true
 	JobID 17
 	exclusive 1
@@ -2068,17 +2144,16 @@ automacro upAteLv80 {
 	timeout 30
 	call {
 		$saveMapDesejado = geffen
-		$lockMapDesejado = gl_church
+		$lockMapDesejado = gef_fild06
 		call configurarMapa
 	}
 }
-
-automacro IndoPraRachelPraUpAteLv95 {
+automacro IndoPraRachelPraUpAteLv99 {
 	ConfigKeyNot quest_eden em_curso
 	ConfigKeyNot quest_eden terminando
 	ConfigKeyNot lockMap ra_fild12
 	ConfigKeyNot aeroplano1 rachel
-	BaseLevel 80..94
+	BaseLevel 92..99
 	NotInMap rachel
 	NotInMap ra_fild12
 	JobID 17
@@ -2086,18 +2161,18 @@ automacro IndoPraRachelPraUpAteLv95 {
 	priority 5
 	timeout 30
 	call {
-		do eventMacro junopra -- rachel
+		call junopra "rachel"
 	}
 }
 
-automacro salvandoEmRachelPraUpAteLv95 {
+automacro salvandoEmRachelPraUpAteLv99 {
 	ConfigKeyNot saveMap rachel
 	InMap rachel
 	ConfigKeyNot quest_eden em_curso
 	ConfigKeyNot quest_eden terminando
 	ConfigKeyNot aeroplano1 rachel
 	ConfigKeyNot In_saveMap_sequence true
-	BaseLevel 80..94
+	BaseLevel 92..99
 	JobID 17
 	exclusive 1
 	run-once 1
@@ -2107,31 +2182,17 @@ automacro salvandoEmRachelPraUpAteLv95 {
 	}
 }
 
-automacro upAteLv95 {
+automacro upAteLv99 {
 	ConfigKeyNot quest_eden em_curso
 	ConfigKeyNot quest_eden terminando
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKeyNot lockMap ra_fild12
-	BaseLevel 80..94
+	BaseLevel 92..99
 	exclusive 1
 	ConfigKey saveMap rachel
 	call {
 		call voltarAtacar
 		do conf lockMap ra_fild12
-	}
-}
-
-automacro upAteLv99 {
-	ConfigKeyNot quest_eden em_curso
-	ConfigKeyNot quest_eden terminando
-	ConfigKeyNot In_saveMap_sequence true
-	BaseLevel 95..98
-	ConfigKeyNot lockMap ve_fild03
-	timeout 30
-	call {
-		$saveMapDesejado = rachel
-		$lockMapDesejado = ve_fild03
-		call configurarMapa
 	}
 }
 
