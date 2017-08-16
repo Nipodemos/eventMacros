@@ -735,15 +735,26 @@ automacro começarQuestSalgueiro {
 	}
 }
 
+automacro changeToHeavierTrainingMoveClose {
+	QuestActive 7123
+	QuestActive 7127
+	exclusive 1
+	NpcNotNear /Trainer/
+	InMap new_1-3, new_2-3, new_3-3
+	ConfigKey master RMS Renewal Test Server
+	call {
+		do move &rand(103,105) &rand(36,38)
+	}
+}
+	
 automacro changeToHeavierTraining {
 	QuestActive 7123
 	QuestActive 7127
 	exclusive 1
 	NpcNear /Trainer/
 	InMap new_1-3, new_2-3, new_3-3
+	ConfigKeyNot master Brazil - bRO: Thor
 	call {
-		do move &rand(103,105) &rand(36,38)
-		pause 3
 		log mudando pra mapa onde tem pickys e salgueiros
 		do talk $.NpcNearLastBinId #Treinador
 		do talk resp 0
@@ -754,6 +765,7 @@ automacro changeToHeavierTraining {
 automacro treinoMaisPesadoMoverPerto {
 	QuestActive 7123
 	QuestActive 7127
+	ConfigKeyNot master RMS Renewal Test Server
 	exclusive 1
 	NpcNotNear /Treinador/
 	InMap new_1-3, new_2-3, new_3-3
@@ -763,6 +775,7 @@ automacro treinoMaisPesadoMoverPerto {
 automacro treinoMaisPesado {
 	QuestActive 7123
 	QuestActive 7127
+	ConfigKeyNot master RMS Renewal Test Server
 	exclusive 1
 	NpcNear /Treinador/
 	InMap new_1-3, new_2-3, new_3-3
@@ -1122,8 +1135,23 @@ automacro EdenJoinedBugged {
 		do conf -f membroDoEden sim
 	}
 }
+automacro iniciandoQuestEden12MoverPerto {
+	NpcNotNear /Boya/
+	InInventoryID 6219 = 1
+	BaseLevel 12..18
+	exclusive 1
+	JobID 6 #gatuno
+	QuestInactive 7128
+	ConfigKeyNot In_saveMap_sequence true
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	IsNotEquippedID armor 15009
+	InInventoryID 15009 = 0
+	call moverPertoDosNpcEden
+}
 
-automacro IniciandoQuestsEden12 {
+automacro iniciandoQuestEden12 {
+	NpcNear /Boya/
 	InInventoryID 6219 = 1
 	BaseLevel 12..18
 	exclusive 1
@@ -1135,18 +1163,32 @@ automacro IniciandoQuestsEden12 {
 	IsNotEquippedID armor 15009
 	InInventoryID 15009 = 0
 	call {
-		do conf lockMap none
-		call pararDeAtacar
-		do move &rand(33,35) &rand(25,27) #posição otima no Eden
 		#do talknpc 25 35 c r1 c c c c c r0 c r0 c c c c c c #Boya
-		do talk &npc(/Boya/)
+		log $.NpcNearLastBinId
+		do talk $.NpcNearLastBinId
 		do talk resp 1
 		do talk resp 0
 		do talk resp 0
 	}
 }
 
-automacro IniciandoQuestEden26 {
+automacro iniciandoQuestEden26MoverPerto {
+	NpcNotNear /Boya/
+	BaseLevel 26..32
+	InInventoryID 6219 = 1
+	JobID 6 #gatuno
+	exclusive 1
+	QuestInactive 7138
+	ConfigKeyNot In_saveMap_sequence true
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	IsNotEquippedID armor 15010
+	InInventoryID 15010 = 0
+	call moverPertoDosNpcEden
+}
+
+automacro iniciandoQuestEden26 {
+	NpcNear /Boya/
 	BaseLevel 26..32
 	InInventoryID 6219 = 1
 	JobID 6 #gatuno
@@ -1158,16 +1200,29 @@ automacro IniciandoQuestEden26 {
 	IsNotEquippedID armor 15010
 	InInventoryID 15010 = 0
 	call {
-		do conf lockMap none
-		call pararDeAtacar
-		do move moc_para01 &rand(33,35) &rand(25,27)
 		#do talknpc 25 35 c c r1 c c c c c c #Boya
-		do talk &npc(/Boya/)
+		do talk $.NpcNearLastBinId
 		do talk resp 1
 	}
 }
 
+automacro IniciandoQuestEden40MoverPerto {
+	NpcNotNear /Boya/
+	BaseLevel 40..49
+	InInventoryID 6219 = 1
+	JobID 6 #gatuno
+	exclusive 1
+	QuestInactive 7147
+	ConfigKeyNot In_saveMap_sequence true
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	IsNotEquippedID armor 15011
+	InInventoryID 15011 = 0
+	call moverPertoDosNpcEden
+}
+
 automacro IniciandoQuestEden40 {
+	NpcNear /Boya/
 	BaseLevel 40..49
 	InInventoryID 6219 = 1
 	JobID 6 #gatuno
@@ -1179,16 +1234,29 @@ automacro IniciandoQuestEden40 {
 	IsNotEquippedID armor 15011
 	InInventoryID 15011 = 0
 	call {
-		do conf lockMap none
-		call pararDeAtacar
-		do move moc_para01 &rand(33,35) &rand(25,27)
 		#do talknpc 25 35 c r0 c c c c c c #Boya
-		do talk &npc(/Boya/)
+		do talk $.NpcNearLastBinId
 		do talk resp 0
 	}
 }
 
-automacro Eden60Começo {
+automacro inciandoQuestEden60MoverPerto {
+	NpcNotNear /Ur/
+	BaseLevel 60..69
+	exclusive 1
+	InInventoryID 6219 = 1
+	JobID 17 #arruaceiro
+	QuestInactive 7214
+	ConfigKeyNot In_saveMap_sequence true
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	IsNotEquippedID armor 15031
+	InInventoryID 15031 = 0
+	call moverPertoDosNpcEden
+}
+
+automacro inciandoQuestEden60 {
+	NpcNear /Ur/
 	BaseLevel 60..69
 	exclusive 1
 	InInventoryID 6219 = 1
@@ -1200,14 +1268,17 @@ automacro Eden60Começo {
 	IsNotEquippedID armor 15031
 	InInventoryID 15031 = 0
 	call {
-		call pararDeAtacar
-		do conf lockMap none
-		do move moc_para01 &rand(33,35) &rand(25,27)
 		#do talknpc 23 35 c r0 c c c c c r1 c c c c c c #Uru
-		do talk &npc(/Ur/)
+		do talk $.NpcNearLastBinId
 		do talk resp 0
 		do talk resp 1
 	}
+}
+
+macro moverPertoDosNpcEden {
+	do conf lockMap none
+	call pararDeAtacar
+	do move moc_para01 &rand(33,35) &rand(25,27) #posição otima no Eden
 }
 
 automacro Eden12salvarNaKafra {
@@ -1478,9 +1549,7 @@ automacro voltarDoMapa {
 	call {
 		log Completei as Caças!
 		log vamo lá pegar meus equips de direito!
-		do conf lockMap none
-		call pararDeAtacar
-		do move moc_para01 &rand(33,35) &rand(25,27)
+		call moverPertoDosNpcEden
 	}
 }
 
@@ -1549,9 +1618,10 @@ automacro EdenPegandoEquips12e26e40 {
 		do talk $.NpcNearLastBinId
 		do talk resp 0
 		do talk resp 1
-		if ( $.lvl >= 40 && $.lvl <= 59 ) {
+		
+		if ( $.lvl >= 40 ) {
 			#do talknpc 112 96 c r2 c c r4 c r0 c #Administrador Mihael(encanto de destreza do chapéu valhalla)
-			do talk &npc(/hael/)
+			do talk $.NpcNearLastBinId
 			do talk resp 2
 			do talk resp 4
 			do talk resp 0
@@ -1682,23 +1752,6 @@ automacro virarArruaceiro1 {
 	}
 }
 
-automacro virarArruaceiroAgain {
-	JobID 6 #gatuno 6 #gatuno
-	JobLevel = 50
-	priority 3
-	QuestInactive 2017
-	QuestInactive 2018
-	QuestInactive 2022
-	QuestInactive 2023
-	QuestInactive 2024
-	QuestInactive 2026
-	ConfigKey virarArruaceiro true
-	exclusive 1
-	call {
-		do conf -f virarArruaceiro false
-		release virarArruaceiro1
-	}
-}								
 automacro virarArruaceiro2 {
 	JobID 6 #gatuno 6 #gatuno
 	QuestActive 2017
@@ -1954,6 +2007,16 @@ automacro jaSouArruaceiro {
 	}
 }
 
+automacro parandoDePegarPotDeAprendiz {
+	InInventoryID 569 < 1
+	InStorageID 569 < 1
+	ConfigKey getAuto_0 Poção de Aprendiz
+	exclusive 1
+	call {
+		log as poções de aprendiz acabaram, removendo o getAuto
+		do conf getAuto_0 none
+	}
+}
 
 automacro todobugadão {
 	InMapRegex /^(?!new_\d-\d|moc_prydb1)$/
@@ -2023,7 +2086,7 @@ automacro upAteLv26 {
 automacro upAteLv35 {
 	ConfigKeyNot quest_eden em_curso
 	ConfigKeyNot quest_eden terminando
-	ConfigKeyNot lockMap pay_fild07
+	ConfigKeyNot lockMap pay_dun00
 	ConfigKeyNot In_saveMap_sequence true
 	BaseLevel 26..35
 	exclusive 1
@@ -2031,7 +2094,11 @@ automacro upAteLv35 {
 	priority 5
 	timeout 30
 	call {
-		call configurarMapa "payon" "pay_fild07"
+		do iconf Erva Azul 7 1 0
+		do iconf Unha Apodrecida 10 1 0
+		do iconf Osso 10 1 0
+		do iconf Mandíbula Horrenda 10 1 0
+		call configurarMapa "payon" "pay_dun00"
 	}
 }
 
@@ -2046,6 +2113,10 @@ automacro upAteLv44 {
 	priority 5
 	timeout 30
 	call {
+		do iconf Erva Azul 7 1 0
+		do iconf Unha Apodrecida 10 1 0
+		do iconf Osso 10 1 0
+		do iconf Mandíbula Horrenda 10 1 0
 		call configurarMapa "payon" "pay_fild09"
 	}
 }
@@ -2054,14 +2125,14 @@ automacro upAteLv54 {
 	BaseLevel 44..53
 	ConfigKeyNot quest_eden em_curso
 	ConfigKeyNot quest_eden terminando
-	ConfigKeyNot lockMap gef_fild10
+	ConfigKeyNot lockMap cmd_fild02
 	ConfigKeyNot In_saveMap_sequence true
 	exclusive 1
 	JobID 6 #gatuno
 	priority 5
 	timeout 30
 	call {
-		call configurarMapa "prontera" "gef_fild10"
+		call configurarMapa "comodo" "cmd_fild02"
 	}
 }
 
@@ -2209,7 +2280,7 @@ automacro ConfigEstáErrada {
 	exclusive 1
 	overrideAI 1
 	priority -5
-	ConfigKeyNot autoTalkCont 1, attackAuto_inLockOnly 0
+	ConfigKeyNot autoTalkCont 1
 	call {
 		log Tem uma config que está errada
 		log A config é $.ConfigKeyNotLastKey
@@ -2294,7 +2365,7 @@ macro SetSaveIn {
 #Digite no console do eventMacro junopra --cidade
 #Pode ser tambem einbrochpra
 #ou rachelpra
-#se o nome estiver certo, ele vai mover-se pra cidade desejada
+#se o nome estiver certo, ele vai mover pra cidade desejada
 macro junopra {
 	log Vamos ir de Juno para $.param1
 	#Se a cidade for izlude ou rachel , ele pega o aeroplano respectivo
