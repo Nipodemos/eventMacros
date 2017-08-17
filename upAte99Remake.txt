@@ -746,7 +746,8 @@ automacro changeToHeavierTrainingMoveClose {
 		do move &rand(103,105) &rand(36,38)
 	}
 }
-	
+
+
 automacro changeToHeavierTraining {
 	QuestActive 7123
 	QuestActive 7127
@@ -1791,6 +1792,13 @@ automacro virarArruaceiro3 {
 		log Pegar Erva
 		[
 		do conf lockMap cmd_fild02
+		do mconf 1266 0 0 0
+		do mconf 1073 0 0 0
+		do mconf 1254 0 0 0
+		do mconf Cornutus 0 0 0
+		do mconf 1074 0 0 0
+		do mconf 1391 0 0 0
+		do conf attackAuto_inLockOnly 1
 		call voltarAtacar
 		]
 		stop
@@ -1800,6 +1808,11 @@ automacro virarArruaceiro3 {
 		log Pegar Unha
 		[
 		do conf lockMap pay_dun00
+		do mconf 1005 0 0 0
+		do mconf 1031 0 0 0
+		do mconf 1078 0 0 0
+		do mconf 1084 0 0 0
+		do conf attackAuto_inLockOnly 1
 		call voltarAtacar
 		]
 		stop
@@ -1809,7 +1822,13 @@ automacro virarArruaceiro3 {
 		log Pegar Osso
 		[
 		do conf lockMap pay_dun01
+		do mconf Drainliar 0 0 0
+		do mconf Eggyra 0 0 0
+		do mconf 1084 0 0 0
+		do mconf 1078 0 0 0
+		do conf attackAuto_inLockOnly 1
 		do conf route_randomWalk 1
+		call voltarAtacar
 		]
 		stop
 		
@@ -1818,7 +1837,14 @@ automacro virarArruaceiro3 {
 		log Pegar mandibula
 		[	
 		do conf lockMap pay_dun00
+		do mconf 1005 0 0 0
+		do mconf 1031 0 0 0
+		do mconf 1078 0 0 0
+		do mconf 1084 0 0 0
+		do mconf 1076 0 0 0
+		do conf attackAuto_inLockOnly 1
 		do conf route_randomWalk 1
+		call voltarAtacar
 		]
 		stop
 		
@@ -1826,6 +1852,20 @@ automacro virarArruaceiro3 {
 		:Npc
 		log Vamos No NPC já temos os Itens...
 		call pararDeAtacar
+		do conf attackAuto_inLockOnly 0
+		do mconf 1266 1 0 0
+		do mconf 1073 1 0 0
+		do mconf 1254 1 0 0
+		do mconf Cornutus 1 0 0
+		do mconf 1074 1 0 0
+		do mconf 1391 1 0 0
+		do mconf 1005 1 0 0
+		do mconf 1031 1 0 0
+		do mconf 1078 1 0 0
+		do mconf 1084 1 0 0
+		do mconf Drainliar 1 0 0 #ID e nome n funcionam
+		do mconf Eggyra 1 0 0 #ID e nome n funcionam
+		do mconf 1076 1 0 0
 		do move in_rogue 372 23
 		do talknpc 376 23 c #Smith
 		do talknpc 376 23 c #Smith
@@ -2079,6 +2119,7 @@ automacro upAteLv26 {
 	priority 5
 	timeout 30
 	call {
+		do iconf Erva Azul 7 1 0
 		call configurarMapa "payon" "pay_fild08"
 	}
 }
@@ -2094,7 +2135,6 @@ automacro upAteLv35 {
 	priority 5
 	timeout 30
 	call {
-		do iconf Erva Azul 7 1 0
 		do iconf Unha Apodrecida 10 1 0
 		do iconf Osso 10 1 0
 		do iconf Mandíbula Horrenda 10 1 0
@@ -2113,10 +2153,6 @@ automacro upAteLv44 {
 	priority 5
 	timeout 30
 	call {
-		do iconf Erva Azul 7 1 0
-		do iconf Unha Apodrecida 10 1 0
-		do iconf Osso 10 1 0
-		do iconf Mandíbula Horrenda 10 1 0
 		call configurarMapa "payon" "pay_fild09"
 	}
 }
@@ -2132,6 +2168,7 @@ automacro upAteLv54 {
 	priority 5
 	timeout 30
 	call {
+		do iconf Erva Azul 7 1 0
 		call configurarMapa "comodo" "cmd_fild02"
 	}
 }
@@ -2208,6 +2245,7 @@ automacro IndoPraRachelPraUpAteLv99 {
 	priority 5
 	timeout 30
 	call {
+		do conf lockMap none
 		call junopra "rachel"
 	}
 }
@@ -2256,7 +2294,7 @@ automacro estouLv99 {
 macro configurarMapa {
 	if ( &config(saveMap) = $.param1 ) {
 		do conf lockMap $.param2
-		call voltarAtacar
+	call voltarAtacar
 	} else {
 		call SetSaveIn $.param1
 	}
@@ -2300,19 +2338,19 @@ macro junopra {
 	#Se a cidade for izlude ou rachel , ele pega o aeroplano respectivo
 	if ( $.param1 =~ /izlude/i ) {
 		do conf -f aeroplano1 izlude
-		do conf -f aeroplano2 none
+	do conf -f aeroplano2 none
 	} elsif ( $.param1 =~ /rachel/i ) {
 		do conf -f aeroplano1 rachel
-		do conf -f aeroplano2 none
+	do conf -f aeroplano2 none
 	} elsif ( $.param1 =~ /hugel/i ) {
 		do conf -f aeroplano1 none
-		do conf -f aeroplano2 hugel
+	do conf -f aeroplano2 hugel
 	} elsif ( $.param1 =~ /lighthalzen/i ) {
 		do conf -f aeroplano1 none
-		do conf -f aeroplano2 lighthalzen
+	do conf -f aeroplano2 lighthalzen
 	} elsif ( $.param1 =~ /einbroch/i ) {
 		do conf -f aeroplano1 none
-		do conf -f aeroplano2 eibroch
+	do conf -f aeroplano2 eibroch
 	} elsif ( $.param1 =~ /[jy]uno/) {
 		log VOCÊ QUER IR DE JUNO PRA JUNO?
 	log PORQUE VOCÊ FARIA ISSO?
@@ -2342,22 +2380,22 @@ macro einbrochpra {
 	# se for outra cidade, ele pega os dois aeroplanos
 	if ( $.param1 =~ /izlude/i ) {
 		do conf -f aeroplano1 izlude
-		do conf -f aeroplano2 juno
+	do conf -f aeroplano2 juno
 	} elsif ($.param1 =~ /rachel/i ) {
 		do conf -f aeroplano1 rachel
-		do conf -f aeroplano2 juno
+	do conf -f aeroplano2 juno
 	} elsif ( $.param1 =~ /hugel/i ) {
 		do conf -f aeroplano1 none
-		do conf -f aeroplano2 hugel
+	do conf -f aeroplano2 hugel
 	} elsif ( $.param1 =~ /lighthalzen/i ) {
 		do conf -f aeroplano1 none
-		do conf -f aeroplano2 lighthalzen
+	do conf -f aeroplano2 lighthalzen
 	} elsif ($.param1 =~ /einbroch/i ) {
 		log VOCÊ QUER IR DE EIBROCH PRA EINBROCH?
 	log PORQUE VOCÊ FARIA ISSO?
 	} elsif ( $.param1 =~ /[jy]uno/) {
 		do conf -f aeroplano1 none
-		do conf -f aeroplano2 juno
+	do conf -f aeroplano2 juno
 	} else {
 		[
 		log Você digitou um nome inválido, por favor tente novamente
@@ -2383,22 +2421,22 @@ macro rachelpra {
 	# se for outra cidade, ele pega os dois aeroplanos
 	if ( $.param1 =~ /izlude/i ) {
 		do conf -f aeroplano1 izlude
-		do conf -f aeroplano2 none
+	do conf -f aeroplano2 none
 	} elsif ($.param1 =~ /rachel/i ) {
 		log VOCÊ QUER IR DE RACHEL PRA RACHEL?
 	log PORQUE VOCÊ FARIA ISSO?
 	} elsif ( $.param1 =~ /hugel/i ) {
 		do conf -f aeroplano1 juno
-		do conf -f aeroplano2 hugel
+	do conf -f aeroplano2 hugel
 	} elsif ( $.param1 =~ /lighthalzen/i ) {
 		do conf -f aeroplano1 juno
-		do conf -f aeroplano2 lighthalzen
+	do conf -f aeroplano2 lighthalzen
 	} elsif ($.param1 =~ /einbroch/i ) {
 		do conf -f aeroplano1 juno
-		do conf -f aeroplano2 eibroch
+	do conf -f aeroplano2 eibroch
 	} elsif ( $.param1 =~ /[jy]uno/) {
 		do conf -f aeroplano1 juno
-		do conf -f aeroplano2 none
+	do conf -f aeroplano2 none
 	} else {
 		[
 		log Você digitou um nome inválido, por favor tente novamente
@@ -2418,12 +2456,44 @@ macro rachelpra {
 		log $aeroplano1, $aeroplano2
 	}
 }
+automacro dentroDoAeroplanoBugged {
+	InMap airplane, airplane_01
+	exclusive 1
+	ConfigKeyNot lockMap none
+	call {
+		do conf lockMap none
+	}
+}
+
+automacro dentroDoAeroplanoInternacionalVarNaoDefinida {
+	ConfigKeyNot aeroplano1 none
+	InMap airplane_01
+	timeout 50
+	call {
+		if ($aeroplano1 = undef) {
+			$aeroplano1 = &config(aeroplano1)
+		}
+		log Estamos no aeroplano, aguardando chegada ao destino
+	}
+}
 
 automacro dentroDoAeroplanoInternacional {
 	InMap airplane_01
-	LocalMsg /Bem-vindos a $aeroplano1|Welcome to $aeroplano1/i
+	LocalMsg /Bem-vindo a $aeroplano1|Welcome to $aeroplano1/i
 	exclusive 1
 	call sairDoAeroplano
+}
+
+automacro dentroDoAeroplanoDomesticoVarNaoDefinida {
+	ConfigKeyNot aeroplano2 none
+	InMap airplane
+	timeout 50
+	call {
+		if ($aeroplano2 = undef) {
+			$aeroplano2 = &config(aeroplano2)
+		}
+		log Estamos no aeroplano, aguardando chegada ao destino
+	}
 }
 
 automacro dentroDoAeroplanoDomestico {
@@ -2516,6 +2586,7 @@ automacro chegueiEmJuno {
 }
 
 macro SetSaveIn {
+	do conf lockMap none
 	do conf -f saveMap_save_sequence c r0
 	do conf -f saveMap_storage_sequence c r1
 	switch ( $.param1 ) {
@@ -2600,7 +2671,7 @@ automacro movendoPraKafraDentroDaCidade {
 	exclusive 1
 	ConfigKeyNot saveMap $saveMap
 	ConfigKeyNot saveMap_wanted none
-	NpcNotNear /(Kafra Employee|Funcionária Kafra)/
+	NpcNotNear /(Kafra Employee|Funcionária Kafra|Corp. Ev. Incríveis)/
 	InMap $saveMap
 	call move_to_near_kafra
 }
@@ -2615,7 +2686,7 @@ automacro FalarComKafra {
 	ConfigKeyNot saveMap $saveMap
 	ConfigKeyNot saveMap_wanted none
 	InMap $saveMap
-	NpcNear /(Kafra Employee|Funcionária Kafra)/
+	NpcNear /(Kafra Employee|Funcionária Kafra|Corp. Ev. Incríveis)/
 	delay 2
 	timeout 20
 	call {
@@ -2627,7 +2698,7 @@ automacro FalarComKafra {
 automacro SalvoNaKafra {
 	exclusive 1
 	priority -5
-	NpcMsgName /O seu Ponto de Retorno foi salvo|saved here/ /(Kafra Employee|Funcionária Kafra)/
+	NpcMsgName /O seu Ponto (de Retorno )?foi salvo|saved here|foi salvo aqui na cidade/ /(Kafra Employee|Funcionária Kafra|Corp)/
 	ConfigKeyNot saveMap $saveMap
 	ConfigKey In_saveMap_sequence true
 	InMap $saveMap
@@ -2664,6 +2735,57 @@ sub GetIndexAndEquipped {
 			return $EquipIndex;
 		}
 }
+automacro checarNoInicio {
+	OnCharLogIn 1
+	run-once 1
+	call {
+		xConfConfiguratedOrNot()
+	}
+}
+
+sub xConfConfiguratedOrNot {
+	use File::Copy;
+	$path = "plugins/xconf.pl";
+	if (-e $path ) {
+		message "o plugin xconf existe na pasta plugins, tudo certo.\n";
+	}
+	else {
+		message "plugin xconf não foi encontrado, iniciando cópia.\n";
+		copy("plugins/needs-review/xconf/trunk/xconf.pl","plugins") or die "Copy failed: $!";
+		message "xconf.pl foi copiado para a pasta plugins.\n";
+	}
+	my $controlfile = Settings::getControlFilename('sys.txt');
+	my $xconfEncontrado = 0;
+	open(FILE, "<:utf8", $controlfile);
+	my @lines = <FILE>;
+	close(FILE);
+	chomp @lines;
+	foreach my $line (@lines) {
+		next if $line =~ /^$/ || $line =~ /^#/;
+		if ($line =~ /xconf/ ) {
+			$xconfEncontrado = 1 ;
+			message "xconf está configurado no sys.txt, tudo certo.\n";
+		}
+	}
+	if ( $xconfEncontrado == 0) {
+		my @itens;
+		foreach my $line (@lines) {
+			next if $line =~ /^$/ || $line =~ /^#/;
+			if ($line =~ /loadPlugins_list\s(.*)/ ) {
+				message "linha anterior: ".$line."\n";
+				$line = 'loadPlugins_list '.join (',',$1,"xconf");
+				message "linha modificada: ".$line."\n";
+			}
+		}
+		open(WRITE, ">:utf8", $controlfile);
+		print WRITE join ("\n", @lines);
+		close(WRITE);
+		message "
+		Saindo do openkore, isso é normal\n
+		Só acontecerá uma vez, e é só abrir novamente. ";
+		Commands::run("quit")
+	}
+}	
 
 sub GetNamenyNameID {
 	my $name = $items_lut{$_[0]};
