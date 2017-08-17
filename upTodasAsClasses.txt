@@ -1,4 +1,4 @@
-﻿#campo dos aprendizes by HenryBK and Nipodemos
+#campo dos aprendizes by HenryBK and Nipodemos
 
 automacro moveToSprakkiOutside {
 	exclusive 1
