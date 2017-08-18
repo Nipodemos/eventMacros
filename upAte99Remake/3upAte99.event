@@ -1,0 +1,241 @@
+﻿automacro todobugadão {
+	InMapRegex /^(?!new_\d-\d|moc_prydb1)$/
+	JobID 0
+	exclusive 1
+	JobLevel = 10
+	timeout 100
+	call {
+		log WTF?
+		log Deveria ser gatuno agora, mas nem isso eu sou
+		log tô todo bugado
+		log vamo virar gatuno, tá na hora
+		do move moc_prydb1 &rand(44,46) &rand(127,129)
+	}
+}
+
+automacro upAteLv12Aprendiz {
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	ConfigKeyNot lockMap pay_fild01
+	ConfigKeyNot In_saveMap_sequence true
+	JobLevel != 10
+	JobID 0
+	exclusive 1
+	timeout 30
+	InMapRegex /^(?!new_\d-\d|moc_prydb1)$/
+	call {
+		log pelo visto, ainda to no lvl de Classe $JobLevelLast ainda... 
+		log o que aconteceu?
+		log a que ponto chegamos?
+		log nuss
+		log Tentando resolver isso...
+		call configurarMapa "payon" "pay_fild01"
+	}
+}
+
+automacro upAteLv12 {
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	ConfigKeyNot lockMap pay_fild01
+	ConfigKeyNot In_saveMap_sequence true
+	BaseLevel 1..11
+	NotInMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
+	exclusive 1
+	JobID 6 #gatuno
+	priority 5
+	timeout 30
+	call {
+		call configurarMapa "payon" "pay_fild01"
+	}
+}
+automacro upAteLv26 {
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	ConfigKeyNot lockMap pay_fild08
+	ConfigKeyNot In_saveMap_sequence true
+	BaseLevel 12..25
+	exclusive 1
+	JobID 6 #gatuno
+	priority 5
+	timeout 30
+	call {
+		do iconf Erva Azul 7 1 0
+		call configurarMapa "payon" "pay_fild08"
+	}
+}
+
+automacro upAteLv35 {
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	ConfigKeyNot lockMap pay_dun00
+	ConfigKeyNot In_saveMap_sequence true
+	BaseLevel 26..35
+	exclusive 1
+	JobID 6 #gatuno
+	priority 5
+	timeout 30
+	call {
+		do iconf Unha Apodrecida 10 1 0
+		do iconf Osso 10 1 0
+		do iconf Mandíbula Horrenda 10 1 0
+		call configurarMapa "payon" "pay_dun00"
+	}
+}
+
+automacro upAteLv44 {
+	BaseLevel 36..43
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	ConfigKeyNot lockMap pay_fild09
+	ConfigKeyNot In_saveMap_sequence true
+	exclusive 1
+	JobID 6 #gatuno
+	priority 5
+	timeout 30
+	call {
+		call configurarMapa "payon" "pay_fild09"
+	}
+}
+
+automacro upAteLv54 {
+	BaseLevel 44..53
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	ConfigKeyNot lockMap cmd_fild02
+	ConfigKeyNot In_saveMap_sequence true
+	exclusive 1
+	JobID 6 #gatuno
+	priority 5
+	timeout 30
+	call {
+		do iconf Erva Azul 7 1 0
+		call configurarMapa "comodo" "cmd_fild02"
+	}
+}
+
+automacro upAteLv60 {
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	ConfigKeyNot lockMap iz_dun02
+	ConfigKeyNot In_saveMap_sequence true
+	ConfigKeyNot virarArruaceiro true
+	JobID 6, 17
+	BaseLevel 54..59
+	exclusive 1
+	priority 5
+	timeout 30
+	call {
+		call configurarMapa "izlude" "iz_dun02"
+	}
+}
+
+automacro upAteLv70 {
+	BaseLevel 60..70
+	JobID 17
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	ConfigKeyNot lockMap moc_fild17
+	ConfigKeyNot In_saveMap_sequence true
+	priority 5
+	timeout 30
+	call {
+		call configurarMapa "morocc" "moc_fild17"
+	}
+}
+
+automacro upAteLv80 {
+	BaseLevel 71..79
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	ConfigKeyNot lockMap mjolnir_11
+	ConfigKeyNot In_saveMap_sequence true
+	JobID 17
+	exclusive 1
+	priority 5
+	timeout 30
+	call {
+		call configurarMapa "prontera" "mjolnir_11"
+	}
+}
+
+automacro upAteLv92 {
+	BaseLevel 80..91
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	ConfigKeyNot lockMap gef_fild06
+	ConfigKeyNot In_saveMap_sequence true
+	JobID 17
+	exclusive 1
+	priority 5
+	timeout 30
+	call {
+		call configurarMapa "geffen" "gef_fild06"
+	}
+}
+automacro IndoPraRachelPraUpAteLv99 {
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	ConfigKeyNot lockMap ra_fild12
+	ConfigKeyNot aeroplano1 rachel
+	BaseLevel 92..99
+	NotInMap rachel
+	NotInMap ra_fild12
+	JobID 17
+	exclusive 1
+	priority 5
+	timeout 30
+	call {
+		do conf lockMap none
+		call junopra "rachel"
+	}
+}
+
+automacro salvandoEmRachelPraUpAteLv99 {
+	ConfigKeyNot saveMap rachel
+	InMap rachel
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	ConfigKeyNot aeroplano1 rachel
+	ConfigKeyNot In_saveMap_sequence true
+	BaseLevel 92..99
+	JobID 17
+	exclusive 1
+	run-once 1
+	call {
+		call SetSaveIn "rachel"
+	}
+}
+
+automacro upAteLv99 {
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	ConfigKeyNot In_saveMap_sequence true
+	ConfigKeyNot lockMap ra_fild12
+	BaseLevel 92..99
+	exclusive 1
+	ConfigKey saveMap rachel
+	call {
+		call voltarAtacar
+		do conf lockMap ra_fild12
+	}
+}
+
+automacro estouLv99 {
+	BaseLevel = 99
+	exclusive 1
+	timeout 15
+	JobID 17 #arruaceiro
+	call {
+		log CHEGUEI NO LVL 99 FINALMENTE !!!!!!!
+		log CARA ISSO LEVOU TEMPO PARA CAR**HO
+	}
+}
+
+macro configurarMapa {
+	if ( &config(saveMap) = $.param1 ) {
+		do conf lockMap $.param2
+	call voltarAtacar
+	} else {
+		call SetSaveIn $.param1
+	}
+}

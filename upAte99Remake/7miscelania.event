@@ -1,0 +1,122 @@
+﻿automacro parandoDePegarPotDeAprendiz {
+	InInventoryID 569 < 1
+	InStorageID 569 < 1
+	ConfigKey getAuto_0 Poção de Aprendiz
+	exclusive 1
+	call {
+		log as poções de aprendiz acabaram, removendo o getAuto
+		do conf getAuto_0 none
+	}
+}
+
+
+
+automacro ConfigEstáErrada {
+	exclusive 1
+	overrideAI 1
+	priority -5
+	ConfigKeyNot autoTalkCont 1
+	call {
+		log Tem uma config que está errada
+		log A config é $.ConfigKeyNotLastKey
+		log O valor que quero é $.ConfigKeyNotLastWantedValue
+		log Mas o valor atual é $.ConfigKeyNotLastKeyValue
+		log Mudando valor da config $.ConfigKeyNotLastKey de $.ConfigKeyNotLastKeyValue para $.ConfigKeyNotLastWantedValue
+		do conf $.ConfigKeyNotLastKey $.ConfigKeyNotLastWantedValue
+	}
+}
+
+macro pararDeAtacar {
+	[
+	do conf route_randomWalk 0
+	do conf attackAuto 1
+	]
+}
+
+macro voltarAtacar {
+	[
+	do conf route_randomWalk 1
+	do conf attackAuto 2
+	]
+}
+
+sub GetIndexAndEquipped {
+	my ($type, $id) = @_;
+	my $Item = $char->inventory->getByNameID($id);
+	my $EquipIndex = $Item->{binID};
+	if (exists $char->{equipment}{$type}) {
+		my $equipItem = $char->{equipment}{$type};
+		if ($equipItem->{nameID} == $id) {
+		return -1;
+		} else {
+			return $EquipIndex;
+		}
+		} else {
+			return $EquipIndex;
+		}
+}
+automacro checarNoInicio {
+	OnCharLogIn 1
+	run-once 1
+	call {
+		xConfConfiguratedOrNot()
+	}
+}
+
+sub xConfConfiguratedOrNot {
+	use File::Copy;
+	$path = "plugins/xconf.pl";
+	if (-e $path ) {
+		message "o plugin xconf existe na pasta plugins, tudo certo.\n";
+	}
+	else {
+		message "plugin xconf não foi encontrado, iniciando cópia.\n";
+		copy("plugins/needs-review/xconf/trunk/xconf.pl","plugins") or die "Copy failed: $!";
+		message "xconf.pl foi copiado para a pasta plugins.\n";
+	}
+	my $controlfile = Settings::getControlFilename('sys.txt');
+	my $xconfEncontrado = 0;
+	open(FILE, "<:utf8", $controlfile);
+	my @lines = <FILE>;
+	close(FILE);
+	chomp @lines;
+	foreach my $line (@lines) {
+		next if $line =~ /^$/ || $line =~ /^#/;
+		if ($line =~ /xconf/ ) {
+			$xconfEncontrado = 1 ;
+			message "xconf está configurado no sys.txt, tudo certo.\n";
+		}
+	}
+	if ( $xconfEncontrado == 0) {
+		my @itens;
+		foreach my $line (@lines) {
+			next if $line =~ /^$/ || $line =~ /^#/;
+			if ($line =~ /loadPlugins_list\s(.*)/ ) {
+				message "linha anterior: ".$line."\n";
+				$line = 'loadPlugins_list '.join (',',$1,"xconf");
+				message "linha modificada: ".$line."\n";
+			}
+		}
+		open(WRITE, ">:utf8", $controlfile);
+		print WRITE join ("\n", @lines);
+		close(WRITE);
+		message "
+		Saindo do openkore, isso é normal\n
+		Só acontecerá uma vez, e é só abrir novamente. ";
+		Commands::run("quit")
+	}
+}	
+
+sub GetNamenyNameID {
+	my $name = $items_lut{$_[0]};
+	return $name;
+}
+
+sub nextMap {
+	my $map = $_[0];
+	if ($map =~ /^new_(\d)-(\d)$/) {
+	return "new_".$1."-".($2+1);
+	} else {
+		return 0;
+	}
+}
