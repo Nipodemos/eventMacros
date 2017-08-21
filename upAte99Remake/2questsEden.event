@@ -112,6 +112,7 @@ automacro IniciandoQuestEden40MoverPerto {
 	NpcNotNear /Boya/
 	BaseLevel 40..49
 	InInventoryID 6219 = 1
+	JobLevel != 50
 	JobID 6 #gatuno
 	exclusive 1
 	QuestInactive 7147
@@ -127,6 +128,7 @@ automacro IniciandoQuestEden40 {
 	NpcNear /Boya/
 	BaseLevel 40..49
 	InInventoryID 6219 = 1
+	JobLevel != 50
 	JobID 6 #gatuno
 	exclusive 1
 	QuestInactive 7147
@@ -247,6 +249,8 @@ automacro Eden40SalvarNaKafra {
 	QuestActive 7147
 	BaseLevel 49..59
 	exclusive 1
+	JobLevel != 50
+	ConfigKeyNot virarArrauceiro true
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKeyNot saveMap prontera
 	call {
@@ -257,7 +261,9 @@ automacro Eden40SalvarNaKafra {
 automacro Eden40IrNoMapa {
 	QuestActive 7147
 	BaseLevel 50..59
+	JobLevel != 50
 	exclusive 1
+	ConfigKeyNot virarArrauceiro true
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKey saveMap prontera
 	call {
@@ -322,6 +328,7 @@ automacro Eden26Caçar {
 automacro Eden40Caçar {
 	QuestHuntOngoing 7148 1686, 7149 1023, 7150 1273
 	exclusive 1
+	JobLevel != 50
   	timeout 180
 	call {
 		call caçarMonstros
@@ -356,7 +363,7 @@ automacro Eden60JuntarFolhasEOmbreiras {
 		$qtdDeOmbeira = GetNamenyNameID(7196)
 		$qtdDeFolha = GetNamenyNameID(7100)
 		$ombreira = &invamount ( $qtdDeOmbeira )
-		$folha = &invamount ($qtdDeFolha)
+		$folha = &invamount ( $qtdDeFolha )
 		if ( $ombreira < 5 )                 goto Ombreira
 		if ( $ombreira >= 5 && $folha < 7 )  goto Folha
 		if ( $ombreira >= 5 && $folha >= 7 ) goto Juntei
@@ -409,6 +416,7 @@ automacro Eden26FinalizarCaças {
 
 automacro Eden40FinalizarCaças {
 	QuestHuntCompleted 7148 1686, 7149 1023, 7150 1273
+	JobLevel != 50
 	exclusive 1
 	call {
 		call pararDeAtacar
@@ -423,9 +431,10 @@ automacro Eden40FinalizarCaças {
 automacro Eden60FinalizarCaças {
 	QuestHuntCompleted 7215 1278, 7216 1278
 	exclusive 1
+	JobID 17 #arruaceiro
 	call {
 		do mconf $.QuestHuntCompletedLastMobID 0 0 0
-		switch ($.QuestHuntCompletedLastQuestID) {
+		switch ( $.QuestHuntCompletedLastQuestID ) {
 			
 			case (= 7215) { #golem1
 				do move comodo &rand(174,176) &rand(344,346)
@@ -615,4 +624,10 @@ automacro Eden60Equipando {
 		if ($check != -1) do eq $check
 	}
 }
+#
+#
+#
+# FIM DAS QUESTS EDEN
+#
+
 

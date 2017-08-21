@@ -1,4 +1,4 @@
-﻿#From- Macro Quest Arruaceiro 2.0
+#From- Macro Quest Arruaceiro 2.0
 
 #By Gaspel
 #Edited- by CALF
@@ -69,14 +69,13 @@ automacro virarArruaceiro3 {
 	JobID 6 #gatuno
 	QuestActive 2018
 	exclusive 1
+	ConfigKeyNot questArruaceiro peguei
 	timeout 100
 	call  {
-		[
-		do iconf Erva Azul 7 1 0
-		do iconf Unha Apodrecida 10 1 0
-		do iconf Osso 10 1 0
-		do iconf Mandíbula Horrenda 10 1 0
-		]
+		do iconf 510 7 1 0 #ervaAzul
+		do iconf 957 10 1 0 #unhaApodrecida
+		do iconf 932 10 1 0 #osso
+		do iconf 958 10 1 0 #mandibula
 		$ervaAzul       = &invamount (Erva Azul)
 		$unhaApodrecida = &invamount (Unha Apodrecida)
 		$osso           = &invamount (Osso)
@@ -159,8 +158,10 @@ automacro tenhoOsItensIrProNpc {
 	exclusive 1
 	call {
 		lock virarArruaceiro3
+		do conf -f questArruaceiro peguei
 		log Vamos No NPC já temos os Itens...
 		call pararDeAtacar
+		do conf lockMap none
 		do conf attackAuto_inLockOnly 0
 		do mconf 1266 1 0 0
 		do mconf 1073 1 0 0
@@ -173,6 +174,7 @@ automacro tenhoOsItensIrProNpc {
 		do mconf 1078 1 0 0
 		do mconf 1084 1 0 0
 		do mconf 1076 1 0 0
+		lock virarArruaceiro3
 		do move in_rogue &rand(370,373) &rand(20,24)
 	}
 }
@@ -188,15 +190,17 @@ automacro tenhoOsItens {
 	call {
 		lock virarArruaceiro3
 		log Vamos No NPC já temos os Itens...
+		do conf lockMap none
 		call pararDeAtacar
 		do talk $.NpcNearLastBinID #Smith
 		do talk $.NpcNearLastBinID #Smith
 		do talk $.NpcNearLastBinID #Smith
+		lock virarArruaceiro3
 	}
 }
 
 automacro virarArruaceiro4.0 {
-	JobID 6 #gatuno 6 #gatuno
+	JobID 6 #gatuno
 	QuestActive 2022
 	exclusive 1
 	JobLevel = 50
@@ -211,7 +215,7 @@ automacro virarArruaceiro4.0 {
 }
 
 automacro virarArruaceiro4.1 {
-	JobID 6 #gatuno 6 #gatuno
+	JobID 6 #gatuno
 	QuestActive 2023 
 	exclusive 1
 	JobLevel = 50
@@ -345,22 +349,17 @@ automacro virarArruaceiro8 {
 
 automacro jaSouArruaceiro {
 	JobID 17
-	InMap in_rogue
+	ConfigKey virarArruaceiro true
 	exclusive 1
-	run-once 1
 	call {
 		do conf virarArruaceiro none
-		do conf questArruaceiro none
-		$check = GetIndexAndEquipped("shoes",2458) #Botas Valhalla Avançadas
-		if ($check != -1) do eq $check
-		$check = GetIndexAndEquipped("rightHand",13051) #Adaga Valhalla Intermediária
-		if ($check != -1) do eq $check
-		$check = GetIndexAndEquipped("armor",15011) #Uniforme Valhalla Avançado
-		if ($check != -1) do eq $check
-		$check = GetIndexAndEquipped("robe",2560 )#Capa Valhalla#
-		if ($check != -1) do eq $check
-		$check = GetIndexAndEquipped("topHead",5583) #Chapéu Valhalla#
-		if ($check != -1) do eq $check
-		
+		do conf questArruaceiro none	
 	}
 }
+#
+#
+#
+# FIM DA QUEST PRA VIRAR ARRUACEIRO
+#
+
+

@@ -39,10 +39,22 @@ macro voltarAtacar {
 	do conf attackAuto 2
 	]
 }
+automacro checarNoInicio {
+	OnCharLogIn 1
+	run-once 1
+	exclusive 1
+	call {
+		xConfConfiguratedOrNot()
+	}
+}
 
 sub GetIndexAndEquipped {
 	my ($type, $id) = @_;
 	my $Item = $char->inventory->getByNameID($id);
+	if ($Item eq "" ) {
+	message "Erro: ou a ID do item está incorreta, ou você não possui esse equipamento.\n";
+	return -1;
+	}
 	my $EquipIndex = $Item->{binID};
 	if (exists $char->{equipment}{$type}) {
 		my $equipItem = $char->{equipment}{$type};
@@ -51,31 +63,26 @@ sub GetIndexAndEquipped {
 		} else {
 			return $EquipIndex;
 		}
-		} else {
+	} else {
 			return $EquipIndex;
-		}
-}
-automacro checarNoInicio {
-	OnCharLogIn 1
-	run-once 1
-	call {
-		xConfConfiguratedOrNot()
 	}
 }
 
 sub xConfConfiguratedOrNot {
 	use File::Copy;
 	$path = "plugins/xconf.pl";
+	my $estaNaPasta = 0;
+	my $estaNoSys = 0;
 	if (-e $path ) {
-		message "o plugin xconf existe na pasta plugins, tudo certo.\n";
+		$estaNaPasta = 1;
 	}
 	else {
 		message "plugin xconf não foi encontrado, iniciando cópia.\n";
 		copy("plugins/needs-review/xconf/trunk/xconf.pl","plugins") or die "Copy failed: $!";
 		message "xconf.pl foi copiado para a pasta plugins.\n";
+		$estaNaPasta = 0;
 	}
 	my $controlfile = Settings::getControlFilename('sys.txt');
-	my $xconfEncontrado = 0;
 	open(FILE, "<:utf8", $controlfile);
 	my @lines = <FILE>;
 	close(FILE);
@@ -83,29 +90,31 @@ sub xConfConfiguratedOrNot {
 	foreach my $line (@lines) {
 		next if $line =~ /^$/ || $line =~ /^#/;
 		if ($line =~ /xconf/ ) {
-			$xconfEncontrado = 1 ;
-			message "xconf está configurado no sys.txt, tudo certo.\n";
+			$estaNoSys = 1 ;
 		}
 	}
-	if ( $xconfEncontrado == 0) {
-		my @itens;
+	if ( $estaNoSys == 0) {
 		foreach my $line (@lines) {
 			next if $line =~ /^$/ || $line =~ /^#/;
 			if ($line =~ /loadPlugins_list\s(.*)/ ) {
-				message "linha anterior: ".$line."\n";
 				$line = 'loadPlugins_list '.join (',',$1,"xconf");
-				message "linha modificada: ".$line."\n";
 			}
 		}
 		open(WRITE, ">:utf8", $controlfile);
 		print WRITE join ("\n", @lines);
 		close(WRITE);
+		$estaNoSys = 0;
+	}
+	unless ($estaNaPasta == 1 && $estaNoSys == 1) {
 		message "
 		Saindo do openkore, isso é normal\n
 		Só acontecerá uma vez, e é só abrir novamente. ";
-		Commands::run("quit")
+		Commands::run("quit");
 	}
-}	
+	else {
+		message "Checando algumas coisas...\nTudo certo.\n";	
+	}
+	}
 
 sub GetNamenyNameID {
 	my $name = $items_lut{$_[0]};
@@ -120,3 +129,12 @@ sub nextMap {
 		return 0;
 	}
 }
+
+#
+#
+#
+# FIM DAS MISCELANIAS
+#
+
+
+

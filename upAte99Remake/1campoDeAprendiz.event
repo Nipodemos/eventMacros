@@ -1095,3 +1095,8 @@ automacro jaSouGatuno {
 		if ($check != -1) do eq $check
 	}
 }
+#
+#
+#
+# FIM DO CAMPO DE APRENDIZ
+

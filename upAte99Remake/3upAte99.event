@@ -239,3 +239,10 @@ macro configurarMapa {
 		call SetSaveIn $.param1
 	}
 }
+
+#
+#
+#
+# FIM DO UP ATE O 99
+# 
+
