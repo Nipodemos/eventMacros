@@ -152,8 +152,9 @@ automacro tenhoOsItensIrProNpc {
 	InInventory "Erva Azul" >= 6
 	InInventory "Unha Apodrecida" >= 10
 	InInventory "Osso" >= 10
-	InInventory "Mandíbula" >= 10
+	InInventory "Mandíbula Horrenda" >= 10
 	QuestActive 2018
+	Zeny > 9999
 	NpcNotNear /Smith/
 	exclusive 1
 	call {
@@ -179,17 +180,33 @@ automacro tenhoOsItensIrProNpc {
 	}
 }
 
+automacro tenhoOsItensbugged {
+	InInventory "Erva Azul" >= 6
+	InInventory "Unha Apodrecida" >= 10
+	InInventory "Osso" >= 10
+	InInventory "Mandíbula Horrenda" >= 10
+	QuestActive 2018
+	Zeny < 10000
+	exclusive 1
+	call {
+		log por algum motivo, o bot não tem nem os 10k de zeny pra fazer a quest
+		log tentando resolver isso
+		do autosell
+	}
+}
+
+
 automacro tenhoOsItens {
 	InInventory "Erva Azul" >= 6
 	InInventory "Unha Apodrecida" >= 10
 	InInventory "Osso" >= 10
 	NpcNear /Smith/
-	InInventory "Mandíbula" >= 10
+	InInventory "Mandíbula Horrenda" >= 10
+	Zeny > 9999
 	QuestActive 2018
 	exclusive 1
 	call {
 		lock virarArruaceiro3
-		log Vamos No NPC já temos os Itens...
 		do conf lockMap none
 		call pararDeAtacar
 		do talk $.NpcNearLastBinID #Smith
@@ -204,7 +221,8 @@ automacro virarArruaceiro4.0 {
 	QuestActive 2022
 	exclusive 1
 	JobLevel = 50
-	call {	
+	call {
+		do conf attackAuto -1
 		do conf -f questArruaceiro 0
 		do move cmd_fild09 107 195
 		do talk resp 1		
@@ -220,9 +238,9 @@ automacro virarArruaceiro4.1 {
 	exclusive 1
 	JobLevel = 50
 	call {
+		do conf attackAuto -1
 		do conf -f questArruaceiro 1
 		do move cmd_fild04 304 180
-		pause 1
 		do talk resp 2
 		do talk resp 1
 		do talk resp 1
@@ -235,6 +253,7 @@ automacro virarArruaceiro4.2 {
 	exclusive 1
 	JobLevel = 50
 	call {
+		do conf attackAuto -1
 		do conf -f questArruaceiro 2
 		do move cmd_fild09 335 143
 		do talk resp 0
@@ -249,7 +268,7 @@ automacro virarArruaceiro5.0 {
 	ConfigKey questArruaceiro 0
 	JobLevel = 50
 	NotInMap in_rogue
-	run-once 1
+	CurrentHP > 80%
 	call {
 		do conf attackAuto -1
 		do move cmd_fild09 107 195
@@ -264,8 +283,9 @@ automacro virarArruaceiro5.1 {
 	ConfigKey questArruaceiro 1
 	QuestActive 2026
 	JobLevel = 50
+	NotInMap in_rogue
+	CurrentHP > 80%
 	exclusive 1
-	run-once 1
 	call {
 		do conf attackAuto -1
 		do move cmd_fild04 304 180
@@ -281,7 +301,7 @@ automacro virarArruaceiro5.2 {
 	QuestActive 2026
 	JobLevel = 50
 	NotInMap in_rogue
-	run-once 1
+	CurrentHP > 80%
 	call {
 		do conf attackAuto -1
 		do move cmd_fild09 335 143
@@ -292,11 +312,33 @@ automacro virarArruaceiro5.2 {
 	}
 }
 
+automacro virarArruaceiro5buggeed {
+	QuestActive 2026
+	JobLevel = 50
+	NotInMap in_rogue
+	CurrentHP < 80%
+	exclusive 1
+	timeout 120
+	call {
+		log ====================================
+		log MORRI TENTANDO PASSAR PELO LABIRINTO
+		log HP ATUAL: $.CurrentHPLastPercent \%
+		log ESPRANDO HP FICAR ACIMA DE 80\%
+		log ====================================
+		do sit
+		if ( &config (sitAuto_hp_upper) != 80 ) {
+		do conf sitAuto_hp_lower 20
+		do conf sitAuto_hp_upper 80
+		}
+	}
+}
+
 automacro virarArruaceiro6.0 {
 	JobLevel = 50
 	IsInMapAndCoordinate in_rogue 169 34
 	run-once 1
 	call {
+		#essa é a parte depois que fala a senha na porta e entra na casa
 		do talknpc 160 34 c r0 c
 	}
 }
@@ -306,8 +348,11 @@ automacro virarArruaceiro6.1 {
 	IsInMapAndCoordinate in_rogue 246 25
 	run-once 1
 	call {
+		#essa é a parte depois que fala a senha na porta e entra na casa
 		do move in_rogue 244 33
-		do talknpc 244 39 c r0 c
+		do talk &npc (244 39)
+		do talk resp 0
+		#do talknpc 244 39 c r0 c
 	}
 }
 
@@ -318,6 +363,7 @@ automacro virarArruaceiro6.2 {
 	run-once 1
 	exclusive 1
 	call {
+		#essa é a parte depois que fala a senha na porta e entra na casa
 		do move in_rogue 172 108
 		do talknpc 177 109 c r0 c
 	}
@@ -327,20 +373,26 @@ automacro virarArruaceiro7 {
 	JobLevel = 50
 	exclusive 1
 	IsInMapAndCoordinate in_rogue 15 105
-	run-once 1
+	macro_delay 0.5
 	call {
+		#ahhhh o labirinto.... o bixin vai morrer algumas vezes aqui viu...
 		do conf attackAuto -1 
 		do conf itemsTakeAuto 0
+		do move 23 105
+		do move 23 334
+		#preguiça de fazer o resto das coordenadas específicas
 		do move in_rogue 359 117
 	}
 }
 
 automacro virarArruaceiro8 {
 	JobLevel = 50
-	IsInMapAndCoordinate in_rogue 359 117 
-	run-once 1
+	IsInMapAndCoordinate in_rogue 359 117
 	exclusive 1
 	call {
+		log ===========================
+		log PASSAMOS PELO LABIRINTO!!!!
+		log ===========================
 		do move in_rogue 369 119
 		do talknpc 363 122 c c c
 		do conf itemsTakeAuto 1
@@ -348,10 +400,11 @@ automacro virarArruaceiro8 {
 }
 
 automacro jaSouArruaceiro {
-	JobID 17
+	JobID 17 #arruaceiro
 	ConfigKey virarArruaceiro true
 	exclusive 1
 	call {
+		do conf attackAuto 1
 		do conf virarArruaceiro none
 		do conf questArruaceiro none	
 	}

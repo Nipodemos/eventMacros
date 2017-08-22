@@ -83,7 +83,7 @@ sub xConfConfiguratedOrNot {
 		$estaNaPasta = 0;
 	}
 	my $controlfile = Settings::getControlFilename('sys.txt');
-	open(FILE, "<:utf8", $controlfile);
+	open(FILE, '<:encoding(UTF-8)', $controlfile);
 	my @lines = <FILE>;
 	close(FILE);
 	chomp @lines;
@@ -100,21 +100,20 @@ sub xConfConfiguratedOrNot {
 				$line = 'loadPlugins_list '.join (',',$1,"xconf");
 			}
 		}
-		open(WRITE, ">:utf8", $controlfile);
+		open(WRITE, '>:encoding(UTF-8)', $controlfile);
 		print WRITE join ("\n", @lines);
 		close(WRITE);
 		$estaNoSys = 0;
 	}
 	unless ($estaNaPasta == 1 && $estaNoSys == 1) {
 		message "
-		Saindo do openkore, isso é normal\n
-		Só acontecerá uma vez, e é só abrir novamente. ";
-		Commands::run("quit");
+		Ativando xConf\n";
+		Commands::run("plugin load plugins/xconf.pl");
 	}
 	else {
 		message "Checando algumas coisas...\nTudo certo.\n";	
 	}
-	}
+}
 
 sub GetNamenyNameID {
 	my $name = $items_lut{$_[0]};

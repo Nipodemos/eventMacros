@@ -4,6 +4,10 @@
 # Revok: http://revok.com.br                                                                             
 # Openkore Private Forums: http://forum.revok.com.br
 #
+# Adaptado para o eventMacro por Nipodemos
+# Reescrito praticamente, para aproveitar 
+# o potencial máximo que o eventMacro proporciona
+#
 # This source code is licensed under the                                                                        
 # GNU General Public License, Version 3.                                                                        
 # See http://www.gnu.org/licenses/gpl.html                                                                 
@@ -11,34 +15,33 @@
 
 
 ########################################
-#                                                                            #
-#       ENTRA NAS BATALHAS CAMPAIS        #
-#                                                                           #
-#######################################
-#Prontera
-automacro Join_BG-Prontera {
-	InMap prontera
+#                                      #
+#       PRIMEIRAS CONFIGURAÇÕES        #
+#                                      #
+########################################
+
+automacro not on bat_room {
+	NotInMap bat_room
+	NotInMap bat_c01
+	ConfigKeyNot exercito none
 	exclusive 1
 	call {
-		release all
-		do move 123 82
-		do talknpc 123 83 r0
+		do move bat_room
 	}
 }
 
-
-#Payon
-automacro Join_BG-Payon {
-	InMap payon
+automacro ConfigKeyNao {
+	ConfigKeyNot lockMap none, autoTalkCont 1
+	ConfigKey exercito Croix, exercito Guillaume
 	exclusive 1
 	call {
-		release all
-		do move 191 100
-		do talknpc 189 105 r0
+		do conf route_randomWalk 0
+		do conf attackAuto 1
+		do conf lockMap none
+		do conf autoTalkCont 1
 	}
 }
 
-TODO
 automacro army_is_Unset {
 	exclusive 1
 	ConfigKey exercito none
@@ -55,236 +58,136 @@ automacro army_is_Unset {
 #                                                      #
 ########################################################
 
-	#location not bat_room 166 211 173 204 #não trigga se estivermos na  # miniROOM valid square
-	#location not bat_room 166 227 173 220 #não trigga se estivermos na # miniROOM_Guillaume valid square
-
 automacro moverPertoDoNpcCroix {
-	NpcNotNear /KVM#Croix/
+	NpcNotNear /KVM.Croix/
 	ConfigKey exercito Croix
+	ConfigKeyNot dentroDaMiniRoom sim
 	InChatRoom 0
 	exclusive 1
+	NotInMap bat_c01
+	InMap bat_room
 	call {
-		do conf route_randomWalk 0
 		do move bat_room &rand (164,167) &rand (124, 129) # move para perto dos NPCs
 	}
 }
 
+automacro acessoAminiSalaCroix {
+	NpcNear /KVM.Croix/
+	exclusive 1
+	InChatRoom 0
+	QuestInactive 6025
+	NotInMap bat_c01
+	InMap bat_room
+	ConfigKey exercito Croix
+	call {
+		do talk $.NpcNearLastBinId # Oficial de KVM
+		do talk resp 0
+	}
+}
 
 automacro moverPertoDoNpcGuillaume {
-	NpcNotNear /KVM#Guillaum/
+	NpcNotNear /KVM.Guillaum/
 	InChatRoom 0
 	ConfigKey exercito Guillaume
+	ConfigKeyNot dentroDaMiniRoom sim
 	exclusive 1
+	NotInMap bat_c01
+	InMap bat_room
 	call {
-		do conf route_randomWalk 0
 		do move bat_room &rand (164,167) &rand (175, 170) # move para perto dos NPCs
 	}
 }
 
+automacro acessoAminiSalaGuillaume {
+	NpcNear /KVM.Guillaum/
+	exclusive 1
+	InChatRoom 0
+	NotInMap bat_c01
+	InMap bat_room
+	ConfigKey exercito Guillaume
+	call {
+		do talk $.NpcNearLastBinId # Oficial de KVM
+		do talk resp 0
+	}
+}
 
 #######################################
 #              MINI ROOM              #
 #######################################
 
-
-automacro acessoAminiSalaGuillaume {
-	NpcNear /KVM#Guillaum/
-	exclusive 1
-	InChatRoom 0
-	#QuestInactive 
-	ConfigKey exercito Guillaume
-	call {
-		do talk $.NpcNearLastBinID # Oficial de KVM
-		do talk resp 0
-	}
-}
-
-
-automacro acessoAminiSalaCroix {
-	NpcNear /KVM#Croix/
-	exclusive 1
-	InChatRoom 0
-	QuestInactive 6025
-	ConfigKey exercito Croix
-	call {
-		do talk $.NpcNearLastBinID # Oficial de KVM
-		do talk resp 0
-	}
-}
-
-
-#automacro miniROOM_get_my_cell_Guillaume {
-#	location bat_room 169 223
-#	exclusive 1
-#	run-once 0
-#	var army == Guillaume
-#	call {
-#		do move @rand (166,173) @rand (224,227) #coordenadas dentro do quadrado permitido !
-#		pause 0.5
-#		#do look @rand (4,6) #maybe nao funcionando?
-#	}
-#}
-#
-#
-#automacro miniROOM_get_my_cell_Croix {
-#	location bat_room 169 207
-#	exclusive 1
-#	run-once 0
-#	var army == Croix
-#	call {
-#		do move @rand (166,173) @rand (204,208) #coordenadas dentro do quadrado permitido !
-#		pause 0.5
-#		#do look @rand (4,6) #maybe nao funcionando?
-#	}
-#}
-
-
-automacro miniROOM_join_chat {
+automacro miniROOM_TentarEntrarNoChat {
 	macro_delay 0.2
 	timeout 0.5
+	priority -5 #prioridade máxima
 	ChatRoomNear /KVM/
 	InChatRoom 0
 	exclusive 1
 	run-once 1
 	call {
+		if ( &config (dentroDaMiniRoom) != sim) do conf -f dentroDaMiniRoom sim
 		do chat join 0
-		release miniROOM_join_chat
+		release miniROOM_TentarEntrarNoChat
 	}
 }
 
 
-automacro miniROOM_join_chat_LOCK {
-	console /Você já está em uma sala./i
-	priority 5 # alta prioridade
-	exclusive 1
-	call {
-		$chatLocked = 1
-		do notify Entrei na sala!
-		lock miniROOM_join_chat
-		}
-	}
-
-
-automacro miniROOM_join_chat_UNLOCK {
-	var chatLocked == 1
-	MapLoaded bat_c01
-	call {
-	$chatLocked = 0
-		release miniROOM_join_chat
-		}
-	}
-
-
-automacro insideROOM_get_points {
-	location bat_c01 50 131 56 125, bat_c01 144 57 149 52
-	console /O Oficial dará pontos nos próximos 30 segundos./i
-	priority 4 #prioridade médiaalta
+automacro miniROOM_entrouNoChat {
+	InChatRoom 1
 	run-once 1
-	macro_delay 1
 	call {
-		#log talk 9; do talk 9;
-		log talk 10
-		do talk 10
-		log talk 11
-		do talk 11
-		log talk 12
-		do talk 12
-		log talk 13
-		do talk 13
-		log talk 14
-		do talk 14
-		release insideROOM_get_points # não deve funcionar, visto que as macros de result triggam antes
-	}
-}
-
-
-automacro insideROOM_battle_results_lost {
-	exclusive 1
-	priority 5 #prioridade máxima
-	console /Você ganhou pontos pela derrota\: 1./i
-	call {
-		$points = @eval(@config(kvmPoints) + 1)
-		log $points
-		do eval configModify(kvmPoints, $points )
-		$oldarmy = $army
-		if ($army == Croix) goto changeToGuil
-		if ($army == Guillaume) goto changeToCroix
-		:changeToGuil
-		$army = Guillaume
-		goto end
-		:changeToCroix
-		$army = Croix
-		goto end
-		:end
-		do notify Perdemos no $oldarmy .\nAgora somos $army .\nPontos da sessão: [ @config(kvmPoints) ] .
-		release miniROOM_join_chat
-		release insideROOM_get_points
-	}
-}
-
-
-automacro insideROOM_battle_results_draw {
-	exclusive 1
-	priority 5 #prioridade máxima
-	console /Você ganhou pontos pelo empate\: 1./i
-	call {
-		$points = @eval(@config(kvmPoints) + 1)
-		log $points
-		do eval configModify(kvmPoints, $points )
-		do notify Empatamos no $army \nPontos da sessão: [ @config(kvmPoints) ] .
-		release miniROOM_join_chat
-		release insideROOM_get_points
-		
-		
-	}
-}
-
-
-automacro insideROOM_battle_results_victory {
-	exclusive 1
-	priority 5 #prioridade máxima
-	console /Você ganhou pontos pela vitória\: 5./i
-	call {
-		$points = @eval(@config(kvmPoints) + 5)
-		log $points
-		do eval configModify(kvmPoints, $points )
-		do notify Ganhamos no $army \nPontos da sessão: [ @config(kvmPoints) ] .
-		release miniROOM_join_chat
-		release insideROOM_get_points
-		
-		
-	}
-}
-
-
-########################################
-#                                                                            #
-#                    FALSA AI, DEVE SER MELHORADA                       #
-#                                                                           #
-#######################################
-
-
-automacro insideROOM_fakeAI_walking {
-	location not bat_c01 144 57 149 52
-	location not bat_c01 50 131 56 125
-	location bat_c01
-	exclusive 1
-	run-once 0
-	timeout 10
-	call {
-		do conf route_randomWalk 0
-		do move @rand (70, 76) @rand (114, 120)
-	}
-}
-
-
-automacro insideROOM_fakeAI_squareAttack {
-location bat_c01 70 120 76 114
-	exclusive 1
-	run-once 0
-	timeout 5
-	priority 1
-	call {
-	do kill @rand (0, 6)
+		[
+		log ============================================
+		log ==========ENTREI NA SALA DE CHAT============
+		log ============================================
+		]
 		}
-	}																										
+	}
+
+automacro FimDaBatalha_pegarPontos {
+	NpcNear /KVM/
+	InMap bat_c01
+	call {
+		do conf dentroDaMiniRoom none
+		release miniROOM_entrouNoChat
+		do talk $.NpcNearLastBinId
+	}
+}
+
+
+automacro derrota {
+	exclusive 1
+	NpcMsg /Você ganhou pontos pela derrota\: 1./i
+	call {
+		$points = &eval(&config(pontosKVM) + 1)
+		log \$points: $points
+		do conf -f pontosKVM $points
+		$oldarmy = &config (exercito)
+		if ( &config (exercito) == Croix ) do conf exercito Guillaume
+		if ( &config (exercito) == Guillaume ) do conf exercito Croix
+		log Perdemos no $oldarmy .\nAgora somos $army .\nPontuação total até agora: [ &config(pontosKVM) ] .
+	}
+}
+
+
+automacro empate {
+	exclusive 1
+	NpcMsg /Você ganhou pontos pelo empate\: 1./i
+	call {
+		$points = &eval(&config(pontosKVM) + 1)
+		log $points
+		do conf -f pontosKVM $points
+		log Empatamos no $army \nPontuação total até agora: [ &config(pontosKVM) ] .
+	}
+}
+
+
+automacro vitoria {
+	exclusive 1
+	NpcMsg /Você ganhou pontos pela vitória\: 5./i
+	call {
+		$points = &eval(&config(pontosKVM) + 5)
+		log $points
+		do conf -f pontosKVM $points
+		log Ganhamos no $army !\nPontuação total até agora: [ &config(kvmPoints) ] .
+	}
+}																									

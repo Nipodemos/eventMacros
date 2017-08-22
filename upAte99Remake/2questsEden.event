@@ -618,9 +618,9 @@ automacro Eden60Equipando {
 		if ($check != -1) do eq $check
 		$check = GetIndexAndEquipped("shoes", 2473) ##Botas_IV_do_Grupo_Éden#
 		if ($check != -1) do eq $check
-		$check = GetIndexAndEquipped("armor", 15031) #Armadura_do_Grupo_Éden#
-		if ($check != -1) do eq $check
 		$check = GetIndexAndEquipped("rightHand",13066) #Adaga_III_do_Grupo_Éden#
+		if ($check != -1) do eq $check
+		$check = GetIndexAndEquipped("armor", 15031) #Armadura_do_Grupo_Éden#
 		if ($check != -1) do eq $check
 	}
 }
