@@ -1,0 +1,64 @@
+automacro SemTicket_IndoProNpc {
+	InInventoryID 6488 < 1
+	NpcNotNear /Dubae/
+	exclusive 1
+	call {
+		do move prt_gld &rand(155,161) &rand(91,95)
+	}
+}
+
+automacro SemTicket {
+	InInventoryID 6488 < 1
+	NpcNear /Dubae/
+	exclusive 1
+	call {
+		while ( $.zeny > 10000000 ) {	
+		do talk $.NpcNearLastBinID
+		do talk resp 2
+		do talk resp 0
+		do talk resp 2
+		}
+	}
+}
+
+automacro ComTicket_IndoProNpc_ForaDaCidade {
+	InInventoryID 6488 >= 1
+	Zeny <= 10000000
+	exclusive 1
+	NpcNotNear /Máquina de Agradecimento/
+	NotInMap malangdo
+	call irPraMalangdo
+}
+
+automacro ComTicket_IndoProNpc_NaCidade {
+	InInventoryID 6488 >= 1
+	Zeny <= 10000000
+	exclusive 1
+	NpcNotNear /Máquina de Agradecimento/
+	InMap malangdo
+	call irPraMalangdo
+}
+
+macro irPraMalangdo {
+	do move malangdo &rand(208, 212) &rand(122, 115)
+}
+
+automacro ComTicket {
+	InInventoryID 6488 >= 1
+	Zeny <= 10000000
+	exclusive 1
+	NpcNear /Máquina de Agradecimento/
+	InMap malangdo
+	call {
+		$bilhete = GetNamenByID(6488)
+		while ( &invamout ( $bilhete ) != 0 && &eval( ( $.weight < $.maxweight / 100 * 89) ? 1 : 0 ) ) {
+		do talk $.NpcNearLastBinID
+		do talk resp 2
+		}
+	}
+}
+
+sub GetNamenByID {
+	my $name = $items_lut{$_[0]};
+	return $name;
+}
