@@ -146,6 +146,7 @@ automacro miniROOM_entrouNoChat {
 automacro FimDaBatalha_pegarPontos {
 	NpcNear /KVM/
 	InMap bat_c01
+	timeout 10
 	call {
 		do conf dentroDaMiniRoom none
 		release miniROOM_entrouNoChat
