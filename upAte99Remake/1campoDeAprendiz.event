@@ -200,6 +200,12 @@ automacro talkBrade {
 	InMap new_1-2, new_2-2, new_3-2, new_4-2, new_5-2
 	priority 0
 	call {
+		do pconf 5055 0
+		do pconf 2510 0
+		do pconf 2414 0
+		do pconf 2112 0
+		do pconf 1243 0
+		do pconf 2352 0
 		do talk $.NpcNearLastBinId
 	}
 }
@@ -227,6 +233,12 @@ automacro talkBradeBugged {
 	InMap new_1-2, new_2-2, new_3-2, new_4-2, new_5-2
 	priority 0
 	call {
+		do pconf 5055 0
+		do pconf 2510 0
+		do pconf 2414 0
+		do pconf 2112 0
+		do pconf 1243 0
+		do pconf 2352 0
 		do talk $.NpcNearLastBinId
 	}
 }
@@ -236,6 +248,12 @@ automacro equipStuffForBrade {
 	QuestActive 7119
 	IsNotEquippedID topHead 5055, leftHand 2112, robe 2510, shoes 2414, armor 2352, rightHand 1243
 	call {
+		do pconf 5055 0
+		do pconf 2510 0
+		do pconf 2414 0
+		do pconf 2112 0
+		do pconf 1243 0
+		do pconf 2352 0
 		$check = GetIndexAndEquipped("topHead", 5055)
 		if ($check != -1) do eq $check
 		$check = GetIndexAndEquipped("robe", 2510)
@@ -754,7 +772,7 @@ automacro changeToHeavierTraining {
 	exclusive 1
 	NpcNear /Trainer/
 	InMap new_1-3, new_2-3, new_3-3
-	ConfigKeyNot master Brazil - bRO: Thor
+	ConfigKey master RMS Renewal Test Server
 	call {
 		log mudando pra mapa onde tem pickys e salgueiros
 		do talk $.NpcNearLastBinId #Treinador
@@ -790,6 +808,7 @@ automacro treinoMaisPesado {
 automacro caçandoPickys {
 	QuestHuntOngoing 7123 1049
 	InMap new_4-3, new_5-3
+	ConfigKeyNot quest_atual matando
 	timeout 60
 	exclusive 1
 	call sePreparandoPraMatar 
@@ -798,6 +817,7 @@ automacro caçandoPickys {
 automacro caçandoSalgueiro {
 	QuestHuntOngoing 7127 1010
 	InMap new_4-3, new_5-3
+	ConfigKeyNot quest_atual matando
 	timeout 60
 	exclusive 1
 	call sePreparandoPraMatar 
@@ -807,8 +827,9 @@ macro sePreparandoPraMatar {
 	call voltarAtacar
 	do mconf 1113 0 0 0 #drops
 	do mconf 1004 0 0 0 #zangao
-	do mconf 1007 0 0 0 #fabre
-	do mconf $.QuestHuntOngoingLastMobID 1 0 0 
+	do mconf 1049 1 0 0 #picky
+	do mconf 1010 1 0 0 #Salgueiro
+	do conf -f quest_atual matando
 	log ======== Indo matar pickys e salgueiros
 }
 
@@ -826,8 +847,8 @@ automacro mateiPickys {
 	InMap new_4-3, new_5-3
 	NpcNear /Espadachi|Swordman/i
 	call {
+		do conf quest_atual none
 		do mconf 1004 0 0 0 #zangao
-		do mconf 1007 0 0 0 #fabre
 		do mconf 1049 0 0 0 #Picky
 		do talk $.NpcNearLastBinId
 		do talk resp 2
@@ -850,8 +871,6 @@ automacro mateiSalgueiros {
 	InMap new_4-3, new_5-3
 	call {
 		do mconf 1004 0 0 0 #zangao
-		do mconf 1007 0 0 0 #fabre
-		do mconf 1049 0 0 0 #Picky
 		do mconf 1010 0 0 0 #Salgueiro
 		do talk $.NpcNearLastBinId
 		do talk resp 2
@@ -1093,6 +1112,19 @@ automacro jaSouGatuno {
 		if ($check != -1) do eq $check 
 		$check = GetIndexAndEquipped("armor", 2393) #Tunica de Iniciante
 		if ($check != -1) do eq $check
+	}
+}
+
+automacro vireiGatuno_equipandoItens {
+	BaseLevel < 25
+	JobID 6
+	exclusive 1
+	IsNotEquippedID rightHand 13041
+	InInventoryID  13050 = 0
+	InInventoryID 13041 = 1
+	call {
+		$check = GetIndexAndEquipped("rightHand", 13041) # main gauche de iniciante
+		if ($check != -1) do eq $check 
 	}
 }
 #

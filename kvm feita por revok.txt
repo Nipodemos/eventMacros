@@ -140,13 +140,13 @@ automacro miniROOM_entrouNoChat {
 		log ==========ENTREI NA SALA DE CHAT============
 		log ============================================
 		]
-		}
 	}
+}
 
 automacro FimDaBatalha_pegarPontos {
 	NpcNear /KVM/
 	InMap bat_c01
-	timeout 10
+	timeout 5
 	call {
 		do conf dentroDaMiniRoom none
 		release miniROOM_entrouNoChat
@@ -157,7 +157,8 @@ automacro FimDaBatalha_pegarPontos {
 
 automacro derrota {
 	exclusive 1
-	NpcMsg /Você ganhou pontos pela derrota\: 1./i
+	timeout 10
+	NpcMsg /pontos pela derrota/i
 	call {
 		$points = &eval(&config(pontosKVM) + 1)
 		log \$points: $points
@@ -172,7 +173,8 @@ automacro derrota {
 
 automacro empate {
 	exclusive 1
-	NpcMsg /Você ganhou pontos pelo empate\: 1./i
+	timeout 10
+	NpcMsg /pontos pelo empate/i
 	call {
 		$points = &eval(&config(pontosKVM) + 1)
 		log $points
@@ -184,7 +186,8 @@ automacro empate {
 
 automacro vitoria {
 	exclusive 1
-	NpcMsg /Você ganhou pontos pela vitória\: 5./i
+	timeout
+	NpcMsg /pontos pela vitória/i
 	call {
 		$points = &eval(&config(pontosKVM) + 5)
 		log $points

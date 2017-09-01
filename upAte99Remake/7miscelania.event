@@ -59,12 +59,13 @@ sub GetIndexAndEquipped {
 	if (exists $char->{equipment}{$type}) {
 		my $equipItem = $char->{equipment}{$type};
 		if ($equipItem->{nameID} == $id) {
-		return -1;
+			message "Erro: Esse equip já está equipado.\n";
+			return -1;
 		} else {
 			return $EquipIndex;
 		}
 	} else {
-			return $EquipIndex;
+		return $EquipIndex;
 	}
 }
 

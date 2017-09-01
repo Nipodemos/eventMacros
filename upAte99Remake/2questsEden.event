@@ -1,5 +1,6 @@
 ﻿automacro EdenJoinMoveNpc {
 	InInventoryID 6219 = 0
+	InInventoryID 2414 = 0
 	exclusive 1
 	BaseLevel >= 12
 	ConfigKeyNot membroDoEden sim
@@ -112,7 +113,12 @@ automacro IniciandoQuestEden40MoverPerto {
 	NpcNotNear /Boya/
 	BaseLevel 40..49
 	InInventoryID 6219 = 1
-	JobLevel != 50
+	QuestInactive 2017
+	QuestInactive 2018
+	QuestInactive 2022
+	QuestInactive 2023
+	QuestInactive 2024
+	QuestInactive 2026
 	JobID 6 #gatuno
 	exclusive 1
 	QuestInactive 7147
@@ -128,7 +134,12 @@ automacro IniciandoQuestEden40 {
 	NpcNear /Boya/
 	BaseLevel 40..49
 	InInventoryID 6219 = 1
-	JobLevel != 50
+	QuestInactive 2017
+	QuestInactive 2018
+	QuestInactive 2022
+	QuestInactive 2023
+	QuestInactive 2024
+	QuestInactive 2026
 	JobID 6 #gatuno
 	exclusive 1
 	QuestInactive 7147
@@ -249,7 +260,12 @@ automacro Eden40SalvarNaKafra {
 	QuestActive 7147
 	BaseLevel 49..59
 	exclusive 1
-	JobLevel != 50
+	QuestInactive 2017
+	QuestInactive 2018
+	QuestInactive 2022
+	QuestInactive 2023
+	QuestInactive 2024
+	QuestInactive 2026
 	ConfigKeyNot virarArrauceiro true
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKeyNot saveMap prontera
@@ -261,7 +277,12 @@ automacro Eden40SalvarNaKafra {
 automacro Eden40IrNoMapa {
 	QuestActive 7147
 	BaseLevel 50..59
-	JobLevel != 50
+	QuestInactive 2017
+	QuestInactive 2018
+	QuestInactive 2022
+	QuestInactive 2023
+	QuestInactive 2024
+	QuestInactive 2026
 	exclusive 1
 	ConfigKeyNot virarArrauceiro true
 	ConfigKeyNot In_saveMap_sequence true
@@ -328,8 +349,13 @@ automacro Eden26Caçar {
 automacro Eden40Caçar {
 	QuestHuntOngoing 7148 1686, 7149 1023, 7150 1273
 	exclusive 1
-	JobLevel != 50
   	timeout 180
+	QuestInactive 2017
+	QuestInactive 2018
+	QuestInactive 2022
+	QuestInactive 2023
+	QuestInactive 2024
+	QuestInactive 2026
 	call {
 		call caçarMonstros
 		if ( &config(lockMap) != gef_fild10) do conf lockMap gef_fild10
@@ -416,7 +442,12 @@ automacro Eden26FinalizarCaças {
 
 automacro Eden40FinalizarCaças {
 	QuestHuntCompleted 7148 1686, 7149 1023, 7150 1273
-	JobLevel != 50
+	QuestInactive 2017
+	QuestInactive 2018
+	QuestInactive 2022
+	QuestInactive 2023
+	QuestInactive 2024
+	QuestInactive 2026
 	exclusive 1
 	call {
 		call pararDeAtacar
