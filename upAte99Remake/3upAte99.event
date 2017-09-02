@@ -78,6 +78,7 @@ automacro upAteLv35 {
 		do iconf Unha Apodrecida 10 1 0
 		do iconf Osso 10 1 0
 		do iconf Mandíbula Horrenda 10 1 0
+		do mconf 1084 0 0 0 #cugomelo negro, troço inútil
 		call configurarMapa "payon" "pay_dun00"
 	}
 }

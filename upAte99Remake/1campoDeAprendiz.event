@@ -1083,9 +1083,9 @@ automacro virando gatuno {
 }
 
 automacro jaSouGatuno {
-	InMap moc_prydb1
-	JobID 6
+	JobIDNot 0 #aprendiz
 	InInventoryID 2414 = 1
+	InInventoryID 5055 = 1
 	exclusive 1
 	call {
 		do pconf 1243 0 #1243#Adaga_do_Aprendiz#
@@ -1115,7 +1115,7 @@ automacro jaSouGatuno {
 	}
 }
 
-automacro vireiGatuno_equipandoItens {
+automacro vireiGatuno_equipandoAdaga {
 	BaseLevel < 25
 	JobID 6
 	exclusive 1
@@ -1125,6 +1125,19 @@ automacro vireiGatuno_equipandoItens {
 	call {
 		$check = GetIndexAndEquipped("rightHand", 13041) # main gauche de iniciante
 		if ($check != -1) do eq $check 
+	}
+}
+
+automacro vireiGatuno_equipandoTunica {
+	IsNotEquippedID armor 2393
+	IsNotEquippedID armor 15009
+	BaseLevel < 18
+	JobID 6
+	InInventoryID 15009 = 0
+	exclusive 1
+	call {
+		$check = GetIndexAndEquipped("armor", 2393) #Tunica de Iniciante
+		if ($check != -1) do eq $check
 	}
 }
 #
