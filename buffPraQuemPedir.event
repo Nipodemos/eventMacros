@@ -1,0 +1,79 @@
+############CURA############## 
+
+automacro cura { 
+	PubMsg /cura|heal/i
+	exclusive 1
+	call {
+		call dáOqueEleQuer "28"  #cura
+	}
+} 
+
+automacro agi { 
+	PubMsg /agi/i 
+	exclusive 1
+	call {
+		call dáOqueEleQuer "29"  #agi
+	}
+} 
+
+automacro bless { 
+	PubMsg /ben[çc]|bles[s]?/i 
+	exclusive 1
+	call {
+		call dáOqueEleQuer "34"  #bless
+	}
+}
+
+automacro buffs {
+	PubMsg /buf/i
+	exclusive 1
+	call {
+		pause 1
+		do c ok
+		do sp 34 $.PubMsgLastName #bless
+		do sp 29 $.PubMsgLastName #agi
+		do sp 66 $.PubMsgLastName #impositio
+		pause 2
+		do sp 73 $.PubMsgLastName #kyrie
+	}
+}
+
+macro dáOqueEleQuer {
+	if ( $quantidadeDePedidos{$.PubMsgLastName} = unset ) %quantidadeDePedidos = ($.PubMsgLastName => 1)
+	log Quantidade de pedidos é $quantidadeDePedidos{$.PubMsgLastName}
+	do stand
+	do conf sitAuto_idle 0
+	switch ($quantidadeDePedidos{$.PubMsgLastName}) {
+		case (= 1 ) {
+			pause 1 
+			do e &random ("ok","no1") 
+			pause 1 
+			do sp $.param1 $.PubMsgLastName
+			$quantidadeDePedidos{$.PubMsgLastName}++
+		}
+		case (= 2) {
+			pause 1 
+			do e &random ("ta...","hmm") 
+			pause 1 
+			do sp $.param1 $.PubMsgLastName
+			$quantidadeDePedidos{$.PubMsgLastName}++
+		}
+		case (= 3) {
+			pause 1 
+			do e &random ("denovo?","mais?","que isso") 
+			pause 1 
+			do sp $.param1 $.PubMsgLastName
+			$quantidadeDePedidos{$.PubMsgLastName}++
+		}
+		case (= 4 ) {
+			do c &random ("ultima vez","é a ultima to vazando","só mais essa e tchau") 
+			pause 1 
+			do sp $.param1 $.PubMsgLastName
+			$quantidadeDePedidos{$.PubMsgLastName}++
+		}
+		case (>= 5) {
+			do c &random ("nao vai rolar....","ah neeeeem","mals ae","agora nao desculpe","5 vezes é demais") 
+			$quantidadeDePedidos{$.PubMsgLastName}++
+		}
+	}
+} 

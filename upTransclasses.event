@@ -1,0 +1,732 @@
+#======Macro Aprendiz T Up Char=======
+#======By Sarampo=======
+#======Versão 1.0 ======
+#Codificação:  UTF-8
+#http://openkorebrasil.org/ | http://openkorebrasil.com.br/ & http://wiki.openkore.com
+#Agradecimento ao CALF e ao Guiim por suas macros e ajuda para desenvolver essa
+
+automacro iniciarEmprontera {
+	exclusive 1
+	BaseLevel = 1
+	InMap prontera
+	JobID 161
+	ConfigKeyNot saveMap prontera
+	ConfigKeyNot In_saveMap_sequence true
+	call {
+		do conf -f classe noviço
+		call configurarMapa "prontera" "prt_fild08"
+	}
+}
+automacro salvoEmProtera {
+	ConfigKey saveMap prontera
+	ConfigKeyNot configurado sim
+	ConfigKeyNot In_saveMap_sequence true
+	exclusive 1
+	call configuraçõesBasicas
+}
+
+
+automacro iniciarEmIzlude {
+	exclusive 1
+	BaseLevel = 1
+	InMap izlude
+	JobID 161
+	ConfigKeyNot saveMap prontera
+	ConfigKeyNot In_saveMap_sequence true
+	call {
+		do conf -f classe espadachim
+		call configurarMapa "izlude" "prt_fild08"
+	}
+}
+
+automacro salvoEmIzlude {
+	ConfigKey saveMap izlude
+	ConfigKeyNot configurado sim
+	ConfigKeyNot In_saveMap_sequence true
+	exclusive 1
+	call configuraçõesBasicas
+}
+
+
+automacro iniciarEmAlberta {
+	exclusive 1
+	BaseLevel = 1
+	InMap alberta
+	JobID 161
+	ConfigKeyNot saveMap alberta
+	ConfigKeyNot In_saveMap_sequence true
+	call {
+		do conf -f classe mercador
+		call configurarMapa "alberta" "pay_fild03"
+	}
+}
+
+automacro salvoEmAlberta {
+	ConfigKey saveMap alberta
+	ConfigKeyNot configurado sim
+	ConfigKeyNot In_saveMap_sequence true
+	exclusive 1
+	call configuraçõesBasicas
+}
+
+
+automacro iniciarEmMorocc {
+	exclusive 1
+	BaseLevel = 1
+	InMap morocc
+	JobID 161
+	ConfigKeyNot saveMap morocc
+	ConfigKeyNot In_saveMap_sequence true
+	call {
+		do conf -f classe gatuno
+		call configurarMapa "morocc" "moc_fild12"
+	}
+}
+
+automacro salvoEmMorocc {
+	ConfigKey saveMap morocc
+	ConfigKeyNot configurado sim
+	ConfigKeyNot In_saveMap_sequence true
+	exclusive 1
+	call configuraçõesBasicas
+}
+
+macro configuraçõesBasicas {
+	do conf route_randomWalk 1
+	do conf itemsTakeAuto 1
+	do conf itemsGatherAuto 0
+	do conf autoTalkCont 1
+	if ( &config(classe) = noviço) {
+		do conf sitAuto_sp_lower 0 #modifique para noviço
+	do conf sitAuto_sp_upper 0 #modifique para noviço	
+	} else {
+		do conf sitAuto_hp_lower 20
+		do conf sitAuto_hp_upper 80
+	}
+	do conf attackAuto 2
+	do conf attackAuto_party 1
+	do conf aggressiveAntiKS 1
+	do conf attackUseWeapon 1
+	do conf statsAddAuto 0
+	do conf statsAddAuto_list
+	do conf skillsAddAuto 1
+	do conf skillsAddAuto_list NV_BASIC 9
+	do eq &inventory (Faca [4])
+	do eq &inventory (Camisa de Algodão [1])
+	do conf -f configurado sim
+}
+
+automacro virando novico {
+	JobLevel = 10
+	exclusive 1
+	JobID 161 #aprendiz T.
+	ConfigKey classe noviço
+	call {
+		call virarClasse1T "prt_church" "184 41"
+	}
+}
+
+automacro virando espadachim {
+	JobLevel = 10
+	exclusive 1
+	JobID 161 #aprendiz T.
+	ConfigKey classe espadachim
+	call {
+		call virarClasse1T "izlude_in" "74 172"
+	}
+}
+automacro virando mercador {
+	job == 10
+	exclusive 1
+	JobID 161 #aprendiz T.
+	ConfigKey classe mercador
+	call {
+		call virarClasse1T "alberta_in" "53 43"
+	}
+}
+automacro virando gatuno {
+	job == 10
+	exclusive 1
+	JobID 161
+	ConfigKey classe gatuno
+	call {
+		call virarClasse1T "moc_prydb1" "42 133"
+	}
+}
+
+macro virarClasse1T {
+	call pararDeAtacar
+	[
+	log ========================================
+	log == Mudando de Classe Para &config(classe) ==
+	log ========================================	
+	]
+	do move $param1 $param2 &rand(1,6)
+	do talknpc $param2 c c
+	do eq &inventory (Faca [4])
+	do eq &inventory (Camisa de Algodão [1])
+}
+
+automacro upar Acolyte {
+	BaseLevel < 12
+	ConfigKeyNot In_saveMap_sequence true
+	exclusive 1
+	JobID 165 #novico transclasse
+	call {
+		call configurarMapa "prontera" "prt_fild08"
+	}
+}
+automacro upar Merchant {
+	BaseLevel < 12
+	ConfigKeyNot In_saveMap_sequence true
+	exclusive 1
+	JobID 166 #mercador transclasse
+	ConfigKeyNot lockMap pay_fild03
+	call {
+		call configurarMapa "alberta" "pay_fild03"
+	}
+}
+automacro upar Swordsman {
+	BaseLevel < 12
+	ConfigKeyNot In_saveMap_sequence true
+	exclusive 1
+	JobID 162 # espadachim T
+	ConfigKeyNot lockMap prt_fild08
+	call {
+		call configurarMapa "izlude" "prt_fild08"
+	}
+}
+automacro upar Thief {
+	BaseLevel < 12
+	ConfigKeyNot In_saveMap_sequence true
+	exclusive 1
+	JobID 167 # gatuno T
+	ConfigKeyNot lockMap moc_fild12
+	call {
+		call configurarMapa "morocc" "moc_fild12"
+	}
+}
+
+automacro upAteLv26 {
+	ConfigKeyNot lockMap pay_fild08
+	ConfigKeyNot In_saveMap_sequence true
+	BaseLevel 12..25
+	exclusive 1
+	priority 5
+	timeout 30
+	call {
+		call configurarMapa "payon" "pay_fild08"
+	}
+}
+
+automacro upAteLv35 {
+	ConfigKeyNot lockMap pay_dun00
+	ConfigKeyNot In_saveMap_sequence true
+	BaseLevel 26..35
+	exclusive 1
+	priority 5
+	timeout 30
+	call {
+		call configurarMapa "payon" "pay_dun00"
+	}
+}
+
+automacro upAteLv44 {
+	BaseLevel 36..43
+	ConfigKeyNot lockMap pay_fild09
+	ConfigKeyNot In_saveMap_sequence true
+	exclusive 1
+	priority 5
+	timeout 30
+	call {
+		call configurarMapa "payon" "pay_fild09"
+	}
+}
+
+automacro upAteLv54 {
+	BaseLevel 44..53
+	ConfigKeyNot lockMap cmd_fild02
+	ConfigKeyNot In_saveMap_sequence true
+	exclusive 1
+	JobLevel != 50
+	priority 5
+	timeout 30
+	call {
+		call configurarMapa "comodo" "cmd_fild02"
+	}
+}
+
+automacro upAteLv60 {
+	ConfigKeyNot lockMap iz_dun02
+	ConfigKeyNot In_saveMap_sequence true
+	BaseLevel 54..59
+	JobLevel != 50
+	exclusive 1
+	priority 5
+	timeout 30
+	call {
+		call configurarMapa "izlude" "iz_dun02"
+	}
+}
+
+automacro upAteLv70 {
+	BaseLevel 60..70
+	ConfigKeyNot lockMap moc_fild17
+	ConfigKeyNot In_saveMap_sequence true
+	priority 5
+	timeout 30
+	call {
+		call configurarMapa "morocc" "moc_fild17"
+	}
+}
+
+automacro upAteLv80 {
+	BaseLevel 71..79
+	ConfigKeyNot lockMap mjolnir_11
+	ConfigKeyNot In_saveMap_sequence true
+	exclusive 1
+	priority 5
+	timeout 30
+	call {
+		call configurarMapa "prontera" "mjolnir_11"
+	}
+}
+
+automacro upAteLv98 {
+	BaseLevel 80..98
+	ConfigKeyNot lockMap gef_fild06
+	ConfigKeyNot In_saveMap_sequence true
+	exclusive 1
+	priority 5
+	timeout 30
+	call {
+		call configurarMapa "geffen" "gef_fild06"
+	}
+}
+
+automacro estouLv99 {
+	BaseLevel = 99
+	exclusive 1
+	timeout 15
+	JobID 17 #arruaceiro
+	call {
+		log CHEGUEI NO LVL 99 FINALMENTE !!!!!!!
+		log CARA ISSO LEVOU TEMPO PARA CAR**HO
+	}
+}
+
+#Equipando Eden 12
+automacro reequiparEdenLv12 {
+	IsNotEquippedID armor 15009
+	InInventoryID 15009 = 1
+	BaseLevel 12..25 
+	exclusive 1
+	run-once 1 
+	call {
+		$check = GetIndexAndEquipped("robe", 2560) #Capa Valhalla
+		if ($check != -1) do eq $check
+		$check = GetIndexAndEquipped("topHead", 5583) #Chapeu valhalla
+		if ($check != -1) do eq $check
+		$check = GetIndexAndEquipped("shoes", 2456) #Botas Valhalla Iniciante
+		if ($check != -1) do eq $check
+		$check = GetIndexAndEquipped("armor", 15009) #Uniforme Valhalla Iniciante
+		if ($check != -1) do eq $check
+	}
+}
+
+
+#Equipando Eden 26
+automacro reequiparEdenLv26 {
+	IsNotEquippedID armor 15010
+	InInventoryID 15010 = 1
+	BaseLevel 26..39
+	exclusive 1
+	run-once 1
+	call {
+		switch (&config (classe) ) {
+			case (= noviço) {
+				do eq &inventory (Cajado Valhalla Iniciante)
+			}
+			case (= gatuno) {
+				do eq &inventory (Adaga Valhalla Iniciante)
+			}
+			case (= espadachim) {
+				do eq &inventory (Espada Valhalla Iniciante)
+			}
+			case (= mercador) {
+				do eq &inventory (Maça Valhalla Iniciante)
+			}
+		}
+		do eq &inventory (Botas Valhalla Intermediárias)
+		do eq &inventory (Uniforme Valhalla Intermediário)
+	}
+}
+automacro reequiparEdenLv40 {
+	IsNotEquippedID armor 15011
+	InInventoryID 15011 = 1
+	BaseLevel 40..59
+	exclusive 1
+	run-once 1
+	call {
+		switch (&config (classe) ) {
+			case (= noviço) {
+				do eq &inventory (Cajado Valhalla Intermediária)
+			}
+			case (= gatuno) {
+				do eq &inventory (Adaga Valhalla Intermediária)
+			}
+			case (= espadachim) {
+				do eq &inventory (Espada Valhalla Intermediária)
+			}
+			case (= mercador) {
+				do eq &inventory (Maça Valhalla Intermediária)
+			}
+		}
+		do eq &inventory (Botas Valhalla Avançadas)
+		do eq &inventory (Uniforme Valhalla Avançado)
+	}
+}
+
+#Equipando Eden
+automacro reequipar eden lvl 60 Priest {
+	base == 60
+	class High Priest
+	exclusive 1
+	priority 2
+	run-once 1
+	call {
+		do eq &inventory (Cajado III do Grupo Éden)
+		do eq &inventory (Capa II do Grupo Éden)
+		do eq &inventory (Botas IV do Grupo Éden)
+		do eq &inventory (Armadura do Grupo Éden)
+		do eq &inventory (Chapéu II do Grupo Éden [1])
+	}
+}
+#Equipando Eden
+automacro reequipar eden lvl 60 Stalker {
+	base == 60
+	class Stalker
+	exclusive 1
+	priority 2
+	run-once 1
+	call {
+		do eq &inventory (Adaga III do Grupo Éden)
+		do eq &inventory (Capa II do Grupo Éden)
+		do eq &inventory (Botas IV do Grupo Éden)
+		do eq &inventory (Armadura do Grupo Éden)
+		do eq &inventory (Chapéu II do Grupo Éden [1])
+	}
+}
+#Equipando Eden
+automacro reequipar eden lvl 60 Creator {
+	base == 60
+	class Creator
+	exclusive 1
+	priority 2
+	run-once 1
+	call {
+		do eq &inventory (Maça III do Grupo Éden)
+		do eq &inventory (Capa II do Grupo Éden)
+		do eq &inventory (Botas IV do Grupo Éden)
+		do eq &inventory (Armadura do Grupo Éden)
+		do eq &inventory (Chapéu II do Grupo Éden [1])
+	}
+}
+#Equipando Eden
+automacro reequipar eden lvl 60 Lord Knight {
+	base == 60
+	class Lord Knight
+	exclusive 1
+	priority 2
+	run-once 1
+	call {
+		do eq &inventory (Espada III do Grupo Éden)
+		do eq &inventory (Capa II do Grupo Éden)
+		do eq &inventory (Botas IV do Grupo Éden)
+		do eq &inventory (Armadura do Grupo Éden)
+		do eq &inventory (Chapéu II do Grupo Éden [1])
+	}
+}
+
+
+automacro virarTransclasse_salvarEmJuno {
+	JobLevel = 50
+	ConfigKeyNot saveMap yuno
+	exclusive 1
+	ConfigKeyNot saveMap_save_sequence true
+	call {
+		call pararDeAtacar
+		call SetSaveIn "yuno"
+	}
+}
+
+automacro virarTransclasse_Sumo {
+	JobLevel = 50
+	JobID 165
+	ConfigKey saveMap yuno
+	exclusive 1
+	ConfigKeyNot saveMap_save_sequence true
+	call {
+		call virarTransclasse_passos "44 42"
+	}
+}
+
+automacro virarTransclasse_Criador {
+	JobLevel = 50
+	JobID 166
+	ConfigKey saveMap yuno
+	exclusive 1
+	ConfigKeyNot saveMap_save_sequence true
+	call {
+		call virarTransclasse_passos "53 50"
+	}
+}
+
+automacro virarTransclasse_Lorde {
+	JobLevel = 50
+	JobID 162
+	ConfigKey saveMap yuno
+	exclusive 1
+	ConfigKeyNot saveMap_save_sequence true
+	call {
+		call virarTransclasse_passos "94 39"
+	}
+}
+
+automacro virarTransclasse_Desordeiro {
+	JobLevel = 50
+	JobID 167
+	ConfigKey saveMap yuno
+	exclusive 1
+	ConfigKeyNot saveMap_save_sequence true
+	call {
+		call virarTransclasse_passos "53 58"
+	}
+}
+macro virarTransclasse_passos {
+	do conf lockMap none
+	do conf route_randomWalk 0
+	do conf follow 0
+	do move yuno_in02 &rand(93,85) &rand(202,204)
+	do talknpc 93 207 c w1 c w1 r1 w1 c #livro
+	pause 1
+	do move &rand(42,40) &rand(40,38)
+	do talknpc $param1 c c r1 
+	pause 1
+	do eq &inventory (Chapéu Valhalla [DES +2])
+	do eq &inventory (Capa Valhalla)
+	pause 1
+	do move &rand(42,40) &rand(31,29)
+	do talknpc 44 33 c r7 #teleporte
+}
+
+#Equipando Eden
+automacro reequipar eden lvl 80 Priest {
+	base == 80
+	class High Priest
+	exclusive 1
+	priority 2
+	run-once 1
+	call {
+		do eq &inventory (Cajado III do Grupo Éden [Pedra da Conjuração 3])
+		)
+	}
+}
+#Equipando Eden
+automacro reequipar eden lvl 80 Stalker {
+	base == 80
+	class Stalker
+	exclusive 1
+	priority 2
+	run-once 1
+	call {
+		do eq &inventory (Adaga III do Grupo Éden [ATQ+3%:Carta Caramelo])
+	}
+}
+#Equipando Eden
+automacro reequipar eden lvl 80 Creator {
+	base == 80
+	class Creator
+	exclusive 1
+	priority 2
+	run-once 1
+	call {
+		do eq &inventory (Maça III do Grupo Éden [ATQ+3%])
+	}
+}
+#Equipando Eden
+automacro reequipar eden lvl 80 Lord Knight {
+	base == 80
+	class Lord Knight
+	exclusive 1
+	priority 2
+	run-once 1
+	call {
+		do eq &inventory (Espada Matadora III do Éden [ATQ+3%])
+	}
+}
+
+#quando tiver a arma removida
+automacro strip {
+	status EFST_NOEQUIPWEAPON
+	call {
+		do relog 5
+	}
+}
+
+macro pararDeAtacar {
+	[
+	do conf route_randomWalk 0
+	do conf attackAuto 1
+	]
+}
+
+macro voltarAtacar {
+	[
+	do conf route_randomWalk 1
+	do conf attackAuto 2
+	]
+}
+macro configurarMapa {
+	if ( &config(saveMap) = $.param1 ) {
+		do conf lockMap $.param2
+	call voltarAtacar
+	} else {
+		call SetSaveIn $.param1
+	}
+}
+
+macro SetSaveIn {
+	do conf lockMap none
+	do conf -f saveMap_save_sequence c r0
+	do conf -f saveMap_storage_sequence c r1
+	switch ( $.param1 ) {
+		case (=~ /einbroch/i ) {
+			do conf -f saveMap_wanted einbroch
+			do conf -f saveMap_kafra_position 242 205
+			do conf -f saveMap_sellNpc_position einbroch 224 207
+		}
+		case (=~ /aldebaran/i ) {
+			do conf -f saveMap_wanted aldebaran
+			do conf -f saveMap_kafra_position 143 119
+			do conf -f saveMap_sellNpc_position aldebaran 165 107
+		}
+		case (=~ /juno/i ) {
+		    do conf -f saveMap_wanted yuno
+			do conf -f saveMap_kafra_position 152 187
+			do conf -f saveMap_sellNpc_position yuno_in01 25 34
+		}
+		case (=~ /rachel/i ) {
+			do conf -f saveMap_wanted rachel
+			do conf -f saveMap_kafra_position 109 138
+			do conf -f saveMap_sellNpc_position rachel 65 80
+		}
+		case (=~ /comodo/i ) {
+		    do conf -f saveMap_wanted comodo
+			do conf -f saveMap_kafra_position 195 150
+			do conf -f saveMap_sellNpc_position cmd_in01 79 182
+		}
+		case (=~ /prontera/i ) {
+		    do conf -f saveMap_wanted prontera
+			do conf -f saveMap_kafra_position 151 29
+			do conf -f saveMap_sellNpc_position prontera 113 42
+		}
+		case (=~ /payon/i ) {
+			do conf -f saveMap_wanted payon
+			do conf -f saveMap_kafra_position 181 104
+			do conf -f saveMap_sellNpc_position payon_in01 5 49
+		}
+		case (=~ /geffen/i ) {
+			do conf -f saveMap_wanted geffen
+			do conf -f saveMap_kafra_position 120 62
+			do conf -f saveMap_sellNpc_position geffen_in 74 144
+		}
+		case (=~ /morocc|morroc|morooc/i ) {
+			do conf -f saveMap_wanted morocc
+			do conf -f saveMap_kafra_position 156 97
+			do conf -f saveMap_sellNpc_position morocc_in 141 67
+		}
+		case (=~ /izlude/i ) {
+			do conf -f saveMap_wanted izlude
+			do conf -f saveMap_kafra_position 134 88
+			do conf -f saveMap_sellNpc_position izlude 105 99
+		}
+		case ( =~ /veins/i ) {
+			do conf -f saveMap_wanted veins
+			do conf -f saveMap_kafra_position 207 128
+			do conf -f saveMap_sellNpc_position ve_in 243 303
+		}
+		else {
+			log nome da cidade inválido, tente novamente...
+			log Talvez o nome foi escrito errado?
+			stop
+		}
+		}
+		log Iniciando seguência de salvamento em &config(saveMap_wanted)
+		$saveMap = &config(saveMap_wanted)
+		do conf -f In_saveMap_sequence true
+		
+	}	
+	
+	
+	automacro movendoPraKafraForaDaCidade {
+		exclusive 1
+		ConfigKey In_saveMap_sequence true
+		ConfigKeyNot saveMap_wanted none
+		ConfigKeyNot saveMap $saveMap
+		NotInMap $saveMap
+		call move_to_near_kafra
+	}
+	
+	automacro movendoPraKafraDentroDaCidade {
+		exclusive 1
+		ConfigKeyNot saveMap $saveMap
+		ConfigKeyNot saveMap_wanted none
+		NpcNotNear /(Kafra Employee|Funcionária Kafra|Corp. Ev. Incríveis)/
+		InMap $saveMap
+		call move_to_near_kafra
+	}
+	
+	macro move_to_near_Kafra {
+		log estou indo para a kafra em $saveMap &config(saveMap_kafra_position)
+		do move $saveMap &config(saveMap_kafra_position) &random("1","2","3","4","5")
+	}
+	
+	automacro FalarComKafra {
+		ConfigKey In_saveMap_sequence true
+		ConfigKeyNot saveMap $saveMap
+		ConfigKeyNot saveMap_wanted none
+		InMap $saveMap
+		NpcNear /(Kafra Employee|Funcionária Kafra|Corp. Ev. Incríveis)/
+		delay 2
+		timeout 20
+		call {
+			log Falando com kafra na posição &config(saveMap_kafra_position) usando a sequência '&config(saveMap_save_sequence)'
+			do talknpc &config(saveMap_kafra_position) &config(saveMap_save_sequence)
+		}
+	}
+	
+	automacro SalvoNaKafra {
+		exclusive 1
+		priority -5
+		NpcMsgName /O seu Ponto (de Retorno )?foi salvo|saved here|foi salvo aqui na cidade/ /(Kafra Employee|Funcionária Kafra|Corp)/
+		ConfigKeyNot saveMap $saveMap
+		ConfigKey In_saveMap_sequence true
+		InMap $saveMap
+		call {
+			do conf saveMap $saveMap
+			do conf storageAuto_npc $saveMap &config(saveMap_kafra_position)
+			do conf storageAuto 1
+			do conf sellAuto 1
+			do conf sellAuto_npc &config(saveMap_sellNpc_position)
+			do conf storageAuto_npc_type 3
+			do conf storageAuto_npc_steps &config(saveMap_storage_sequence)
+			
+			do conf In_saveMap_sequence false
+			do conf saveMap_save_sequence none
+			do conf saveMap_storage_sequence none
+			do conf saveMap_wanted none
+			do conf saveMap_kafra_position none
+			do conf saveMap_sellNpc_position none
+		}
+	}		

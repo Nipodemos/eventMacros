@@ -1,0 +1,48 @@
+automacro slaveNaoDefinido {
+	ConfigKey followTarget none
+	exclusive 1
+	timeout 15
+	call {
+		[
+		log Você precisa colocar o nome do seu slave na configuração
+		log Como fazer:
+		log vá no config.txt e procure por "followTarget"
+		log e coloque o nome do seu slave na frente
+		log Você só precisa fazer isso uma vez
+		]
+	}
+}
+
+#sempre que tiver com hp baixo ele vai em direção ao slave
+#e pede pro slave vir tambem
+automacro vidaBaixa {
+	timeout 20
+	CurrentHP < 40%
+	call {
+		do conf follow 2
+		$master = &config (followTarget)
+		do busmsg $master Ajuda Aqui
+	}
+}
+
+#quando tiver de boas, ele simplesmente volta a upar
+#e o slave vai continuar seguindo ele ate ser chamado por outro
+automacro vidaAlta {
+	timeout 20
+	CurrentHP > 90%
+	call {
+		do conf follow 0
+	}
+}
+
+#Se o slave tiver tomando dando ele pede ajuda pra voce
+#e voce vai ajudar
+automacro findSlave5 {
+	timeout 40
+	BusMsg /mata aqui fdm/
+	call {
+		do &eval ( AI::clear("move", "route") )
+		do conf follow 2
+		do busmsg $.PrivMsgLastName To indo $.PrivMsgLastName
+	}
+}

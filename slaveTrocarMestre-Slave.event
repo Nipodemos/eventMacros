@@ -1,0 +1,20 @@
+#slave is lost
+automacro acharMestre_precisandoDeAjuda {
+	timeout 30
+	BusMsg /Ajuda Aqui/
+	call {
+		do eval AI::clear("move", "route")
+		do party share 1
+		do conf followTarget $.PrivMsgLastName
+		do busmsg $.PrivMsgLastName To indo $.PrivMsgLastName
+	}
+}
+
+automacro findMaster5 {
+	timeout 10
+	CurrentHP < 90%
+	call {
+		$master = &config (followTarget)
+		do busmsg $master mata aqui fdm
+	}
+}
