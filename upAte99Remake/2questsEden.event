@@ -260,7 +260,7 @@ automacro Eden26IrNoMapa {
 
 automacro Eden40SalvarNaKafra {
 	QuestActive 7147
-	BaseLevel 49..59
+	BaseLevel 50..59
 	exclusive 1
 	QuestInactive 2017
 	QuestInactive 2018
@@ -299,12 +299,12 @@ automacro Eden40IrNoMapa {
 		do mconf Guerreiro Orc 0 0 0
 		do mconf Filhote de Orc 0 0 0
 		do mconf Senhora Orc 0 0 0
-	}	
+	}
 }
 
 automacro Eden60SalvarNaKafra {
 	QuestActive 7214
-	BaseLevel 69..79
+	BaseLevel 70..79
 	exclusive 1
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKeyNot saveMap comodo
@@ -316,7 +316,7 @@ automacro Eden60SalvarNaKafra {
 
 automacro Eden60IrNoMapa {
 	QuestActive 7214
-	BaseLevel 69..79
+	BaseLevel 70..79
 	exclusive 1
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKey saveMap comodo
@@ -336,7 +336,7 @@ automacro Eden12Caçar {
 	timeout 120
 	call {
 		call caçarMonstros
-		if ( &config(lockMap) != moc_fild11) do conf lockMap moc_fild11		
+		if ( &config(lockMap) != moc_fild11) do conf lockMap moc_fild11
 	}
 }
 
@@ -397,19 +397,19 @@ automacro Eden60JuntarFolhasEOmbreiras {
 		if ( $ombreira < 5 )                 goto Ombreira
 		if ( $ombreira >= 5 && $folha < 7 )  goto Folha
 		if ( $ombreira >= 5 && $folha >= 7 ) goto Juntei
-		
+
 		:Ombreira
 		log Pegar Ombreiras
 		do conf lockMap um_fild02
 		call voltarAtacar
 		stop
-		
+
 		:Folha
 		log Pegar Folhas
 		do conf lockMap um_fild01
 		call voltarAtacar
 		stop
-		
+
 		:Juntei
 		log Vamos No NPC já temos os Itens.
 		call pararDeAtacar
@@ -426,7 +426,7 @@ automacro Eden12FinalizarCaças {
 		call pararDeAtacar
 		do mconf $.QuestHuntCompletedLastMobID 0 0 0
 		do move moc_fild11 &rand(181,183) &rand(254,256)
-	  	do talk 0 #cao falante 
+	  	do talk 0 #cao falante
 		release Eden12Caçar
 	}
 }
@@ -439,7 +439,7 @@ automacro Eden26FinalizarCaças {
 		do mconf $.QuestHuntCompletedLastMobID 0 0 0
 		do move pay_arche &rand(44,46) &rand(132,134)
 		#do talknpc 41 136 c c c c c #Coral
-		do talk &npc( 41 136 ) #Coral 
+		do talk &npc( 41 136 ) #Coral
 		release Eden26Caçar
 	}
 }
@@ -470,14 +470,14 @@ automacro Eden60FinalizarCaças {
 	call {
 		do mconf $.QuestHuntCompletedLastMobID 0 0 0
 		switch ( $.QuestHuntCompletedLastQuestID ) {
-			
+
 			case (= 7215) { #golem1
 				do move comodo &rand(174,176) &rand(344,346)
 				#do talknpc 173 354 c c c c c #Mémbro do grupo Éden#2n
 				do talk &npc( 173 354 )
 				release Eden60Caçar
 			}
-			
+
 			case (= 7216) { #golem2
 				do move um_fild01 &rand(36,38) &rand(277,279)
 				#do talknpc 34 280 c c c c #Romeo#2nd02
@@ -509,7 +509,7 @@ automacro voltarDoMapaDentroDoEden {
 		#7151 : eden 40
 		#7218 : eden 60
 		switch ($.QuestActiveLastID) {
-			
+
 			case (= 7132) { #eden 12
 				#do talknpc 25 35 c c c #Boya
 				do talk &npc(/Boya/)
@@ -518,7 +518,7 @@ automacro voltarDoMapaDentroDoEden {
 				do mconf Condor 1 0 0
 				release EdenPegandoEquips12e26e40
 			}
-			
+
 			case (= 7141) { #eden 26
 				#do talknpc 25 35 c c #Boya
 				do talk &npc(/Boya/)
@@ -527,7 +527,7 @@ automacro voltarDoMapaDentroDoEden {
 				do mconf Zumbi 1 0 0
 				release EdenPegandoEquips12e26e40
 			}
-			
+
 			case (= 7151) { #eden 40
 				#do talknpc 25 35 c c #Boya
 				do talk &npc(/Boya/)
@@ -536,7 +536,7 @@ automacro voltarDoMapaDentroDoEden {
 				do mconf Senhora Orc 1 0 0
 				release EdenPegandoEquips12e26e40
 			}
-			
+
 			case (= 7218) { #eden 60
 				#do talknpc 23 35 c c c #Uru
 				do talk &npc(/Ur/)
@@ -564,7 +564,7 @@ automacro EdenPegandoEquips12e26e40 {
 		do talk $.NpcNearLastBinId
 		do talk resp 0
 		do talk resp 1
-		
+
 		if ( $.lvl >= 40 ) {
 			#do talknpc 112 96 c r2 c c r4 c r0 c #Administrador Mihael(encanto de destreza do chapéu valhalla)
 			do talk $.NpcNearLastBinId
@@ -579,9 +579,9 @@ automacro EdenPegandoEquips12e26e40 {
 automacro Eden12Equipando {
 	IsNotEquippedID armor 15009
 	InInventoryID 15009 = 1
-	BaseLevel 12..25 
+	BaseLevel 12..25
 	exclusive 1
-	run-once 1 
+	run-once 1
 	call {
 		$check = GetIndexAndEquipped("robe", 2560) #Capa Valhalla
 		if ($check != -1) do eq $check
@@ -602,11 +602,11 @@ automacro Eden26Equipando {
 	run-once 1
 	call {
 		$check = GetIndexAndEquipped("shoes", 2457) #Botas Valhalla Intermediárias
-		if ($check != -1) do eq $check 
+		if ($check != -1) do eq $check
 		$check = GetIndexAndEquipped("rightHand", 13050) #Adaga Valhalla Iniciante
-		if ($check != -1) do eq $check 
+		if ($check != -1) do eq $check
 		$check = GetIndexAndEquipped("armor", 15010) #Uniforme Valhalla Intermediário
-		if ($check != -1) do eq $check 
+		if ($check != -1) do eq $check
 	}
 }
 
@@ -645,7 +645,7 @@ automacro Eden60Equipando {
 	IsNotEquippedID armor 15031
 	InInventoryID 15031 = 1
 	BaseLevel 60..98
-	exclusive 1		
+	exclusive 1
 	call {
 		$check = GetIndexAndEquipped("robe", 2571) #Capa II do Grupo Eden
 		if ($check != -1) do eq $check
@@ -664,5 +664,3 @@ automacro Eden60Equipando {
 #
 # FIM DAS QUESTS EDEN
 #
-
-
