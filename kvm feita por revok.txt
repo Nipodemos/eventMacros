@@ -1,16 +1,16 @@
 #########################################################################
 # KvM macro by Revok
 # Openkore: http://openkore.com/
-# Revok: http://revok.com.br                                                                             
+# Revok: http://revok.com.br
 # Openkore Private Forums: http://forum.revok.com.br
 #
 # Adaptado para o eventMacro por Nipodemos
-# Reescrito praticamente, para aproveitar 
+# Reescrito praticamente, para aproveitar
 # o potencial máximo que o eventMacro proporciona
 #
-# This source code is licensed under the                                                                        
-# GNU General Public License, Version 3.                                                                        
-# See http://www.gnu.org/licenses/gpl.html                                                                 
+# This source code is licensed under the
+# GNU General Public License, Version 3.
+# See http://www.gnu.org/licenses/gpl.html
 #############################################################################
 
 
@@ -57,6 +57,25 @@ automacro army_is_Unset {
 #                    SALÃO PRINCIPAL                   #
 #                                                      #
 ########################################################
+
+# Bugou Lado (Trocando)
+automacro BugouLado1 {
+	NpcMsg /^Eu sei que você já está ao lado dos Guillaume/i
+	timeout 10
+	exclusive 1
+	call {
+		do conf -f exercito Guillaume
+	}
+}
+
+# Bugou Lado (Trocando)
+automacro BugouLado2 {
+	NpcMsg /^Eu sei que você já está ao lado dos Croix/i
+	exclusive 1
+	call {
+		do conf -f exercito Croix
+	}
+}
 
 automacro moverPertoDoNpcCroix {
 	NpcNotNear /KVM.Croix/
@@ -143,12 +162,17 @@ automacro miniROOM_entrouNoChat {
 	}
 }
 
+
+############################################
+#                                          #
+#            FIM DA BATALHA                #
+#                                          #
+############################################
 automacro FimDaBatalha_pegarPontos {
 	NpcNear /KVM/
 	InMap bat_c01
 	timeout 5
 	call {
-		do conf dentroDaMiniRoom none
 		release miniROOM_entrouNoChat
 		do talk $.NpcNearLastBinId
 	}
@@ -160,6 +184,7 @@ automacro derrota {
 	timeout 10
 	NpcMsg /pontos pela derrota/i
 	call {
+		do conf dentroDaMiniRoom none
 		$points = &eval(&config(pontosKVM) + 1)
 		log \$points: $points
 		do conf -f pontosKVM $points
@@ -176,6 +201,7 @@ automacro empate {
 	timeout 10
 	NpcMsg /pontos pelo empate/i
 	call {
+		do conf dentroDaMiniRoom none
 		$points = &eval(&config(pontosKVM) + 1)
 		log $points
 		do conf -f pontosKVM $points
@@ -189,9 +215,10 @@ automacro vitoria {
 	timeout
 	NpcMsg /pontos pela vitória/i
 	call {
+		do conf dentroDaMiniRoom none
 		$points = &eval(&config(pontosKVM) + 5)
 		log $points
 		do conf -f pontosKVM $points
 		log Ganhamos no $army !\nPontuação total até agora: [ &config(kvmPoints) ] .
 	}
-}																									
+}

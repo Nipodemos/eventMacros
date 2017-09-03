@@ -38,7 +38,7 @@ automacro virarArruaceiro1 {
 	QuestInactive 2026
 	call {
 		#do talknpc 363 122 c r0 r0 r0 r2 r3 r1 r3 r2 r1 r0 r1 c c c #Arruaceira da Guilda
-		do talk $.NpcNearLastBinID
+		do talk $.NpcNearLastBinId
 		do talk resp 0
 		do talk resp 0
 		do talk resp 0
@@ -58,7 +58,7 @@ automacro virarArruaceiro2 {
 	QuestActive 2017
 	exclusive 1
 	run-once 1
-	call {				   
+	call {
 		do move in_rogue &rand(370,373) &rand(20,24)
 		do talk &npc ( 376 23 ) #Smith
 	}
@@ -84,8 +84,8 @@ automacro virarArruaceiro3 {
 		if ( $ervaAzul >= 6 && $unhaApodrecida < 10 ) goto Unha
 		if ( $ervaAzul >= 6 && $unhaApodrecida >= 10 && $osso < 10 ) goto Osso
 		if ( $ervaAzul >= 6 && $unhaApodrecida >= 10 && $osso >= 10 && $mandibula < 10 ) goto Mandibula
-		
-	
+
+
 		:Erva
 		log Pegar Erva
 		[
@@ -100,8 +100,8 @@ automacro virarArruaceiro3 {
 		call voltarAtacar
 		]
 		stop
-		
-		
+
+
 		:Unha
 		log Pegar Unha
 		[
@@ -114,9 +114,9 @@ automacro virarArruaceiro3 {
 		call voltarAtacar
 		]
 		stop
-		
-		
-		:Osso 
+
+
+		:Osso
 		log Pegar Osso
 		[
 		do conf lockMap pay_dun01
@@ -129,11 +129,11 @@ automacro virarArruaceiro3 {
 		call voltarAtacar
 		]
 		stop
-		
-		
+
+
 		:Mandibula
 		log Pegar mandibula
-		[	
+		[
 		do conf lockMap pay_dun00
 		do mconf 1005 0 0 0
 		do mconf 1031 0 0 0
@@ -209,9 +209,9 @@ automacro tenhoOsItens {
 		lock virarArruaceiro3
 		do conf lockMap none
 		call pararDeAtacar
-		do talk $.NpcNearLastBinID #Smith
-		do talk $.NpcNearLastBinID #Smith
-		do talk $.NpcNearLastBinID #Smith
+		do talk $.NpcNearLastBinId #Smith
+		do talk $.NpcNearLastBinId #Smith
+		do talk $.NpcNearLastBinId #Smith
 		lock virarArruaceiro3
 	}
 }
@@ -225,7 +225,7 @@ automacro virarArruaceiro4.0 {
 		do conf attackAuto -1
 		do conf -f questArruaceiro 0
 		do move cmd_fild09 107 195
-		do talk resp 1		
+		do talk resp 1
 		do talk resp 2
 		do talk resp 1
 		do talk resp 0
@@ -234,7 +234,7 @@ automacro virarArruaceiro4.0 {
 
 automacro virarArruaceiro4.1 {
 	JobID 6 #gatuno
-	QuestActive 2023 
+	QuestActive 2023
 	exclusive 1
 	JobLevel = 50
 	call {
@@ -376,7 +376,7 @@ automacro virarArruaceiro7 {
 	macro_delay 0.5
 	call {
 		#ahhhh o labirinto.... o bixin vai morrer algumas vezes aqui viu...
-		do conf attackAuto -1 
+		do conf attackAuto -1
 		do conf itemsTakeAuto 0
 		do move 23 105
 		do move 23 334
@@ -406,7 +406,7 @@ automacro jaSouArruaceiro {
 	call {
 		do conf attackAuto 1
 		do conf virarArruaceiro none
-		do conf questArruaceiro none	
+		do conf questArruaceiro none
 	}
 }
 #
@@ -414,5 +414,3 @@ automacro jaSouArruaceiro {
 #
 # FIM DA QUEST PRA VIRAR ARRUACEIRO
 #
-
-
