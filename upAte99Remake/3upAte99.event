@@ -44,9 +44,7 @@ automacro upAteLv12 {
 	JobID 6 #gatuno
 	priority 5
 	timeout 30
-	call {
-		call configurarMapa "payon" "pay_fild01"
-	}
+	call configurarMapa "payon" "pay_fild01"
 }
 automacro upAteLv26 {
 	ConfigKeyNot quest_eden em_curso
@@ -93,9 +91,7 @@ automacro upAteLv44 {
 	JobID 6 #gatuno
 	priority 5
 	timeout 30
-	call {
-		call configurarMapa "payon" "pay_fild09"
-	}
+	call configurarMapa "payon" "pay_fild09"
 }
 
 automacro upAteLv54 {
@@ -125,9 +121,7 @@ automacro upAteLv60 {
 	exclusive 1
 	priority 5
 	timeout 30
-	call {
-		call configurarMapa "izlude" "iz_dun02"
-	}
+	call configurarMapa "izlude" "iz_dun02"
 }
 
 automacro upAteLv70 {
@@ -139,9 +133,7 @@ automacro upAteLv70 {
 	ConfigKeyNot In_saveMap_sequence true
 	priority 5
 	timeout 30
-	call {
-		call configurarMapa "morocc" "moc_fild17"
-	}
+	call configurarMapa "morocc" "moc_fild17"
 }
 
 automacro upAteLv80 {
@@ -154,9 +146,7 @@ automacro upAteLv80 {
 	exclusive 1
 	priority 5
 	timeout 30
-	call {
-		call configurarMapa "prontera" "mjolnir_11"
-	}
+	call configurarMapa "prontera" "mjolnir_11"
 }
 
 automacro upAteLv99 {
@@ -169,9 +159,7 @@ automacro upAteLv99 {
 	exclusive 1
 	priority 5
 	timeout 30
-	call {
-		call configurarMapa "geffen" "gef_fild06"
-	}
+	call configurarMapa "geffen" "gef_fild06"
 }
 
 automacro estouLv99 {
@@ -186,11 +174,11 @@ automacro estouLv99 {
 }
 
 macro configurarMapa {
-	if ( &config(saveMap) = $.param1 ) {
-		do conf lockMap $.param2
+	if ( &config(saveMap) = $.param[0] ) {
+		do conf lockMap $.param[1]
 		call voltarAtacar
 	} else {
-		call SetSaveIn $.param1
+		call SetSaveIn $.param[1]
 	}
 }
 

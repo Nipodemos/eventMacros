@@ -1033,7 +1033,7 @@ automacro endleveling {
 
 automacro virandoGatunoBugged {
 	JobLevel = 10
-	InMap moc_prydb1
+	JobID 0
 	SkillLevel NV_BASIC != 9
 	FreeSkillPoints >= 1
 	exclusive 1

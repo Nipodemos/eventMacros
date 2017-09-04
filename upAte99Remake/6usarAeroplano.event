@@ -3,31 +3,31 @@
 #ou rachelpra
 #se o nome estiver certo, ele vai mover pra cidade desejada
 macro junopra {
-	log Vamos ir de Juno para $.param1
+	log Vamos ir de Juno para $.param[0]
 	#Se a cidade for izlude ou rachel , ele pega o aeroplano respectivo
-	if ( $.param1 =~ /izlude/i ) {
+	if ( $.param[0] =~ /izlude/i ) {
 		do conf -f aeroplano1 izlude
 	do conf -f aeroplano2 none
-	} elsif ( $.param1 =~ /rachel/i ) {
+	} elsif ( $.param[0] =~ /rachel/i ) {
 		do conf -f aeroplano1 rachel
 	do conf -f aeroplano2 none
-	} elsif ( $.param1 =~ /hugel/i ) {
+	} elsif ( $.param[0] =~ /hugel/i ) {
 		do conf -f aeroplano1 none
 	do conf -f aeroplano2 hugel
-	} elsif ( $.param1 =~ /lighthalzen/i ) {
+	} elsif ( $.param[0] =~ /lighthalzen/i ) {
 		do conf -f aeroplano1 none
 	do conf -f aeroplano2 lighthalzen
-	} elsif ( $.param1 =~ /einbroch/i ) {
+	} elsif ( $.param[0] =~ /einbroch/i ) {
 		do conf -f aeroplano1 none
 	do conf -f aeroplano2 eibroch
-	} elsif ( $.param1 =~ /[jy]uno/) {
+	} elsif ( $.param[0] =~ /[jy]uno/) {
 		log VOCÊ QUER IR DE JUNO PRA JUNO?
 	log PORQUE VOCÊ FARIA ISSO?
 	} else {
 		[
 		log Você digitou um nome inválido, por favor tente novamente
 		log Os valores podem ser:
-		log izlude , rachel , juno ou yuno 
+		log izlude , rachel , juno ou yuno
 		log hugel , lighthalzen ou einbroch
 		log Escreva como quiser, desde que escreva certo
 		]
@@ -44,31 +44,31 @@ macro junopra {
 }
 
 macro einbrochpra {
-	log Vamos ir de Eibroch para $.param1
+	log Vamos ir de Eibroch para $.param[0]
 	#se a cidade for juno hugel ou lighthalzen ele só pega 1 aeroplano
 	# se for outra cidade, ele pega os dois aeroplanos
-	if ( $.param1 =~ /izlude/i ) {
+	if ( $.param[0] =~ /izlude/i ) {
 		do conf -f aeroplano1 izlude
 	do conf -f aeroplano2 juno
-	} elsif ($.param1 =~ /rachel/i ) {
+	} elsif ($.param[0] =~ /rachel/i ) {
 		do conf -f aeroplano1 rachel
 	do conf -f aeroplano2 juno
-	} elsif ( $.param1 =~ /hugel/i ) {
+	} elsif ( $.param[0] =~ /hugel/i ) {
 		do conf -f aeroplano1 none
 	do conf -f aeroplano2 hugel
-	} elsif ( $.param1 =~ /lighthalzen/i ) {
+	} elsif ( $.param[0] =~ /lighthalzen/i ) {
 		do conf -f aeroplano1 none
 	do conf -f aeroplano2 lighthalzen
-	} elsif ($.param1 =~ /einbroch/i ) {
+	} elsif ($.param[0] =~ /einbroch/i ) {
 		log VOCÊ QUER IR DE EIBROCH PRA EINBROCH?
 	log PORQUE VOCÊ FARIA ISSO?
-	} elsif ( $.param1 =~ /[jy]uno/) {
+	} elsif ( $.param[0] =~ /[jy]uno/) {
 		do conf -f aeroplano1 none
 	do conf -f aeroplano2 juno
 	} else {
 		[
 		log Você digitou um nome inválido, por favor tente novamente
-		log Os valores podem ser izlude , rachel , juno ou yuno , 
+		log Os valores podem ser izlude , rachel , juno ou yuno ,
 		log hugel , lighthalzen ou einbroch
 		log pode ser com letra maiuscula ou sem
 		]
@@ -85,31 +85,31 @@ macro einbrochpra {
 }
 
 macro rachelpra {
-	log Vamos ir de Rachel para $.param1
+	log Vamos ir de Rachel para $.param[0]
 	#se a cidade for izlude ou juno ele só pega 1 aeroplano
 	# se for outra cidade, ele pega os dois aeroplanos
-	if ( $.param1 =~ /izlude/i ) {
+	if ( $.param[0] =~ /izlude/i ) {
 		do conf -f aeroplano1 izlude
 	do conf -f aeroplano2 none
-	} elsif ($.param1 =~ /rachel/i ) {
+	} elsif ($.param[0] =~ /rachel/i ) {
 		log VOCÊ QUER IR DE RACHEL PRA RACHEL?
 	log PORQUE VOCÊ FARIA ISSO?
-	} elsif ( $.param1 =~ /hugel/i ) {
+	} elsif ( $.param[0] =~ /hugel/i ) {
 		do conf -f aeroplano1 juno
 	do conf -f aeroplano2 hugel
-	} elsif ( $.param1 =~ /lighthalzen/i ) {
+	} elsif ( $.param[0] =~ /lighthalzen/i ) {
 		do conf -f aeroplano1 juno
 	do conf -f aeroplano2 lighthalzen
-	} elsif ($.param1 =~ /einbroch/i ) {
+	} elsif ($.param[0] =~ /einbroch/i ) {
 		do conf -f aeroplano1 juno
 	do conf -f aeroplano2 eibroch
-	} elsif ( $.param1 =~ /[jy]uno/) {
+	} elsif ( $.param[0] =~ /[jy]uno/) {
 		do conf -f aeroplano1 juno
 	do conf -f aeroplano2 none
 	} else {
 		[
 		log Você digitou um nome inválido, por favor tente novamente
-		log Os valores podem ser izlude , rachel , juno ou yuno , 
+		log Os valores podem ser izlude , rachel , juno ou yuno ,
 		log hugel , lighthalzen ou einbroch
 		log pode ser com letra maiuscula ou sem
 		]
@@ -188,9 +188,9 @@ automacro chegueiEmEinbroch {
 	call objetivoCompleto
 }
 
-automacro chegueiEmHugel { 
+automacro chegueiEmHugel {
 	InMap hugel
-	ConfigKey aeroplano2 hugel 
+	ConfigKey aeroplano2 hugel
 	run-once 1
 	exclusive 1
 	call objetivoCompleto
@@ -224,7 +224,7 @@ automacro chegueiEmRachel {
 }
 
 macro objetivoCompleto {
-	#Se estivermos na cidade, e o local desejado for essa cidade, ele completa o objetivo 
+	#Se estivermos na cidade, e o local desejado for essa cidade, ele completa o objetivo
 	log cheguei em $.InMapLast , objetivo completo
 	do conf aeroplano2 none
 	do conf aeroplano1 none
@@ -258,6 +258,3 @@ automacro chegueiEmJuno {
 #
 # FIM DA MACRO DE SALVAR NO AEROPLANO
 #
-
-
-
