@@ -1035,7 +1035,7 @@ automacro virandoGatunoBugged {
 	JobLevel = 10
 	JobID 0
 	SkillLevel NV_BASIC != 9
-	FreeSkillPoints >= 1
+	FreeSkillPoints > 1
 	exclusive 1
 	call {
 		$pontos = $.SkillLevelLastLevel
@@ -1043,7 +1043,7 @@ automacro virandoGatunoBugged {
 		log A skill ta lvl $.SkillLevelLastLevel
 		log Mudando isso
 		while ($pontos < 9 ) {
-		do skills add NV_BASIC
+		do skills add 1
 		$pontos++
 		}
 		do conf skillsAddAuto 1

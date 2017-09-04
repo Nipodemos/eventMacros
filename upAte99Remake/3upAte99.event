@@ -178,7 +178,7 @@ macro configurarMapa {
 		do conf lockMap $.param[1]
 		call voltarAtacar
 	} else {
-		call SetSaveIn $.param[1]
+		call SetSaveIn $.param[0]
 	}
 }
 
