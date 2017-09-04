@@ -154,7 +154,7 @@ automacro talkSprakkiBugged2 {
 
 macro SprakiiBuggedTalk {
 	do talk $.NpcNearLastBinId
-	
+
 }
 
 automacro talkSprakki {
@@ -497,7 +497,7 @@ automacro talkChocoAgain {
 	call {
 		do talk $.NpcNearLastBinId
 		do conf current_npc kafra
-		
+
 	}
 }
 
@@ -616,7 +616,7 @@ automacro questLunaticoBugged {
 		log Acabou de ocorrer um bug na sequencia do campo de treinamento
 		log Resolvendo isso
 		call moveBradeGrounds
-		do talk &npc(/Brade/)		
+		do talk &npc(/Brade/)
 	}
 }
 
@@ -668,7 +668,7 @@ automacro lockMap setado quando nao deveria {
 		do conf lockMap none
 		do conf attackAuto_inLockOnly 0
 	}
-	
+
 }
 
 macro moverPertoDosNpc {
@@ -811,7 +811,7 @@ automacro caçandoPickys {
 	ConfigKeyNot quest_atual matando
 	timeout 60
 	exclusive 1
-	call sePreparandoPraMatar 
+	call sePreparandoPraMatar
 }
 
 automacro caçandoSalgueiro {
@@ -820,7 +820,7 @@ automacro caçandoSalgueiro {
 	ConfigKeyNot quest_atual matando
 	timeout 60
 	exclusive 1
-	call sePreparandoPraMatar 
+	call sePreparandoPraMatar
 }
 
 macro sePreparandoPraMatar {
@@ -1108,10 +1108,6 @@ automacro jaSouGatuno {
 		if ($check != -1) do drop $check
 		$check = GetIndexAndEquipped("topHead", 5055) #Chapéu_de_Ovo_do_Aprendiz#
 		if ($check != -1) do drop $check
-		$check = GetIndexAndEquipped("rightHand", 13041) # main gauche de iniciante
-		if ($check != -1) do eq $check 
-		$check = GetIndexAndEquipped("armor", 2393) #Tunica de Iniciante
-		if ($check != -1) do eq $check
 	}
 }
 
@@ -1124,13 +1120,14 @@ automacro vireiGatuno_equipandoAdaga {
 	InInventoryID 13041 = 1
 	call {
 		$check = GetIndexAndEquipped("rightHand", 13041) # main gauche de iniciante
-		if ($check != -1) do eq $check 
+		if ($check != -1) do eq $check
 	}
 }
 
 automacro vireiGatuno_equipandoTunica {
 	IsNotEquippedID armor 2393
 	IsNotEquippedID armor 15009
+	InInventoryID 15009 = 0
 	BaseLevel < 18
 	JobID 6
 	InInventoryID 15009 = 0
@@ -1144,4 +1141,3 @@ automacro vireiGatuno_equipandoTunica {
 #
 #
 # FIM DO CAMPO DE APRENDIZ
-
