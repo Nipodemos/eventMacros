@@ -224,6 +224,7 @@ automacro virarArruaceiro4.0 {
 	call {
 		do conf attackAuto -1
 		do conf -f questArruaceiro 0
+		do move cmd_fild07
 		do move cmd_fild09 107 195
 		do talk resp 1
 		do talk resp 2
@@ -255,6 +256,7 @@ automacro virarArruaceiro4.2 {
 	call {
 		do conf attackAuto -1
 		do conf -f questArruaceiro 2
+		do move cmd_fild07
 		do move cmd_fild09 335 143
 		do talk resp 0
 		do talk resp 2
