@@ -1,4 +1,5 @@
 ﻿macro SetSaveIn {
+	call pararDeAtacar
 	do conf lockMap none
 	do conf -f saveMap_save_sequence c r0
 	do conf -f saveMap_storage_sequence c r1
@@ -67,8 +68,8 @@
 	log Iniciando seguência de salvamento em &config(saveMap_wanted)
 	$saveMap = &config(saveMap_wanted)
 	do conf -f In_saveMap_sequence true
-	
-}	
+
+}
 
 
 automacro movendoPraKafraForaDaCidade {
@@ -123,7 +124,7 @@ automacro SalvoNaKafra {
 		do conf sellAuto_npc &config(saveMap_sellNpc_position)
 		do conf storageAuto_npc_type 3
 		do conf storageAuto_npc_steps &config(saveMap_storage_sequence)
-		
+
 		do conf In_saveMap_sequence false
 		do conf saveMap_save_sequence none
 		do conf saveMap_storage_sequence none
@@ -137,4 +138,3 @@ automacro SalvoNaKafra {
 #
 # FIM DA MACRO DE SALVAR NA KAFRA
 #
-

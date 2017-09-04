@@ -874,8 +874,6 @@ automacro mateiSalgueiros {
 		do mconf 1010 0 0 0 #Salgueiro
 		do talk $.NpcNearLastBinId
 		do talk resp 2
-		log ======== Completei todas as Quests
-		do conf quest_atual todas_completadas
 	}
 }
 
@@ -890,6 +888,7 @@ automacro completeiTodasAsQuests {
 	run-once 1
 	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
 	call {
+		log ======== Completei todas as Quests
 		do conf quest_atual todas_completadas
 	}
 }

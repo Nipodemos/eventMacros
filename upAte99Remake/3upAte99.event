@@ -24,7 +24,7 @@ automacro upAteLv12Aprendiz {
 	timeout 30
 	InMapRegex /^(?!new_\d-\d|moc_prydb1)$/
 	call {
-		log pelo visto, ainda to no lvl de Classe $JobLevelLast ainda... 
+		log pelo visto, ainda to no lvl de Classe $JobLevelLast ainda...
 		log o que aconteceu?
 		log a que ponto chegamos?
 		log nuss
@@ -159,8 +159,8 @@ automacro upAteLv80 {
 	}
 }
 
-automacro upAteLv92 {
-	BaseLevel 80..91
+automacro upAteLv99 {
+	BaseLevel 80..98
 	ConfigKeyNot quest_eden em_curso
 	ConfigKeyNot quest_eden terminando
 	ConfigKeyNot lockMap gef_fild06
@@ -171,53 +171,6 @@ automacro upAteLv92 {
 	timeout 30
 	call {
 		call configurarMapa "geffen" "gef_fild06"
-	}
-}
-automacro IndoPraRachelPraUpAteLv99 {
-	ConfigKeyNot quest_eden em_curso
-	ConfigKeyNot quest_eden terminando
-	ConfigKeyNot lockMap ra_fild12
-	ConfigKeyNot aeroplano1 rachel
-	BaseLevel 92..99
-	NotInMap rachel
-	NotInMap ra_fild12
-	JobID 17
-	exclusive 1
-	priority 5
-	timeout 30
-	call {
-		do conf lockMap none
-		call junopra "rachel"
-	}
-}
-
-automacro salvandoEmRachelPraUpAteLv99 {
-	ConfigKeyNot saveMap rachel
-	InMap rachel
-	ConfigKeyNot quest_eden em_curso
-	ConfigKeyNot quest_eden terminando
-	ConfigKeyNot aeroplano1 rachel
-	ConfigKeyNot In_saveMap_sequence true
-	BaseLevel 92..99
-	JobID 17
-	exclusive 1
-	run-once 1
-	call {
-		call SetSaveIn "rachel"
-	}
-}
-
-automacro upAteLv99 {
-	ConfigKeyNot quest_eden em_curso
-	ConfigKeyNot quest_eden terminando
-	ConfigKeyNot In_saveMap_sequence true
-	ConfigKeyNot lockMap ra_fild12
-	BaseLevel 92..99
-	exclusive 1
-	ConfigKey saveMap rachel
-	call {
-		call voltarAtacar
-		do conf lockMap ra_fild12
 	}
 }
 
@@ -235,7 +188,7 @@ automacro estouLv99 {
 macro configurarMapa {
 	if ( &config(saveMap) = $.param1 ) {
 		do conf lockMap $.param2
-	call voltarAtacar
+		call voltarAtacar
 	} else {
 		call SetSaveIn $.param1
 	}
@@ -245,5 +198,4 @@ macro configurarMapa {
 #
 #
 # FIM DO UP ATE O 99
-# 
-
+#
