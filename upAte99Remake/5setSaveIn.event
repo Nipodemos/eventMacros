@@ -65,7 +65,9 @@
 			stop
 		}
 	}
-	log Iniciando seguência de salvamento em &config(saveMap_wanted)
+	log ====================
+	log =Iniciando seguência de salvamento em &config(saveMap_wanted)
+	log ====================
 	$saveMap = &config(saveMap_wanted)
 	do conf -f In_saveMap_sequence true
 
