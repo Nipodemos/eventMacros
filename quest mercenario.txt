@@ -1,201 +1,435 @@
-﻿
+###############################
+###   CRÉDITOS REEDEMBR   #####
+###  SUPORTE : NIPODEMOS  #####
+###############################
+automacro GoQuest {
+InInventory "Novice Butterfly Wing" >= 1
+JobLevel = 50
+exclusive 1
+InMap xmas, xmas_dun02, xmas_fild01, xmas_dun01, xmas_in
+run-once 1
+call {
+do is Novice Butterfly Wing
+}
+}
 
-automacro comecarQuestIndoAteOMapa {
-	JobID 6
+automacro GoQuest2 {
+InInventory "Butterfly Wing" >= 1
+JobLevel = 50
+exclusive 1
+InMap xmas, xmas_dun02, xmas_fild01, xmas_dun01, xmas_in
+run-once 1
+call {
+do is Butterfly Wing
+}
+}
+
+automacro GoQuest3 {
+InInventory "Butterfly Wing" = 0
+InInventory "Novice Butterfly Wing" = 0
+JobLevel = 50
+exclusive 1
+InMap xmas, xmas_dun02, xmas_fild01, xmas_dun01, xmas_in
+run-once 1
+call {
+do conf route_randomWalk 1
+do move aldebaran
+}
+}
+
+automacro Aldebaran JobLevel 50 {
 	JobLevel = 50
 	exclusive 1
-	CurrentHP > 80%
-	run-once 1
-	NotInMap in_moc_16
+	InMap aldebaran
+	timeout 20
 	call {
-	do move moc_fild17
-	do move moc_fild16
-	do move in_moc_16
+		do move 141 114
+		pause 1
+		do talknpc 143 119 c r2 c r2
+	}
+}
+
+automacro izlude{
+	JobLevel = 50
+	exclusive 1
+	InMap izlude
+	run-once 1
+	call {
+		do move 101 105
+		pause 1
+		do move 125 103
+		pause 1
+		do move 125 91
+		pause 1
+		do talknpc 134 88 c r2 c r2
+	}
+}
+###############################
+###   CRÉDITOS REEDEMBR   #####
+###  SUPORTE : NIPODEMOS  #####
+###############################
+automacro pontosNaoDistribuidos {
+	JobLevel = 50
+	exclusive 1
+	FreeSkillPoints > 1
+	run-once 1
+	call {
+		log Tem pontos ainda não distribuidos
+		log Resolvendo isso
+		do conf skillsAddAuto 1
+		do conf skillsAddAuto_list TF_DOUBLE 10, TF_STEAL 10, TF_MISS 10, TF_HIDING 8, TF_POISON 10, TF_DETOXIFY 1
+	}
+}
+
+automacro Começo {
+	JobLevel = 50
+	FreeSkillPoints = 0
+	InMap morocc, moc_fild11, moc_fild16, moc_fild17, moc_fild12
+	run-once 1
+	call {
+		do conf route_randomWalk 1
+		do conf autoTalkCont 0
+		do conf lockMap none
+		do move moc_fild17 369 272
+		do conf storageAuto 1
+		pause 2
+		do move moc_fild16
+	}
+}
+
+automacro Começo2 {
+	JobLevel = 50
+	FreeSkillPoints = 0
+	InMap moc_fild16
+	run-once 1
+	call {
+		do move moc_fild16 205 283
+		pause 1
+		do move moc_fild16 205 296
 	}
 }
 
 automacro Primeira Parte {
-JobLevel = 50
-exclusive 1
-IsInMapAndCoordinate in_moc_16 18 11
-run-once 1
-call {
-do conf route_randomWalk 0
-do move 20 27
-pause 2
-do talknpc 19 33 c r0 
+	JobLevel = 50
+	IsInMapAndCoordinate in_moc_16 18 11
+	run-once 1
+	call {
+		do conf route_randomWalk 0
+		do move 20 27
+		pause 2
+		do talknpc 19 33 c c c c r0
 }
 }
 
 automacro Segunda Parte {
-JobLevel = 50
-QuestActive 8001
-NpcNotNear /Guilds/ 
-exclusive 1
-#IsInMapAndCoordinate in_moc_16 19 76
-run-once 1
-call {
-do move 26 88
-}
-}
-
-automacro falar com guilsdman {
-	NpcMsg /you must be an/
-	exclusive 1
+	JobLevel = 50
+	IsInMapAndCoordinate in_moc_16 19 76
+	run-once 1
 	call {
-		do talk resp 0
+		do move 26 88
 	}
 }
 
 automacro Terceira Parte {
-JobLevel = 50
-QuestActive 8002
-exclusive 1
-NpcNotNear /Guilds/
-#IsInMapAndCoordinate in_moc_16 19 144
-run-once 1
-call {
-do move 20 158
-pause 2
-do talknpc 21 170
-}
-}
-
-automacro TerceiraParteBugada {
-	QuestActive 8002
-	NpcNear /Guilds/
 	exclusive 1
+	JobLevel = 50
+	IsInMapAndCoordinate in_moc_16 19 144
+	timeout 30
 	call {
-	do move 26 88
+		pause 10
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk resp 0
+		do talk cont
+		pause 1
+		do move 20 158
+		pause 2
+		do talknpc 21 170
 	}
 }
+###############################
+###   CRÉDITOS REEDEMBR   #####
+###  SUPORTE : NIPODEMOS  #####
+###############################
 automacro Quarta Parte {
-JobLevel = 50
-exclusive 1
-IsInMapAndCoordinate in_moc_16 181 183
-run-once 1
-call {
-do move 183 168
-pause 2
-do move 182 169
-pause 2
-do move 181 167
-}
+	JobLevel = 50
+	IsInMapAndCoordinate in_moc_16 181 183
+	run-once 1
+	call {
+		do move 183 168
+		pause 2
+		do move 182 169
+		pause 2
+		do move 181 167
+	}
 }
 
 automacro Quinta Parte {
+	exclusive 1
+	JobLevel = 50
+	IsInMapAndCoordinate in_moc_16 167 113
+	run-once 1
+	call {
+		do conf autoTalkCont 1
+		do move 165 76
+	}
+}
+
+automacro Sexta Parte {
+	JobLevel = 50
+	IsInMapAndCoordinate in_moc_16 165 76
+	run-once 1
+	call {
+		do conf autoTalkCont 0
+		do move 149 79
+	}
+}
+
+automacro Última Parte {
+InInventory "Necklace of Oblivion" >= 1
 JobLevel = 50
 exclusive 1
-IsInMapAndCoordinate in_moc_16 167 113
+IsInMapAndCoordinate in_moc_16 17 19
 run-once 1
 call {
-do move 149 79
+do move 20 27
+pause 2
+do talknpc 19 33 c c c c c
+pause 1
+do eq Novice Adventurer's Suit [1]
+do eq Muffler
+do eq Shoes
+do eq Katar [2]
+do eq Mantle
+}
+}
+
+automacro Voltando para morocc {
+InInventory "Novice Butterfly Wing" >= 1
+JobLevel = 1
+JobID 12
+exclusive 1
+InMap in_moc_16
+run-once 1
+call {
+do is Novice Butterfly Wing
+}
+}
+###############################
+###   CRÉDITOS REEDEMBR   #####
+###  SUPORTE : NIPODEMOS  #####
+###############################
+automacro Voltando para morocc2 {
+InInventory "Butterfly Wing" >= 1
+JobLevel = 1
+JobID 12
+exclusive 1
+InMap in_moc_16
+run-once 1
+call {
+do is Butterfly Wing
+}
+}
+
+automacro Voltando de pézão {
+InInventory "Butterfly Wing" = 0
+InInventory "Novice Butterfly Wing" = 0
+JobLevel = 1
+JobID 12
+exclusive 1
+InMap in_moc_16
+run-once 1
+call {
+do conf route_randomWalk 1
+do move morocc
 }
 }
 
 automacro Kafra morocc {
-JobLevel = 1
-exclusive 1
-IsInMapAndCoordinate morocc
-run-once 1
-call {
-do move 159 103
-pause 1
-do talknpc 156 97 c r2 c r0
-}
+	JobLevel = 1
+	JobID 12 #assassin
+	exclusive 1
+	InMap morocc
+	run-once 1
+	call {
+		do move 159 103
+		pause 1
+		do talknpc 156 97 c r2 c r0
+	}
 }
 
 automacro Prontera {
-JobLevel = 1
-exclusive 1
-IsInMapAndCoordinate prontera
-run-once 1
-call {
-do move 151 39
-pause 1
-do talknpc 151 29 c r2 c r1
-}
+	JobLevel = 1
+	exclusive 1
+	JobID 12 #assassin
+	InMap prontera
+	run-once 1
+	call {
+		do move 151 39
+		pause 1
+		do talknpc 151 29 c r2 c r1
+	}
 }
 
 automacro Geffen {
-JobLevel = 1
-exclusive 1
-IsInMapAndCoordinate geffen
-run-once 1
-call {
-do move 121 62
-pause 1
-do talknpc 120 62 c r2 c r1
-}
+	JobLevel = 1
+	exclusive 1
+	JobID 12 #assassin
+	InMap geffen
+	run-once 1
+	call {
+		do move 121 62
+		pause 1
+		do talknpc 120 62 c r2 c r1
+	}
 }
 
+
 automacro Aldebaran {
-JobLevel = 1
-exclusive 1
-IsInMapAndCoordinate aldebaran
-run-once 1
-call {
-do move 141 114
-pause 1
-do talknpc 143 119 c r0
-pause 5
-do quit
-}
+	JobLevel = 1
+	exclusive 1
+	JobID 12 #assassin
+	InMap aldebaran
+	run-once 1
+	call {
+		do move 141 114
+		pause 1
+		do talknpc 143 119 c r0
+		pause 5
+		do quit
+	}
 }
 
 automacro Pergunta1 {
-NpcMsg /could kill you at any time and it would be so easy/
-exclusive 1
-call {
-do talk resp 0
-}
+	NpcMsg /You are here to become/
+	exclusive 1
+	call {
+		do talk cont
+		do talk resp 0
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+	}
 }
 
 automacro Pergunta2 {
-NpcMsg /what do you think is the/
-exclusive 1
-call {
-do talk resp 0
-}
+	NpcMsg /This place is called the 'Guildmaster's room/
+	exclusive 1
+	call {
+		do talk cont
+		do talk cont
+	}
 }
 
 automacro Pergunta3 {
-NpcMsg /than you are now?/
-exclusive 1
-call {
-do talk resp 0
+	NpcMsg /I apologize for/
+	exclusive 1
+	call {
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk resp 0
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk resp 0
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk resp 0
+		do talk cont
+		do talk resp 1
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk resp 0
+		do talk cont
+		do talk resp 1
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+	}
 }
-}
-
+###############################
+###   CRÉDITOS REEDEMBR   #####
+###  SUPORTE : NIPODEMOS  #####
+###############################
 automacro Pergunta4 {
-NpcMsg /if you could become an/
-exclusive 1
-call {
-do talk resp 1
-}
+	NpcMsg /What brings you here?/
+	exclusive 1
+	call {
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk resp 0
+	}
 }
 
 automacro Pergunta5 {
-NpcMsg /Is that all/
-exclusive 1
-call {
-do talk resp 1
-}
+	NpcMsg /you must be an/
+	exclusive 1
+	call {
+		do talk cont
+		do talk resp 0
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+	}
 }
 
+automacro Pergunta6 {
+	NpcMsg /This place is called the/
+	exclusive 1
+	call {
+		do talk cont
+		do talk cont
+	}
+}
 
 automacro Pergunta7 {
-NpcMsg /you wish to continue/
-exclusive 1
-call {
-do talk resp 0
-}
+	NpcMsg /Mwahaha, it's useless/
+	exclusive 1
+	call {
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk cont
+		do talk resp 0
+		do talk cont
+	}
 }
 
 automacro Pergunta8 {
-NpcMsg /Please choose a weapon/
-exclusive 1
-call {
-do talk resp 1
-}
+	NpcMsg /Do you want to move/
+	exclusive 1
+	call {
+		do talk cont
+		do talk resp 0
+	}
 }

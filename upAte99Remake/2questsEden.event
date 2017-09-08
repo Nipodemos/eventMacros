@@ -82,6 +82,8 @@ automacro iniciandoQuestEden26MoverPerto {
 	JobID 6 #gatuno
 	exclusive 1
 	QuestInactive 7138
+	QuestInactive 7139
+	QuestInactive 7140
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKeyNot quest_eden em_curso
 	ConfigKeyNot quest_eden terminando
@@ -97,6 +99,8 @@ automacro iniciandoQuestEden26 {
 	JobID 6 #gatuno
 	exclusive 1
 	QuestInactive 7138
+	QuestInactive 7139
+	QuestInactive 7140
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKeyNot quest_eden em_curso
 	ConfigKeyNot quest_eden terminando
@@ -122,6 +126,10 @@ automacro IniciandoQuestEden40MoverPerto {
 	JobID 6 #gatuno
 	exclusive 1
 	QuestInactive 7147
+	QuestInactive 7148
+	QuestInactive 7149
+	QuestInactive 7150
+	QuestInactive 7151
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKeyNot quest_eden em_curso
 	ConfigKeyNot quest_eden terminando
@@ -456,7 +464,7 @@ automacro Eden40FinalizarCaças {
 	call {
 		call pararDeAtacar
 		do mconf $.QuestHuntCompletedLastMobID 0 0 0
-		do move in_orcs01 &rand(34,36) &rand(162,164)
+		do move in_orcs01 38 175 &rand(1,4)
 		#do talknpc 38 175 c c #Absalom#para07
 		do talk 0 #Absalom
 		release Eden40Caçar

@@ -3,25 +3,19 @@
 automacro cura {
 	PubMsg /cura|heal/i
 	exclusive 1
-	call {
-		call dáOqueEleQuer "28"  #cura
-	}
+	call dáOqueEleQuer "28"  #cura
 }
 
 automacro agi {
 	PubMsg /agi/i
 	exclusive 1
-	call {
-		call dáOqueEleQuer "29"  #agi
-	}
+	call dáOqueEleQuer "29"  #agi
 }
 
 automacro bless {
-	PubMsg /ben[çc]|bles[s]?/i
+	PubMsg /ben[çc]|bles/i
 	exclusive 1
-	call {
-		call dáOqueEleQuer "34"  #bless
-	}
+	call dáOqueEleQuer "34"  #bless
 }
 
 automacro buffs {
@@ -39,41 +33,43 @@ automacro buffs {
 		do c de nada
 	}
 }
-
 macro dáOqueEleQuer {
-	if ( $quantidadeDePedidos{$.PubMsgLastName} = undef ) %quantidadeDePedidos = ($.PubMsgLastName => 1)
-
+	if ( ! &exists(%quantidadeDePedidos) ) {
+		%quantidadeDePedidos = ($.PubMsgLastName => 1)
+	} elsif ( ! &defined ($quantidadeDePedidos{$.PubMsgLastName})) {
+		$quantidadeDePedidos{$.PubMsgLastName} = 1
+	}
 	log Quantidade de pedidos é $quantidadeDePedidos{$.PubMsgLastName}
 	do stand
 	pause 2
 	do e &random ("ok","ta","aqui","ta bom...", "só uma vez em", "sem problemas")
 	pause 1
-	do sp $.param1 $.PubMsgLastName
-#	if ($quantidadeDePedidos{$.PubMsgLastName} = 1) {
-#		pause 1
-#		do e &random ("ok","ta","aqui")
-#		pause 1
-#		do sp $.param1 $.PubMsgLastName
-#		$quantidadeDePedidos{$.PubMsgLastName}++
-#	} elsif ($quantidadeDePedidos{$.PubMsgLastName} = 2) {
-#		pause 1
-#		do e &random ("ta...","hmm")
-#		pause 1
-#		do sp $.param1 $.PubMsgLastName
-#		$quantidadeDePedidos{$.PubMsgLastName}++
-#	} elsif ($quantidadeDePedidos{$.PubMsgLastName} = 3) {
-#		pause 1
-#		do e &random ("denovo?","mais?","que isso")
-#		pause 1
-#		do sp $.param1 $.PubMsgLastName
-#		$quantidadeDePedidos{$.PubMsgLastName}++
-#	} elsif ($quantidadeDePedidos{$.PubMsgLastName} = 4) {
-#		do c &random ("ultima vez","é a ultima to vazando","só mais essa e tchau")
-#		pause 1
-#		do sp $.param1 $.PubMsgLastName
-#		$quantidadeDePedidos{$.PubMsgLastName}++
-#	} elsif ($quantidadeDePedidos{$.PubMsgLastName} >= 5) {
-#		do c &random ("nao vai rolar....","ah neeeeem","mals ae","agora nao desculpe","5 vezes é demais")
-#		$quantidadeDePedidos{$.PubMsgLastName}++
-#	}
+	do sp $.param[0] $.PubMsgLastName
+	if ($quantidadeDePedidos{$.PubMsgLastName} = 1) {
+		pause 1
+		do e &random ("ok","ta","aqui")
+		pause 1
+		do sp $param[0] $.PubMsgLastName
+		$quantidadeDePedidos{$.PubMsgLastName}++
+	} elsif ($quantidadeDePedidos{$.PubMsgLastName} = 2) {
+		pause 1
+		do e &random ("ta...","hmm")
+		pause 1
+		do sp $param[0] $.PubMsgLastName
+		$quantidadeDePedidos{$.PubMsgLastName}++
+	} elsif ($quantidadeDePedidos{$.PubMsgLastName} = 3) {
+		pause 1
+		do e &random ("denovo?","mais?","que isso")
+		pause 1
+		do sp $param[0] $.PubMsgLastName
+		$quantidadeDePedidos{$.PubMsgLastName}++
+	} elsif ($quantidadeDePedidos{$.PubMsgLastName} = 4) {
+		do c &random ("ultima vez","é a ultima to vazando","só mais essa e tchau")
+		pause 1
+		do sp $param[0] $.PubMsgLastName
+		$quantidadeDePedidos{$.PubMsgLastName}++
+	} elsif ($quantidadeDePedidos{$.PubMsgLastName} >= 5) {
+		do c &random ("nao vai rolar....","ah neeeeem","mals ae","agora nao desculpe","5 vezes é demais")
+		$quantidadeDePedidos{$.PubMsgLastName}++
+	}
 }

@@ -3,7 +3,7 @@
 	do conf lockMap none
 	do conf -f saveMap_save_sequence c r0
 	do conf -f saveMap_storage_sequence c r1
-	switch ( $.param[0] ) {
+	switch ($.param[0]) {
 		case (=~ /einbroch/i ) {
 			do conf -f saveMap_wanted einbroch
 			do conf -f saveMap_kafra_position 242 205
