@@ -435,7 +435,7 @@ macro caçarMonstros {
 	]
 }
 
-automacro Eden60JuntarFolhasEOmbreiras {
+automacro Eden60_JuntarItens {
 	QuestActive 7217
 	exclusive 1
 	timeout 120
@@ -451,7 +451,6 @@ automacro Eden60JuntarFolhasEOmbreiras {
 		]
 		if ( $ombreira < 5 ) goto Ombreira
 		if ( $ombreira >= 5 && $folha < 7 ) goto Folha
-		if ( $ombreira >= 5 && $folha >= 7 ) goto Juntei
 		:Ombreira
 		log Pegar Ombreiras
 		do conf lockMap um_fild02
@@ -463,13 +462,24 @@ automacro Eden60JuntarFolhasEOmbreiras {
 		do conf lockMap um_fild01
 		call voltarAtacar
 		stop
+	}
+}
 
-		:Juntei
-		log Vamos No NPC já temos os Itens.
+automacro Eden60_JaJunteiOsItens {
+	InInventoryID 7196 >= 5
+	InInventoryID 7100 >= 7
+	QuestActive 7217
+	exclusive 1
+	call {
+		lock Eden60_JuntarItens
+		[
+		log ===================================
+		log Vamos No NPC já tenho os Itens
+		log ===================================
+		]
 		call pararDeAtacar
 		do move um_fild01 &rand(36,38) &rand(277,279)
 		do talknpc 34 280 c  #Romeo#2nd02
-		stop
 	}
 }
 

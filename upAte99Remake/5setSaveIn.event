@@ -106,7 +106,9 @@ automacro FalarComKafra {
 	delay 2
 	timeout 20
 	call {
+		log ===========================================================================
 		log Falando com kafra na posição &config(saveMap_kafra_position) usando a sequência '&config(saveMap_save_sequence)'
+		log ===========================================================================
 		do talknpc &config(saveMap_kafra_position) &config(saveMap_save_sequence)
 	}
 }
@@ -133,6 +135,11 @@ automacro SalvoNaKafra {
 		do conf saveMap_wanted none
 		do conf saveMap_kafra_position none
 		do conf saveMap_sellNpc_position none
+		[
+		log ===========================================
+		log =Salvo em &config(saveMap)
+		log ===========================================
+		]
 	}
 }
 #
