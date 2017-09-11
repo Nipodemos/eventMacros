@@ -46,6 +46,11 @@ automacro army_is_Unset {
 	exclusive 1
 	ConfigKey exercito none
 	call {
+		[
+		log ===========================================
+		log Exercito não está definido, resolvendo isso
+		log ===========================================
+		]
 		$army = &random ("Croix", "Guillaume")
 		do conf -f exercito $army
 	}
@@ -64,6 +69,8 @@ automacro BugouLado1 {
 	timeout 10
 	exclusive 1
 	call {
+		log bug bug e mais bug kkkk
+		log resolvendo
 		do conf -f exercito Guillaume
 	}
 }
@@ -73,6 +80,8 @@ automacro BugouLado2 {
 	NpcMsg /^Eu sei que você já está ao lado dos Croix/i
 	exclusive 1
 	call {
+		log bug bug e mais bug kkkk
+		log resolvendo
 		do conf -f exercito Croix
 	}
 }
@@ -86,6 +95,12 @@ automacro moverPertoDoNpcCroix {
 	NotInMap bat_c01
 	InMap bat_room
 	call {
+		[
+		log ============================================
+		log Exercito selecionado: &config(exercito)
+		log movendo-se pra proximo do npc KVM 
+		log ============================================
+		]
 		do move bat_room &rand (164,167) &rand (124, 129) # move para perto dos NPCs
 	}
 }
@@ -99,6 +114,11 @@ automacro acessoAminiSalaCroix {
 	InMap bat_room
 	ConfigKey exercito Croix
 	call {
+		[
+		log ==========================================
+		log Acessando a salinha do exercito &config(exercito)
+		log ==========================================
+		]
 		do talk $.NpcNearLastBinId # Oficial de KVM
 		do talk resp 0
 	}
@@ -113,6 +133,12 @@ automacro moverPertoDoNpcGuillaume {
 	NotInMap bat_c01
 	InMap bat_room
 	call {
+		[
+		log =============================================
+		log Exercito selecionado: &config(exercito)
+		log movendo-se pra proximo do npc KVM 
+		log =============================================
+		]
 		do move bat_room &rand (164,167) &rand (175, 170) # move para perto dos NPCs
 	}
 }
@@ -125,6 +151,11 @@ automacro acessoAminiSalaGuillaume {
 	InMap bat_room
 	ConfigKey exercito Guillaume
 	call {
+		[
+		log ==========================================
+		log Acessando a salinha do exercito &config(exercito)
+		log ==========================================
+		]
 		do talk $.NpcNearLastBinId # Oficial de KVM
 		do talk resp 0
 	}
@@ -173,6 +204,11 @@ automacro FimDaBatalha_pegarPontos {
 	InMap bat_c01
 	timeout 5
 	call {
+		[
+		log ===============================================
+		log A batalha acabou, pegando meus pontos de direto
+		log ===============================================
+		]
 		release miniROOM_entrouNoChat
 		do talk $.NpcNearLastBinId
 	}
@@ -191,7 +227,15 @@ automacro derrota {
 		$oldarmy = &config (exercito)
 		if ( &config (exercito) == Croix ) do conf exercito Guillaume
 		if ( &config (exercito) == Guillaume ) do conf exercito Croix
-		log Perdemos no $oldarmy .\nAgora somos $army .\nPontuação total até agora: [ &config(pontosKVM) ] .
+		[
+		log ================================
+		log perdi a batalha =/
+		log melhor trocar de lado
+		log antes eu estava no exercito $oldarmy
+		log agora estou no exercito $army
+		log Pontuação total até agora: [ &config(pontosKVM) ] pontos.
+		log ================================
+		]
 	}
 }
 
@@ -205,20 +249,33 @@ automacro empate {
 		$points = &eval(&config(pontosKVM) + 1)
 		log $points
 		do conf -f pontosKVM $points
-		log Empatamos no $army \nPontuação total até agora: [ &config(pontosKVM) ] .
+		[
+		log ===========================
+		log a batalha deu empate!!
+		log Pontuação total até agora: [ &config(pontosKVM) ] pontos.
+		log ===========================
+		]
 	}
 }
 
 
 automacro vitoria {
 	exclusive 1
-	timeout
+	timeout 10
 	NpcMsg /pontos pela vitória/i
 	call {
 		do conf dentroDaMiniRoom none
 		$points = &eval(&config(pontosKVM) + 5)
 		log $points
 		do conf -f pontosKVM $points
-		log Ganhamos no $army !\nPontuação total até agora: [ &config(kvmPoints) ] .
+		log Ganhamos no $army !\n
+		[
+		log ================================
+		log Ganhamos a batalha!!!!!
+		log apesar que eu só fiquei parado né
+		log mas ganhamos!
+		log Pontuação total até agora: [ &config(kvmPoints) ] pontos.
+		log ================================
+		]
 	}
 }

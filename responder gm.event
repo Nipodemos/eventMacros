@@ -1,0 +1,31 @@
+automacro responder {
+    PrivMsgName /\d/ /iRO/
+    exclusive 1
+    call {
+		@respostas = ()
+		&push(@respostas, Hallo, ich verstehe kein Englisch.)
+		&push(@respostas, Ich gehe mal aus, jeder fragt, ob ich ein Bot bin.)
+		&push(@respostas, Was war das?)
+		&push(@respostas, Es ist langweilig zu heben und jeder füllt sich, ich gehe gehen.)
+		&push(@respostas, ????)
+		&push(@respostas, Ich bin kein Bot, was für ein Chaos! Ich werde diese Karte verlassen)
+		&push(@respostas, Ich verstehe nicht, was du sagst)
+		&push(@respostas, Hier geh ich ins Bett.)
+		&push(@respostas, was für ein fack)
+		&push(@respostas, Karte voll von bot, löse es bald!)
+		&push(@respostas, welle)
+		&push(@respostas, verbannen diese Scheibe)
+		&push(@respostas, Was willst du)
+		&push(@respostas, müde vom Aufstehen und die Spieler, die die Tasche füllen.)
+		&push(@respostas, Ich kann nicht verstehen, was du sagst, könnte ich in meiner Sprache sprechen?)
+		$index = &rand(0,14)
+        do pm $.PrivMsgNameLastName $respostas[$index]
+		do p anbt997245502
+		do is butterfly wings
+		log =================================================
+		log            GM FEZ O TESTE NESSE BOT
+		log =================================================
+		pause 30
+		do relog 7200
+    }
+}

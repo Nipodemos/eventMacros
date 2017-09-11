@@ -26,34 +26,6 @@ automacro ConfigEstáErrada {
 	}
 }
 
-automacro curar_seMoverProNpc {
-	InSaveMap 1
-	CurrentHp < 30%
-	exclusive 1
-	NpcNotNear /Kafra dos Biscoitos/
-	call {
-		log ===========================================
-		log Morri, vou me curar na kafra do eden
-		log ===========================================
-		do move moc_para01 &rand(37,40) &rand(19,22)
-	}
-}
-
-automacro curar_noNpc {
-	InMap moc_para01
-	NpcNear /Kafra dos Biscoitos/
-	ConfigKeyNot quest_eden em_curso
-	ConfigKeyNot In_saveMap_sequence true
-	ConfigKeyNot quest_eden terminando
-	exclusive 1
-	call {
-		do talk $.NpcNearLastBinId
-		do talk resp 0
-		do talk resp 0
-		do move prontera
-	}
-}
-
 automacro buffExpJobAcabou {
 	StatusInactiveHandle EFST_REWARD_PLUSONLYJOBEXP
 	NotInMap moc_para01

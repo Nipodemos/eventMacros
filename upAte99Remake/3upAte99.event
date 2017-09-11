@@ -178,7 +178,16 @@ macro configurarMapa {
 		do conf lockMap $.param[1]
 		call voltarAtacar
 	} else {
-		call SetSaveIn $.param[0]
+		if (&defined($.param[0])) {
+			log cidade pra salvar  é : $.param[0]
+		} else {
+			log valor de param é $.param[0]
+			log por algum motivo a cidade não ta definida... sem isso nao adianta prosseguir
+			do reload event
+			stop
+		}
+		$cidade = $.param[0]
+		call SetSaveIn "$cidade"
 	}
 }
 

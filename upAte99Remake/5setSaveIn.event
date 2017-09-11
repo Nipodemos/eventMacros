@@ -1,7 +1,6 @@
 ﻿macro SetSaveIn {
 	call pararDeAtacar
 	do conf lockMap none
-	do conf -f saveMap_save_sequence c r0
 	do conf -f saveMap_storage_sequence c r1
 	switch ($.param[0]) {
 		case (=~ /einbroch/i ) {
@@ -61,18 +60,50 @@
 		}
 		else {
 			log nome da cidade inválido, tente novamente...
+			log nome é: $.param[0]
 			log Talvez o nome foi escrito errado?
 			stop
 		}
 	}
-	log ====================
+	[
+	log =============================================
 	log =Iniciando seguência de salvamento em &config(saveMap_wanted)
-	log ====================
+	log =============================================
+	]
 	$saveMap = &config(saveMap_wanted)
 	do conf -f In_saveMap_sequence true
 
 }
 
+automacro jaToSalvoNessaCidade {
+	exclusive 1
+	ConfigKey In_saveMap_sequence true
+	ConfigKey saveMap $saveMap
+	ConfigKeyNot saveMap_wanted none
+	call {
+		[
+		log ==============================================
+		log já esta salvo em $saveMap , nao precisa fazer a sequencia toda denovo
+		log mas só por precaução, as configurações serão feitas
+		log ==============================================
+		]
+
+		do conf saveMap $saveMap
+		do conf storageAuto_npc $saveMap &config(saveMap_kafra_position)
+		do conf storageAuto 1
+		do conf sellAuto 1
+		do conf sellAuto_npc &config(saveMap_sellNpc_position)
+		do conf storageAuto_npc_type 3
+		do conf storageAuto_npc_steps &config(saveMap_storage_sequence)
+
+		do conf saveMap $saveMap
+		do conf In_saveMap_sequence false
+		do conf saveMap_storage_sequence none
+		do conf saveMap_wanted none
+		do conf saveMap_kafra_position none
+		do conf saveMap_sellNpc_position none
+	}
+}
 
 automacro movendoPraKafraForaDaCidade {
 	exclusive 1
@@ -106,10 +137,10 @@ automacro FalarComKafra {
 	delay 2
 	timeout 20
 	call {
-		log ===========================================================================
+		log =======================================================
 		log Falando com kafra na posição &config(saveMap_kafra_position) usando a sequência '&config(saveMap_save_sequence)'
-		log ===========================================================================
-		do talknpc &config(saveMap_kafra_position) &config(saveMap_save_sequence)
+		log =======================================================
+		do talknpc &config(saveMap_kafra_position) c r0
 	}
 }
 
