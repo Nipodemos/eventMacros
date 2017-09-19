@@ -58,6 +58,7 @@ automacro upAteLv26 {
 	priority 5
 	timeout 30
 	call {
+		do conf buyAuto_0_npc payon_in01 5 49
 		do iconf Erva Azul 7 1 0
 		call configurarMapa "payon" "pay_fild08"
 	}
@@ -78,6 +79,7 @@ automacro upAteLv40 {
 		do iconf Osso 10 1 0
 		do iconf Mandíbula Horrenda 10 1 0
 		do mconf 1084 0 0 0 #cugomelo negro, troço inútil
+		do conf buyAuto_0_npc payon_in01 5 49
 		call configurarMapa "payon" "pay_dun00"
 	}
 }
@@ -107,6 +109,7 @@ automacro upAteLv54_pegandoErvaAzul {
 	priority 5
 	timeout 30
 	call {
+		do conf buyAuto_0_npc cmd_in01 79 182
 		do iconf Erva Azul 7 1 0
 		call configurarMapa "comodo" "cmd_fild02"
 	}
@@ -125,7 +128,9 @@ automacro upAteLv54_jaTenhoErvaAzul {
 	timeout 30
 	exclusive 1
 	call {
+		do conf buyAuto_0_npc izlude_in 57 110
 		do mconf Cogumelo Negro 0 0 0
+		do mconf Hidra -1 0 0
 		call configurarMapa "izlude" "iz_dun00"
 	}
 }
@@ -143,6 +148,7 @@ automacro upAteLv60 {
 	timeout 30
 	call {
 		do mconf Hidra -1 0 0
+		do conf buyAuto_0_npc izlude_in 57 110
 		call configurarMapa "izlude" "iz_dun02"
 	}
 }
@@ -156,7 +162,10 @@ automacro upAteLv70 {
 	JobID 17
 	priority 5
 	timeout 30
-	call configurarMapa "morocc" "moc_fild17"
+	call {
+		do conf buyAuto_0_npc moc_ruins 114 63
+		call configurarMapa "morocc" "moc_fild17"
+	}
 }
 
 automacro upAteLv80 {
@@ -169,7 +178,10 @@ automacro upAteLv80 {
 	exclusive 1
 	priority 5
 	timeout 30
-	call configurarMapa "prontera" "mjolnir_11"
+	call {
+		do conf buyAuto_0_npc prt_in 126 76
+		call configurarMapa "prontera" "mjolnir_11"
+	}
 }
 
 automacro upAteLv99 {
