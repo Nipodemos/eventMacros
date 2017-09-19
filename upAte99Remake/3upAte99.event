@@ -46,6 +46,7 @@ automacro upAteLv12 {
 	timeout 30
 	call configurarMapa "payon" "pay_fild01"
 }
+
 automacro upAteLv26 {
 	ConfigKeyNot quest_eden em_curso
 	ConfigKeyNot quest_eden terminando
@@ -62,12 +63,12 @@ automacro upAteLv26 {
 	}
 }
 
-automacro upAteLv35 {
+automacro upAteLv40 {
 	ConfigKeyNot quest_eden em_curso
 	ConfigKeyNot quest_eden terminando
 	ConfigKeyNot lockMap pay_dun00
 	ConfigKeyNot In_saveMap_sequence true
-	BaseLevel 26..35
+	BaseLevel 26..40
 	exclusive 1
 	JobID 6 #gatuno
 	priority 5
@@ -81,8 +82,8 @@ automacro upAteLv35 {
 	}
 }
 
-automacro upAteLv44 {
-	BaseLevel 36..43
+automacro upAteLv46 {
+	BaseLevel 41..45
 	ConfigKeyNot quest_eden em_curso
 	ConfigKeyNot quest_eden terminando
 	ConfigKeyNot lockMap pay_fild09
@@ -94,12 +95,13 @@ automacro upAteLv44 {
 	call configurarMapa "payon" "pay_fild09"
 }
 
-automacro upAteLv54 {
-	BaseLevel 44..53
+automacro upAteLv54_pegandoErvaAzul {
+	BaseLevel 46..53
 	ConfigKeyNot quest_eden em_curso
 	ConfigKeyNot quest_eden terminando
 	ConfigKeyNot lockMap cmd_fild02
 	ConfigKeyNot In_saveMap_sequence true
+	InInventory "Erva Azul" < 7
 	exclusive 1
 	JobID 6 #gatuno
 	priority 5
@@ -107,6 +109,24 @@ automacro upAteLv54 {
 	call {
 		do iconf Erva Azul 7 1 0
 		call configurarMapa "comodo" "cmd_fild02"
+	}
+}
+
+automacro upAteLv54_jaTenhoErvaAzul {
+	BaseLevel 46..53
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	ConfigKeyNot lockMap iz_dun00
+	ConfigKeyNot In_saveMap_sequence true
+	InInventory "Erva Azul" >= 7
+	exclusive 1
+	JobID 6 #gatuno
+	priority 5
+	timeout 30
+	exclusive 1
+	call {
+		do mconf Cogumelo Negro 0 0 0
+		call configurarMapa "izlude" "iz_dun00"
 	}
 }
 
@@ -121,16 +141,19 @@ automacro upAteLv60 {
 	exclusive 1
 	priority 5
 	timeout 30
-	call configurarMapa "izlude" "iz_dun02"
+	call {
+		do mconf Hidra -1 0 0
+		call configurarMapa "izlude" "iz_dun02"
+	}
 }
 
 automacro upAteLv70 {
 	BaseLevel 60..70
-	JobID 17
 	ConfigKeyNot quest_eden em_curso
 	ConfigKeyNot quest_eden terminando
 	ConfigKeyNot lockMap moc_fild17
 	ConfigKeyNot In_saveMap_sequence true
+	JobID 17
 	priority 5
 	timeout 30
 	call configurarMapa "morocc" "moc_fild17"

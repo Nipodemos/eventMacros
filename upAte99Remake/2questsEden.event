@@ -136,15 +136,15 @@ automacro iniciandoQuestEden26 {
 
 automacro IniciandoQuestEden40MoverPerto {
 	QuestInactive 2017  #===========
-	QuestInactive 2018  #=
-	QuestInactive 2022	#=
+	QuestInactive 2018  #
+	QuestInactive 2022	#
 	QuestInactive 2023  #=quests de arruaceiro
-	QuestInactive 2024	#=
+	QuestInactive 2024	#
 	QuestInactive 2026	#===========
 	QuestInactive 7147	#===========
-	QuestInactive 7148	#=
+	QuestInactive 7148	#
 	QuestInactive 7149	#=quests eden
-	QuestInactive 7150	#=
+	QuestInactive 7150	#
 	QuestInactive 7151	#=============
 	NpcNotNear /Boya/
 	BaseLevel 40..49
@@ -277,7 +277,7 @@ automacro Eden12IrNoMapa {
 
 automacro Eden26SalvarNaKafra {
 	QuestActive 7138
-	BaseLevel 30..39
+	BaseLevel >= 26
 	exclusive 1
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKeyNot saveMap payon
@@ -289,7 +289,7 @@ automacro Eden26SalvarNaKafra {
 
 automacro Eden26IrNoMapa {
 	QuestActive 7138
-	BaseLevel 30..39
+	BaseLevel >= 26
 	exclusive 1
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKey saveMap payon
@@ -312,7 +312,7 @@ automacro Eden26IrNoMapa {
 
 automacro Eden40SalvarNaKafra {
 	QuestActive 7147
-	BaseLevel 50..59
+	BaseLevel >= 50
 	exclusive 1
 	QuestInactive 2017
 	QuestInactive 2018
@@ -331,7 +331,7 @@ automacro Eden40SalvarNaKafra {
 
 automacro Eden40IrNoMapa {
 	QuestActive 7147
-	BaseLevel 50..59
+	BaseLevel >= 50
 	QuestInactive 2017
 	QuestInactive 2018
 	QuestInactive 2022
@@ -360,7 +360,7 @@ automacro Eden40IrNoMapa {
 
 automacro Eden60SalvarNaKafra {
 	QuestActive 7214
-	BaseLevel 70..79
+	BaseLevel >= 70
 	exclusive 1
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKeyNot saveMap comodo
@@ -372,7 +372,7 @@ automacro Eden60SalvarNaKafra {
 
 automacro Eden60IrNoMapa {
 	QuestActive 7214
-	BaseLevel 70..79
+	BaseLevel >= 70
 	exclusive 1
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKey saveMap comodo
@@ -455,21 +455,25 @@ automacro Eden60_JuntarItens {
 		do iconf 7100 7 1 0 #folha
 		$ombreira = &invamount (Ombreira)
 		$folha = &invamount (Folha Afiada)
-		[
-		log ===========================================
-		log =estou no processo de coleta de itens pra quest eden
-		log ===========================================
-		]
+
 		if ( $ombreira < 5 ) goto Ombreira
 		if ( $ombreira >= 5 && $folha < 7 ) goto Folha
 		:Ombreira
-		log Pegar Ombreiras
+		[
+		log ===========================================
+		log =coletando Ombreiras pra quest eden
+		log ===========================================
+		]
 		do conf lockMap um_fild02
 		call voltarAtacar
 		stop
 
 		:Folha
-		log Pegar Folhas
+		[
+		log ===========================================
+		log =coletando Folha Afiada pra quest eden
+		log ===========================================
+		]
 		do conf lockMap um_fild01
 		call voltarAtacar
 		stop
@@ -490,7 +494,9 @@ automacro Eden60_JaJunteiOsItens {
 		]
 		call pararDeAtacar
 		do move um_fild01 &rand(36,38) &rand(277,279)
-		do talknpc 34 280 c  #Romeo#2nd02
+		do talknpc 34 280 c #Romeo#2nd02
+		do iconf 7196 0 0 1 #ombreira
+		do iconf 7100 0 0 1 #folha
 	}
 }
 

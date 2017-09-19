@@ -1087,6 +1087,7 @@ automacro jaSouGatuno {
 	InInventoryID 5055 = 1
 	exclusive 1
 	call {
+		do conf sitAuto_hp_upper 70
 		do pconf 1243 0 #1243#Adaga_do_Aprendiz#
 		do pconf 2112 0 #2112#Vembrassa_do_Aprendiz#
 		do pconf 2414 0 #2414#Sandálias_do_Aprendiz#
