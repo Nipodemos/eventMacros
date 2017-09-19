@@ -26,23 +26,6 @@ automacro ConfigEstáErrada {
 	}
 }
 
-automacro buffExpJobAcabou {
-	StatusInactiveHandle EFST_REWARD_PLUSONLYJOBEXP
-	NotInMap moc_para01
-	BaseLevel < 44
-	JobLevel != 50
-	ConfigKeyNot quest_eden em_curso
-	ConfigKeyNot In_saveMap_sequence true
-	ConfigKeyNot quest_eden terminando
-	exclusive 1
-	call {
-		log ===========================================
-		log Acabou o buff de exp job, indo pegar denovo
-		log ===========================================
-		do move moc_para01 &rand(37,40) &rand(19,22)
-	}
-}
-
 macro pararDeAtacar {
 	[
 	do conf route_randomWalk 0
@@ -146,6 +129,7 @@ sub nextMap {
 		return 0;
 	}
 }
+
 
 #
 #

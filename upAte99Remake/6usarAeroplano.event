@@ -5,33 +5,40 @@
 macro junopra {
 	log Vamos ir de Juno para $.param[0]
 	#Se a cidade for izlude ou rachel , ele pega o aeroplano respectivo
-	if ( $.param[0] =~ /izlude/i ) {
-		do conf -f aeroplano1 izlude
-		do conf -f aeroplano2 none
-	} elsif ( $.param[0] =~ /rachel/i ) {
-		do conf -f aeroplano1 rachel
-		do conf -f aeroplano2 none
-	} elsif ( $.param[0] =~ /hugel/i ) {
-		do conf -f aeroplano1 none
-		do conf -f aeroplano2 hugel
-	} elsif ( $.param[0] =~ /lighthalzen/i ) {
-		do conf -f aeroplano1 none
-		do conf -f aeroplano2 lighthalzen
-	} elsif ( $.param[0] =~ /einbroch/i ) {
-		do conf -f aeroplano1 none
-		do conf -f aeroplano2 eibroch
-	} elsif ( $.param[0] =~ /[jy]uno/) {
-		log VOCÊ QUER IR DE JUNO PRA JUNO?
-		log PORQUE VOCÊ FARIA ISSO?
-	} else {
-		[
-		log Você digitou um nome inválido, por favor tente novamente
-		log Os valores podem ser:
-		log izlude , rachel , juno ou yuno
-		log hugel , lighthalzen ou einbroch
-		log Escreva como quiser, desde que escreva certo
-		]
-		stop
+	switch ( $.param[0] ) {
+		case (=~ /izlude/i) {
+			do conf -f aeroplano1 izlude
+			do conf -f aeroplano2 none
+		}
+		case (=~ /rachel/i){
+			do conf -f aeroplano1 rachel
+			do conf -f aeroplano2 none
+		}
+		case (=~ /hugel/i) {
+			do conf -f aeroplano1 none
+			do conf -f aeroplano2 hugel
+		}
+		case (=~ /lighthalzen/i) {
+			do conf -f aeroplano1 none
+			do conf -f aeroplano2 lighthalzen
+		}
+		case (=~ /einbroch/i) {
+			do conf -f aeroplano1 none
+			do conf -f aeroplano2 eibroch
+		}
+		case (=~ /[jy]uno/) {
+			log VOCÊ QUER IR DE JUNO PRA JUNO?
+			log PORQUE VOCÊ FARIA ISSO?
+		} else {
+			[
+			log Você digitou um nome inválido, por favor tente novamente
+			log Os valores podem ser:
+			log izlude , rachel , juno ou yuno
+			log hugel , lighthalzen ou einbroch
+			log Escreva como quiser, desde que escreva certo
+			]
+			stop
+		}
 	}
 	$aeroplano1 = &config(aeroplano1)
 	$aeroplano2 = &config(aeroplano2)

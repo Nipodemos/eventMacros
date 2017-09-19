@@ -1,0 +1,66 @@
+automacro compra {
+	InMap brasilis
+	Zeny > 5000
+ 	CharCurrentWeight < 90%
+	InInventory "Bala de Guaraná" < 499
+	run-once 1
+	call {
+		do move brasilis 192 160
+		pause 0.8
+		do talk  &npc( 187 162 )
+		do talk resp 0
+		release compra
+	}
+}
+
+automacro putcart {
+	CartCurrentWeight < 90%
+	InInventory "Bala de Guaraná" > 499
+	InMap brasilis
+	exclusive 1
+	call {
+		do cart add Bala de Guaraná
+		release compra
+	}
+}
+automacro storage_InventoryFull {
+	InInventory "Bala de Guaraná" > 2499
+	InMap brasilis
+	Zeny > 150
+	exclusive 1
+	call mandarProArmazen
+}
+
+automacro storage_CartFull {
+	InCart "Bala de Guaraná" > 2499
+	InMap brasilis
+	Zeny > 150
+	exclusive 1
+	call mandarProArmazen
+}
+
+macro mandarProArmazen {
+	do move brasilis 197 218
+	pause 1
+	do talknpc 197 221 c r1
+	pause 2
+	do storage add Bala de Guaraná
+	do storage addfromcart Bala de Guaraná
+	do storage close
+	do stand
+	do move brasilis 189 160
+	release compra
+}
+automacro quitmaxbalas {
+	run-once 1
+	InStorage "Bala de Guaraná" >= 2500
+	exclusive 1
+	call {
+		[
+		log ===========================================
+		log =ja tem bala demais no storage, fechando openkore
+		log ===========================================
+		]
+		do quit
+	}
+}

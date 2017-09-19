@@ -1,12 +1,11 @@
 ﻿automacro EdenJoinMoveNpc {
-	InInventoryID 6219 = 0
-	InInventoryID 2414 = 0
+	InInventoryID 6219 = 0 #Emblema do Grupo Valhalla
+	InInventoryID 2414 = 0 #sapatos de aprendiz
 	exclusive 1
 	BaseLevel >= 12
 	ConfigKeyNot membroDoEden sim
 	NpcNotNear /Lenore|Lime/
-	JobIDNot 0
-	run-once 1
+	JobIDNot 0 #aprendiz
 	call {
 		do move moc_para01 &rand(33,35) &rand(25,27) #posição otima no Eden
 	}
@@ -16,7 +15,6 @@ automacro EdenJoinTalkNpc {
 	InInventory "Emblema do Grupo Valhalla" = 0
 	ConfigKeyNot membroDoEden sim
 	exclusive 1
-	run-once 1
 	NpcNear /Lenore|Lime/
 	call {
 		do talk $.NpcNearLastBinId
@@ -25,7 +23,7 @@ automacro EdenJoinTalkNpc {
 		do talk text lolol
 		do talk text lolol
 		do talk resp 4
-		do iconf 6219 0 0 0
+		do iconf 6219 0 0 0 #Emblema do Grupo Valhalla
 		do conf -f membroDoEden sim
 	}
 }
@@ -39,9 +37,22 @@ automacro EdenJoinedBugged {
 		do conf -f membroDoEden sim
 	}
 }
+
+automacro EdenNotJoinedBug {
+	InInventoryID 6919 = 0
+	ConfigKey membroDoEden sim
+	exclusive 1
+	call {
+		log ===============================================
+		log está constando que já sou do éden, mas não sou
+		log alterando isso
+		log ===============================================
+		do conf membroDoEden none
+	}
+}
 automacro iniciandoQuestEden12MoverPerto {
 	NpcNotNear /Boya/
-	InInventoryID 6219 = 1
+	InInventoryID 6219 = 1 #Emblema do Grupo Valhalla
 	BaseLevel 12..18
 	exclusive 1
 	JobID 6 #gatuno
@@ -56,7 +67,7 @@ automacro iniciandoQuestEden12MoverPerto {
 
 automacro iniciandoQuestEden12 {
 	NpcNear /Boya/
-	InInventoryID 6219 = 1
+	InInventoryID 6219 = 1 #Emblema do Grupo Valhalla
 	BaseLevel 12..18
 	exclusive 1
 	JobID 6 #gatuno

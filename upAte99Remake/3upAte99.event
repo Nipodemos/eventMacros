@@ -165,7 +165,7 @@ automacro upAteLv99 {
 automacro estouLv99 {
 	BaseLevel = 99
 	exclusive 1
-	timeout 15
+	run-once 1
 	JobID 17 #arruaceiro
 	call {
 		log CHEGUEI NO LVL 99 FINALMENTE !!!!!!!

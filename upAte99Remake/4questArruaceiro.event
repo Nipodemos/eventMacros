@@ -136,7 +136,7 @@ automacro virarArruaceiro3 {
 		[
 		do conf lockMap pay_dun00
 		do mconf 1005 0 0 0
-		do mconf 1031 0 0 0
+		do mconf 1031 1 0 0
 		do mconf 1078 0 0 0
 		do mconf 1084 0 0 0
 		do mconf 1076 0 0 0
