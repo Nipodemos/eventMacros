@@ -122,7 +122,6 @@ automacro upAteLv54_jaTenhoErvaAzul {
 	ConfigKeyNot lockMap iz_dun00
 	ConfigKeyNot In_saveMap_sequence true
 	InInventory "Erva Azul" >= 7
-	exclusive 1
 	JobID 6 #gatuno
 	priority 5
 	timeout 30

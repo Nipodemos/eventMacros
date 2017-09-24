@@ -12,7 +12,7 @@
 
 automacro configurarFurto {
 	SkillLevel TF_STEAL 10
-	ConfigKeyNot attackSkillSlot_0_TF_STEAL
+	ConfigKeyNot attackSkillSlot_0 Furto
 	exclusive 1
 	call {
 		[

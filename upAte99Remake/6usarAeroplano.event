@@ -54,32 +54,40 @@ macro einbrochpra {
 	log Vamos ir de Eibroch para $.param[0]
 	#se a cidade for juno hugel ou lighthalzen ele só pega 1 aeroplano
 	# se for outra cidade, ele pega os dois aeroplanos
-	if ( $.param[0] =~ /izlude/i ) {
-		do conf -f aeroplano1 izlude
-		do conf -f aeroplano2 juno
-	} elsif ($.param[0] =~ /rachel/i ) {
-		do conf -f aeroplano1 rachel
-		do conf -f aeroplano2 juno
-	} elsif ( $.param[0] =~ /hugel/i ) {
-		do conf -f aeroplano1 none
-		do conf -f aeroplano2 hugel
-	} elsif ( $.param[0] =~ /lighthalzen/i ) {
-		do conf -f aeroplano1 none
-		do conf -f aeroplano2 lighthalzen
-	} elsif ($.param[0] =~ /einbroch/i ) {
-		log VOCÊ QUER IR DE EIBROCH PRA EINBROCH?
-		log PORQUE VOCÊ FARIA ISSO?
-	} elsif ( $.param[0] =~ /[jy]uno/) {
-		do conf -f aeroplano1 none
-		do conf -f aeroplano2 juno
-	} else {
-		[
-		log Você digitou um nome inválido, por favor tente novamente
-		log Os valores podem ser izlude , rachel , juno ou yuno ,
-		log hugel , lighthalzen ou einbroch
-		log pode ser com letra maiuscula ou sem
-		]
-		stop
+	switch ($.param[0]) {
+		case (=~ /izlude/i) {
+			do conf -f aeroplano1 izlude
+			do conf -f aeroplano2 juno
+		}
+		case (=~ /rachel/i) {
+			do conf -f aeroplano1 rachel
+			do conf -f aeroplano2 juno
+		}
+		case (=~ /hugel/i) {
+			do conf -f aeroplano1 none
+			do conf -f aeroplano2 hugel
+		}
+		case (=~ /lighthalzen/i) {
+			do conf -f aeroplano1 none
+			do conf -f aeroplano2 lighthalzen
+		}
+		case (=~ /einbroch/i) {
+			log VOCÊ QUER IR DE EINBROCH PRA EINBROCH?
+			log PORQUE VOCÊ FARIA ISSO?
+		}
+		case (=~ /[jy]uno/) {
+			do conf -f aeroplano1 none
+			do conf -f aeroplano2 juno
+		}
+		else {
+			[
+			log Você digitou um nome inválido, por favor tente novamente
+			log Os valores podem ser izlude , rachel , juno ou yuno ,
+			log hugel , lighthalzen ou einbroch
+			log pode ser com letra maiuscula ou sem
+			]
+			stop
+		}
 	}
 	$aeroplano1 = &config(aeroplano1)
 	$aeroplano2 = &config(aeroplano2)
@@ -146,7 +154,7 @@ automacro dentroDoAeroplanoInternacionalVarNaoDefinida {
 	InMap airplane_01
 	timeout 50
 	call {
-		if ($aeroplano1 = undef) {
+		if (&defined($aeroplano1)) {
 			$aeroplano1 = &config(aeroplano1)
 		}
 		log Estamos no aeroplano, aguardando chegada ao destino
