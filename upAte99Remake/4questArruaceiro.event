@@ -245,6 +245,16 @@ automacro virarArruaceiro4.0 {
 	exclusive 1
 	JobLevel = 50
 	call {
+		log sua posição atual é: $.map $.pos
+		if ($.map = in_rogue && $.pos ~ 169 34, 246 25, 164 106) {
+		[
+		log ==================================
+		log essa macro está se ativando no momento errado
+		log reporte esse bug ao criador da macro
+		log ==================================
+		]
+		stop
+		}
 		do conf attackAuto -1
 		do conf -f questArruaceiro 0
 		do move cmd_fild07
@@ -262,6 +272,16 @@ automacro virarArruaceiro4.1 {
 	exclusive 1
 	JobLevel = 50
 	call {
+		log sua posição atual é: $.map $.pos
+		if ($.map = in_rogue && $.pos ~ 169 34, 246 25, 164 106) {
+		[
+		log ==================================
+		log essa macro está se ativando no momento errado
+		log reporte esse bug ao criador da macro
+		log ==================================
+		]
+		stop
+		}
 		do conf attackAuto -1
 		do conf -f questArruaceiro 1
 		do move cmd_fild04 304 180
@@ -277,9 +297,18 @@ automacro virarArruaceiro4.2 {
 	exclusive 1
 	JobLevel = 50
 	call {
+		log sua posição atual é: $.map $.pos
+		if ($.map = in_rogue && $.pos ~ 169 34, 246 25, 164 106) {
+		[
+		log ==================================
+		log essa macro está se ativando no momento errado
+		log reporte esse bug ao criador da macro
+		log ==================================
+		]
+		stop
+		}
 		do conf attackAuto -1
 		do conf -f questArruaceiro 2
-		do move cmd_fild07
 		do move cmd_fild09 335 143
 		do talk resp 0
 		do talk resp 2
@@ -345,11 +374,13 @@ automacro virarArruaceiro5buggeed {
 	exclusive 1
 	timeout 120
 	call {
+		[
 		log ====================================
 		log MORRI TENTANDO PASSAR PELO LABIRINTO
 		log HP ATUAL: $.CurrentHPLastPercent \%
 		log ESPRANDO HP FICAR ACIMA DE 80\%
 		log ====================================
+		]
 		do sit
 		if ( &config (sitAuto_hp_upper) != 80 ) {
 		do conf sitAuto_hp_lower 20
@@ -362,6 +393,7 @@ automacro virarArruaceiro6.0 {
 	JobLevel = 50
 	IsInMapAndCoordinate in_rogue 169 34
 	exclusive 1
+	priority -5
 	call {
 		#essa é a parte depois que fala a senha na porta e entra na casa
 		do talknpc 160 34 c r0 c
@@ -372,6 +404,7 @@ automacro virarArruaceiro6.1 {
 	JobLevel = 50
 	IsInMapAndCoordinate in_rogue 246 25
 	exclusive 1
+	priority -5
 	call {
 		#essa é a parte depois que fala a senha na porta e entra na casa
 		do move in_rogue 244 33
@@ -386,6 +419,7 @@ automacro virarArruaceiro6.2 {
 	JobLevel = 50
 	IsInMapAndCoordinate in_rogue 164 106
 	exclusive 1
+	priority -5
 	call {
 		#essa é a parte depois que fala a senha na porta e entra na casa
 		do move in_rogue 172 108
@@ -411,7 +445,27 @@ automacro virarArruaceiro7 {
 
 automacro virarArruaceiro8 {
 	JobLevel = 50
-	IsInMapAndCoordinate in_rogue 359 117
+	#IsInMapAndCoordinate in_rogue 359 117
+	NpcNear /Marybell/
+	InMap in_rogue
+	QuestActive 2026
+	exclusive 1
+	call {
+		log ===========================
+		log PASSAMOS PELO LABIRINTO!!!!
+		log ===========================
+		do move in_rogue 369 119
+		do talknpc 363 122 c c c
+		do conf itemsTakeAuto 1
+	}
+}
+
+automacro virarArruaceiro8Alternativo {
+	JobLevel = 50
+	#IsInMapAndCoordinate in_rogue 378 113
+	NpcNear /Homem Assustador/
+	InMap in_rogue
+	QuestActive 2026
 	exclusive 1
 	call {
 		log ===========================

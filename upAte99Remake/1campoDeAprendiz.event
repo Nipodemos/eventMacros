@@ -808,7 +808,6 @@ automacro treinoMaisPesado {
 automacro caçandoPickys {
 	QuestHuntOngoing 7123 1049
 	InMap new_4-3, new_5-3
-	ConfigKeyNot quest_atual matando
 	timeout 60
 	exclusive 1
 	call sePreparandoPraMatar
@@ -817,7 +816,6 @@ automacro caçandoPickys {
 automacro caçandoSalgueiro {
 	QuestHuntOngoing 7127 1010
 	InMap new_4-3, new_5-3
-	ConfigKeyNot quest_atual matando
 	timeout 60
 	exclusive 1
 	call sePreparandoPraMatar
@@ -829,7 +827,6 @@ macro sePreparandoPraMatar {
 	do mconf 1004 0 0 0 #zangao
 	do mconf 1049 1 0 0 #picky
 	do mconf 1010 1 0 0 #Salgueiro
-	do conf -f quest_atual matando
 	log ======== Indo matar pickys e salgueiros
 }
 
@@ -848,7 +845,6 @@ automacro mateiPickys {
 	NpcNear /Espadachi|Swordman/i
 	call {
 		do conf quest_atual none
-		do mconf 1004 0 0 0 #zangao
 		do mconf 1049 0 0 0 #Picky
 		do talk $.NpcNearLastBinId
 		do talk resp 2
@@ -870,7 +866,6 @@ automacro mateiSalgueiros {
 	NpcNear /Gatuno|Thief/i
 	InMap new_4-3, new_5-3
 	call {
-		do mconf 1004 0 0 0 #zangao
 		do mconf 1010 0 0 0 #Salgueiro
 		do talk $.NpcNearLastBinId
 		do talk resp 2
@@ -885,7 +880,6 @@ automacro completeiTodasAsQuests {
 	QuestInactive 7123
 	QuestInactive 7124
 	exclusive 1
-	run-once 1
 	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
 	call {
 		log ======== Completei todas as Quests
@@ -898,9 +892,11 @@ automacro continuarUpandoAte12 {
 	QuestInactive 7127
 	QuestInactive 7123
 	QuestInactive 7124
+	InInventoryID 12323 > 50 #asa de mosca de iniciante
+	InInventoryID 12324 > 20 #asa de borboleta de iniciante
 	BaseLevel < 12
 	exclusive 1
-	run-once 1
+	timeout 180
 	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
 	call {
 		[
@@ -912,8 +908,10 @@ automacro continuarUpandoAte12 {
 		do mconf 1002 1 0 0 #poring
 		do mconf 1113 1 0 0 #drops
 		call voltarAtacar
+		log =================================
+		log upando até o lvl 12
+		log =================================
 		]
-		log Vou continuar upando até chegar nivel 12
 	}
 }
 automacro continuar upando ate 12 bugged {
@@ -924,10 +922,14 @@ automacro continuar upando ate 12 bugged {
 	run-once 1
 	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
 	call {
+		[
+		log ===================================================================
 		log Deveria upar ate o lvl 12 agora, mas nao completamos uma das quests
 		log O número da quest é $.QuestActiveLastID
 		log Resolvendo isso
 		log Se vc ver essa mensagem mais de uma vez provavelmente a macro está bugada
+		log ===================================================================
+		]
 		switch ( $.QuestActiveLastID ) {
 			case (= 7124) {
 				do conf quest_atual lunaticos
