@@ -28,7 +28,7 @@
 		do conf relogAfterStorage 0
 		]
 		#se o mapa salvo nao for juno, faça com que seja (só por desencargo de consciencia)
-		if (&config (saveMap) != yuno) call SetSaveinJuno
+		if (&config (saveMap) != yuno) call SetSavein "yuno"
 		#esvazia tudo pra ficar com 0 de peso
 		do autosell
 		do autostorage
@@ -70,14 +70,14 @@ automacro DandoOuReceBendoZeny {
 	call {
 		#aceitando negociaçao
 		do deal
-		if(@eval($.zeny-1285000) > 0) {
+		if(&eval($.zeny-1285000) > 0) {
 			pause 2
 			#se o zeny atual for maior que 1285000, vc dá o excedente pro mercador
 			$zenyDado = @eval($.zeny-1285000)
 			do deal add z $zenyDado
 			do pm alanzimercador coloqueiozeny
 			pause 2
-		do deal
+			do deal
 		} else {
 			pm alanzimercador $.zeny 
 			#se o zeny atual for menor que 1285000, vc manda pro mercador via pm quanto mais precisa

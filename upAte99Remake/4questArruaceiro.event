@@ -239,11 +239,12 @@ automacro tenhoOsItens {
 	}
 }
 
-automacro virarArruaceiro4_opção1 {
+automacro virarArruaceiro_etapa4 {
 	JobID 6 #gatuno
-	QuestActive 2022
 	exclusive 1
 	JobLevel = 50
+	priority 5 #prioridade baixa
+	QuestActive 2022, 2023, 2024
 	call {
 		log sua posição atual é: $.map $.pos
 		if ($.map = in_rogue && $.pos ~ 169 34, 246 25, 164 106) {
@@ -256,117 +257,55 @@ automacro virarArruaceiro4_opção1 {
 		stop
 		}
 		do conf attackAuto -1
-		do conf -f questArruaceiro 1
-		do move cmd_fild07
-		do move cmd_fild09 107 195
-		do talk resp 1
-		do talk resp 2
-		do talk resp 1
-		do talk resp 0
-	}
-}
-
-automacro virarArruaceiro4_opção2 {
-	JobID 6 #gatuno
-	QuestActive 2023
-	exclusive 1
-	JobLevel = 50
-	call {
-		log sua posição atual é: $.map $.pos
-		if ($.map = in_rogue && $.pos ~ 169 34, 246 25, 164 106) {
-		[
-		log ==================================
-		log essa macro está se ativando no momento errado
-		log reporte esse bug ao criador da macro
-		log ==================================
-		]
-		stop
+		switch ($.QuestActiveLastID) {
+			case (= 2022) { #opção 1
+				do conf -f questArruaceiro 1
+				call irAteLocal_questArruaceiro "cmd_fild09 107 195" "1" "2" "1" "0" #local e respostas apropriadas
+				do move cmd_fild07
+			}
+			case (= 2023) { #opção 2
+				do conf -f questArruaceiro 2
+				call irAteLocal_questArruaceiro "cmd_fild04 304 180" "2" "1" "1" "2" #local e respostas apropriadas
+			}
+			case (= 2024) { #opção 3
+				do conf -f questArruaceiro 3
+				call irAteLocal_questArruaceiro "cmd_fild09 335 143" "0" "2" "4" "0" #local e respostas apropriadas
+			}
 		}
-		do conf attackAuto -1
-		do conf -f questArruaceiro 2
-		do move cmd_fild04 304 180
-		do talk resp 2
-		do talk resp 1
-		do talk resp 1
-		do talk resp 2
 	}
 }
 
-automacro virarArruaceiro4_opção3 {
-	QuestActive 2024
-	exclusive 1
+macro irAteLocal_questArruaceiro {
+	do move $.params[0]
+	do talk resp $.params[1]
+	do talk resp $.params[2]
+	do talk resp $.params[3]
+	do talk resp $.params[4]
+}
+
+automacro virarArruaceiro_morreuNoLabirinto_hpAlto {
+	QuestActive 2026
+	ConfigKeyNot questArruaceiro none
 	JobLevel = 50
+	NotInMap in_rogue
+	CurrentHP > 80%
 	call {
-		log sua posição atual é: $.map $.pos
-		if ($.map = in_rogue && $.pos ~ 169 34, 246 25, 164 106) {
 		[
-		log ==================================
-		log essa macro está se ativando no momento errado
-		log reporte esse bug ao criador da macro
-		log ==================================
+		log ====================================
+		log Já esou com hp alto, vou tentar o labirinto denovo
+		log ====================================
 		]
-		stop
+		# se vc tiver morrido no labirindo, essa macro que vai fazer voce ir la tentar denovo
+		# vai pegar qual o caminho certo e seguir ele
+		switch (&config(questArruaceiro)) {
+			case (= 1) call irAteLocal_questArruaceiro "cmd_fild09 107 195" "1" "2" "1" "0"  #local e respostas apropriadas
+			case (= 2) call irAteLocal_questArruaceiro "cmd_fild04 304 180" "2" "1" "1" "2"  #local e respostas apropriadas
+			case (= 3) call irAteLocal_questArruaceiro "cmd_fild09 335 143" "0" "2" "4" "0"  #local e respostas apropriadas
 		}
-		do conf attackAuto -1
-		do conf -f questArruaceiro 3
-		do move cmd_fild09 335 143
-		do talk resp 0
-		do talk resp 2
-		do talk resp 4
-		do talk resp 0
 	}
 }
 
-automacro virarArruaceiro_morreuNoLabirinto_opção1 {
-	QuestActive 2026
-	ConfigKey questArruaceiro 1
-	JobLevel = 50
-	NotInMap in_rogue
-	CurrentHP > 80%
-	call {
-		do conf attackAuto -1
-		do move cmd_fild09 107 195
-		do talk resp 1
-		do talk resp 2
-		do talk resp 1
-		do talk resp 0
-	}
-}
-
-automacro virarArruaceiro5_morreuNoLabirinto_opção2 {
-	ConfigKey questArruaceiro 2
-	QuestActive 2026
-	JobLevel = 50
-	NotInMap in_rogue
-	CurrentHP > 80%
-	exclusive 1
-	call {
-		do conf attackAuto -1
-		do move cmd_fild04 304 180
-		do talk resp 2
-		do talk resp 1
-		do talk resp 1
-		do talk resp 2
-	}
-}
-
-automacro virarArruaceiro5_morreuNoLabirinto_opção3 {
-	ConfigKey questArruaceiro 3
-	QuestActive 2026
-	JobLevel = 50
-	NotInMap in_rogue
-	CurrentHP > 80%
-	call {
-		do conf attackAuto -1
-		do move cmd_fild09 335 143
-		do talk resp 0
-		do talk resp 2
-		do talk resp 4
-		do talk resp 0
-	}
-}
-
-automacro virarArruaceiro5buggeed {
+automacro virarArruaceiro_morreuNoLabirinto_hpBaixo {
 	QuestActive 2026
 	JobLevel = 50
 	NotInMap in_rogue
@@ -389,41 +328,25 @@ automacro virarArruaceiro5buggeed {
 	}
 }
 
-automacro virarArruaceiro6.0 {
+automacro virarArruaceiro_DentroDaCasa {
 	JobLevel = 50
-	IsInMapAndCoordinate in_rogue 169 34
+	IsInMapAndCoordinate in_rogue 169 34, in_rogue 246 25, in_rogue 164 106
 	exclusive 1
 	priority -5
 	call {
-		#essa é a parte depois que fala a senha na porta e entra na casa
-		do talknpc 160 34 c r0 c
-	}
-}
-
-automacro virarArruaceiro6.1 {
-	JobLevel = 50
-	IsInMapAndCoordinate in_rogue 246 25
-	exclusive 1
-	priority -5
-	call {
-		#essa é a parte depois que fala a senha na porta e entra na casa
-		do move in_rogue 244 33
-		do talk &npc (244 39)
-		do talk resp 0
-		#do talknpc 244 39 c r0 c
-	}
-}
-
-
-automacro virarArruaceiro6.2 {
-	JobLevel = 50
-	IsInMapAndCoordinate in_rogue 164 106
-	exclusive 1
-	priority -5
-	call {
-		#essa é a parte depois que fala a senha na porta e entra na casa
-		do move in_rogue 172 108
-		do talknpc 177 109 c r0 c
+		switch ($.pos) {
+			case (= 169 34) {
+				do talknpc 160 34 c r0 c
+			}
+			case (= 246 25) {
+				do move in_rogue 244 33
+				do talknpc 244 39 c r0 c
+			}
+			case (= 164 106) {
+				do move in_rogue 172 108
+				do talknpc 177 109 c r0 c
+			}
+		}
 	}
 }
 
