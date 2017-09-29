@@ -127,7 +127,7 @@ automacro upAteLv54_jaTenhoErvaAzul {
 	timeout 30
 	exclusive 1
 	call {
-		do conf buyAuto_0_npc izlude_in 57 110
+		do conf buyAuto_0_npc izlude_in 115 61
 		do mconf Cogumelo Negro 0 0 0
 		do mconf Hidra -1 0 0
 		call configurarMapa "izlude" "iz_dun00"
@@ -147,7 +147,7 @@ automacro upAteLv60 {
 	timeout 30
 	call {
 		do mconf Hidra -1 0 0
-		do conf buyAuto_0_npc izlude_in 57 110
+		do conf buyAuto_0_npc izlude_in 115 61
 		call configurarMapa "izlude" "iz_dun02"
 	}
 }

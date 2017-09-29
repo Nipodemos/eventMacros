@@ -239,7 +239,7 @@ automacro tenhoOsItens {
 	}
 }
 
-automacro virarArruaceiro4.0 {
+automacro virarArruaceiro4_opção1 {
 	JobID 6 #gatuno
 	QuestActive 2022
 	exclusive 1
@@ -256,7 +256,7 @@ automacro virarArruaceiro4.0 {
 		stop
 		}
 		do conf attackAuto -1
-		do conf -f questArruaceiro 0
+		do conf -f questArruaceiro 1
 		do move cmd_fild07
 		do move cmd_fild09 107 195
 		do talk resp 1
@@ -266,7 +266,7 @@ automacro virarArruaceiro4.0 {
 	}
 }
 
-automacro virarArruaceiro4.1 {
+automacro virarArruaceiro4_opção2 {
 	JobID 6 #gatuno
 	QuestActive 2023
 	exclusive 1
@@ -283,7 +283,7 @@ automacro virarArruaceiro4.1 {
 		stop
 		}
 		do conf attackAuto -1
-		do conf -f questArruaceiro 1
+		do conf -f questArruaceiro 2
 		do move cmd_fild04 304 180
 		do talk resp 2
 		do talk resp 1
@@ -292,7 +292,7 @@ automacro virarArruaceiro4.1 {
 	}
 }
 
-automacro virarArruaceiro4.2 {
+automacro virarArruaceiro4_opção3 {
 	QuestActive 2024
 	exclusive 1
 	JobLevel = 50
@@ -308,7 +308,7 @@ automacro virarArruaceiro4.2 {
 		stop
 		}
 		do conf attackAuto -1
-		do conf -f questArruaceiro 2
+		do conf -f questArruaceiro 3
 		do move cmd_fild09 335 143
 		do talk resp 0
 		do talk resp 2
@@ -317,9 +317,9 @@ automacro virarArruaceiro4.2 {
 	}
 }
 
-automacro virarArruaceiro5.0 {
+automacro virarArruaceiro_morreuNoLabirinto_opção1 {
 	QuestActive 2026
-	ConfigKey questArruaceiro 0
+	ConfigKey questArruaceiro 1
 	JobLevel = 50
 	NotInMap in_rogue
 	CurrentHP > 80%
@@ -333,8 +333,8 @@ automacro virarArruaceiro5.0 {
 	}
 }
 
-automacro virarArruaceiro5.1 {
-	ConfigKey questArruaceiro 1
+automacro virarArruaceiro5_morreuNoLabirinto_opção2 {
+	ConfigKey questArruaceiro 2
 	QuestActive 2026
 	JobLevel = 50
 	NotInMap in_rogue
@@ -350,8 +350,8 @@ automacro virarArruaceiro5.1 {
 	}
 }
 
-automacro virarArruaceiro5.2 {
-	ConfigKey questArruaceiro 2
+automacro virarArruaceiro5_morreuNoLabirinto_opção3 {
+	ConfigKey questArruaceiro 3
 	QuestActive 2026
 	JobLevel = 50
 	NotInMap in_rogue
@@ -433,9 +433,12 @@ automacro virarArruaceiro7 {
 	IsInMapAndCoordinate in_rogue 15 105
 	macro_delay 0.5
 	call {
-		#ahhhh o labirinto.... o bixin vai morrer algumas vezes aqui viu...
+		#ahhhh o labirinto.... o bixin vai morrer algumas vezes aqui viu... ou não kkkk
 		do conf attackAuto -1
 		do conf itemsTakeAuto 0
+		log ================================
+		log Iniciando Labirindo
+		log ================================
 		do move 23 105
 		do move 23 334
 		#preguiça de fazer o resto das coordenadas específicas
@@ -452,7 +455,7 @@ automacro virarArruaceiro8 {
 	exclusive 1
 	call {
 		log ===========================
-		log PASSAMOS PELO LABIRINTO!!!!
+		log PASSEI PELO LABIRINTO!!!!
 		log ===========================
 		do move in_rogue 369 119
 		do talknpc 363 122 c c c
@@ -469,7 +472,7 @@ automacro virarArruaceiro8Alternativo {
 	exclusive 1
 	call {
 		log ===========================
-		log PASSAMOS PELO LABIRINTO!!!!
+		log PASSEI PELO LABIRINTO!!!!
 		log ===========================
 		do move in_rogue 369 119
 		do talknpc 363 122 c c c

@@ -32,15 +32,14 @@ automacro configurarFurto {
 }
 
 automacro configurarPotLaranja {
-	Zeny >= 24000
+	Zeny > 30000
 	ConfigKeyNot useSelf_item_0 Poção de Aprendiz
 	ConfigKeyNot useSelf_item_0 Poção Laranja
 	exclusive 1
 	call {
 		do conf buyAuto_0 Poção Laranja
-		do conf buyAuto_0_minAmount 10
 		do conf buyAuto_0_maxAmount 100
-		do conf buyAuto_0_zeny 24000
+		do conf buyAuto_0_zeny 30000
 		do conf useSelf_item_0 Poção Laranja
 		do conf useSelf_item_0_hp < 50%
 	}
@@ -75,7 +74,6 @@ macro voltarAtacar {
 	]
 }
 automacro checarNoInicio {
-	OnCharLogIn 1
 	run-once 1
 	exclusive 1
 	call {

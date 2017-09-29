@@ -704,7 +704,9 @@ automacro ComeçarQuestPickyMoverPerto {
 	ConfigKey quest_atual pickys
 	NpcNotNear /Espadachim|Swordman/
 	QuestInactive 7123
+	QuestInactive 7124
 	exclusive 1
+	priority -5
 	run-once 1
 	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
 	call moverPertoDosNpc
@@ -714,7 +716,9 @@ automacro começarQuestPicky {
 	ConfigKey quest_atual pickys
 	NpcNear /Espadachim|Swordman/
 	QuestInactive 7123
+	QuestInactive 7124
 	exclusive 1
+	priority -5
 	run-once 1
 	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
 	call {
@@ -731,6 +735,8 @@ automacro começarQuestSalgueiroMoverPerto {
 	ConfigKey quest_atual salgueiros
 	QuestActive 7123
 	QuestInactive 7127
+	QuestInactive 7124
+	priority -5
 	exclusive 1
 	run-once 1
 	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
@@ -741,7 +747,9 @@ automacro começarQuestSalgueiro {
 	ConfigKey quest_atual salgueiros
 	QuestActive 7123
 	QuestInactive 7127
+	QuestInactive 7124
 	NpcNear /Thief|Gatuno/
+	priority -5
 	exclusive 1
 	run-once 1
 	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
@@ -957,7 +965,7 @@ automacro seMorrerEnquantoUpaAteLv12 {
 automacro se morrer enquanto mata pickys_e_salgueiros {
 	QuestActive 7123, 7127
 	CurrentHP >= 50%
-	IsInCoordinate 95 21
+	priority 5
 	InMap new_1-3, new_2-3, new_3-3
 	exclusive 1
 	call mudarDeMapa
@@ -1139,6 +1147,71 @@ automacro vireiGatuno_equipandoTunica {
 		if ($check != -1) do eq $check
 	}
 }
+
+automacro EdenJoinMoveNpc {
+	InInventory "Emblema do Grupo Valhalla" = 0
+	IsNotEquippedID armor 15009
+	InInventoryID 15009 = 0
+	IsNotEquippedID armor 15010
+	InInventoryID 15010 = 0
+	IsNotEquippedID armor 15011
+	InInventoryID 15011 = 0
+	IsNotEquippedID armor 15031
+	InInventoryID 15031 = 0
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot virarArrauceiro true
+	ConfigKeyNot in_saveMap_sequence true
+	InInventoryID 2414 = 0 #sapatos de aprendiz
+	exclusive 1
+	run-once 1
+	BaseLevel >= 12
+	ConfigKeyNot membroDoEden sim
+	NpcNotNear /Lenore|Lime/
+	JobIDNot 0 #aprendiz
+	call {
+		do move moc_para01 &rand(33,35) &rand(25,27) #posição otima no Eden
+	}
+}
+
+automacro EdenJoinTalkNpc {
+	InInventory "Emblema do Grupo Valhalla" = 0
+	IsNotEquippedID armor 15009
+	InInventoryID 15009 = 0
+	IsNotEquippedID armor 15010
+	InInventoryID 15010 = 0
+	IsNotEquippedID armor 15011
+	InInventoryID 15011 = 0
+	IsNotEquippedID armor 15031
+	InInventoryID 15031 = 0
+	ConfigKeyNot membroDoEden sim
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot virarArrauceiro true
+	ConfigKeyNot in_saveMap_sequence true
+	run-once 1
+	exclusive 1
+	NpcNear /Lenore|Lime/
+	call {
+		do talk $.NpcNearLastBinId
+		do talk resp 1
+		do talk resp 0
+		do talk text lolol
+		do talk text lolol
+		do talk resp 4
+		do iconf 6219 0 0 0 #Emblema do Grupo Valhalla
+		do conf -f membroDoEden sim
+	}
+}
+
+automacro EdenJoinedBugged {
+	InInventoryID 6219 = 1
+	ConfigKeyNotExist membroDoEden
+	exclusive 1
+	run-once 1
+	call {
+		do conf -f membroDoEden sim
+	}
+}
+
 #
 #
 #
