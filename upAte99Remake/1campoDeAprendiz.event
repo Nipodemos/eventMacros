@@ -19,6 +19,13 @@ automacro TalkSprakkiOutside {
 	QuestInactive 7117
 	call {
 		[
+        do conf -f in_saveMap_sequence false
+        do conf -f membroDoEden none
+        do conf -f quest_atual none
+        do conf -f saveMap_storage_sequence none
+        do conf -f saveMap_wanted none
+        do conf -f saveMap_kafra_position none
+        do conf -f saveMap_sellNpc_position none
 		do conf autoMoveOnDeath 1
 		do conf autoMoveOnDeath_x none
 		do conf autoMoveOnDeath_y none
@@ -1033,6 +1040,12 @@ automacro endleveling {
 	priority 1
 	NpcNear /Thief|Gatuno/
 	call {
+        do conf -f in_saveMap_sequence false
+        do conf -f membroDoEden none
+        do conf -f saveMap_storage_sequence none
+        do conf -f saveMap_wanted none
+        do conf -f saveMap_kafra_position none
+        do conf -f saveMap_sellNpc_position none
 		do talk $.NpcNearLastBinId
 		do talk resp 1
 		do talk resp 1

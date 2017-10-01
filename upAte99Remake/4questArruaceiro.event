@@ -21,7 +21,7 @@ automacro virarArruaceiroInicio_Bugged {
 		do conf skillsAddAuto_list NV_BASIC 9, TF_DOUBLE 10, TF_MISS 10, TF_STEAL 10, TF_HIDING 8, TF_POISON 10, TF_DETOXIFY 1, RG_SNATCHER 10, RG_STEALCOIN 10, RG_BACKSTAP 4, RG_TUNNELDRIVE 5, RG_RAID 5, RG_INTIMIDATE 5, RG_PLAGIARISM 10
 		[
 		log ===========================================
-		log =se isso estiver aparecendo repetitamente, a macro tem um bug
+		log =se isso estiver aparecendo repetidamente, a macro tem um bug
 		log ===========================================
 		]
 	}
@@ -276,6 +276,12 @@ automacro virarArruaceiro_etapa4 {
 }
 
 macro irAteLocal_questArruaceiro {
+    [
+    log ================================
+    log =Mapa pra qual está se movendo: '$.params[0]'
+    log =Sequência de conversação: '$.params[1] $.params[2] $.params[3] $.params[4]'
+    log ================================
+    ]
 	do move $.params[0]
 	do talk resp $.params[1]
 	do talk resp $.params[2]
@@ -360,7 +366,7 @@ automacro virarArruaceiro7 {
 		do conf attackAuto -1
 		do conf itemsTakeAuto 0
 		log ================================
-		log Iniciando Labirindo
+		log Iniciando Labirinto
 		log ================================
 		do move 23 105
 		do move 23 334

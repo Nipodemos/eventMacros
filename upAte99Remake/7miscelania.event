@@ -42,6 +42,7 @@ automacro configurarPotLaranja {
 		do conf buyAuto_0_zeny 30000
 		do conf useSelf_item_0 Poção Laranja
 		do conf useSelf_item_0_hp < 50%
+		do iconf 512 100 0 0
 	}
 }
 
@@ -74,6 +75,7 @@ macro voltarAtacar {
 	]
 }
 automacro checarNoInicio {
+	OnCharLogIn 1
 	run-once 1
 	exclusive 1
 	call {
