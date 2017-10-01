@@ -26,12 +26,31 @@ automacro virarArruaceiroInicio_Bugged {
 		]
 	}
 }
+
+automacro virarArruaceiroInicio_salvarEmMorocc {
+	JobID 6 #gatuno
+	JobLevel = 50
+	FreeSkillPoints = 0
+	priority 2
+	exclusive 1
+	ConfigKeyNot saveMap morocc
+	NpcNotNear /Arruaceira da Guilda/
+	QuestInactive 2017
+	QuestInactive 2018
+	QuestInactive 2022
+	QuestInactive 2023
+	QuestInactive 2024
+	QuestInactive 2026
+	call SetSaveIn "morocc"
+}
+
 automacro virarArruaceiroInicio_IrNoNpc {
 	JobID 6 #gatuno
 	JobLevel = 50
 	FreeSkillPoints = 0
 	priority 2
 	exclusive 1
+	ConfigKey saveMap morocc
 	NpcNotNear /Arruaceira da Guilda/
 	QuestInactive 2017
 	QuestInactive 2018
@@ -231,6 +250,7 @@ automacro tenhoOsItens {
 	call {
 		lock virarArruaceiro3
 		do conf lockMap none
+        do conf sitAuto_hp_upper 80
 		call pararDeAtacar
 		do talk $.NpcNearLastBinId #Smith
 		do talk $.NpcNearLastBinId #Smith
@@ -243,25 +263,26 @@ automacro virarArruaceiro_etapa4 {
 	JobID 6 #gatuno
 	exclusive 1
 	JobLevel = 50
+    CurrentHP >= 80%
 	priority 5 #prioridade baixa
 	QuestActive 2022, 2023, 2024
 	call {
-		log sua posição atual é: $.map $.pos
 		if ($.map = in_rogue && $.pos ~ 169 34, 246 25, 164 106) {
-		[
-		log ==================================
-		log essa macro está se ativando no momento errado
-		log reporte esse bug ao criador da macro
-		log ==================================
-		]
-		stop
+		    [
+		    log ==================================
+			log essa macro está se ativando no momento errado
+			log reporte esse bug ao criador da macro
+			log ==================================
+			]
+			stop
 		}
+        do stand
 		do conf attackAuto -1
+        log sua posição atual é: $.map $.pos
 		switch ($.QuestActiveLastID) {
 			case (= 2022) { #opção 1
 				do conf -f questArruaceiro 1
 				call irAteLocal_questArruaceiro "cmd_fild09 107 195" "1" "2" "1" "0" #local e respostas apropriadas
-				do move cmd_fild07
 			}
 			case (= 2023) { #opção 2
 				do conf -f questArruaceiro 2
@@ -278,15 +299,15 @@ automacro virarArruaceiro_etapa4 {
 macro irAteLocal_questArruaceiro {
     [
     log ================================
-    log =Mapa pra qual está se movendo: '$.params[0]'
-    log =Sequência de conversação: '$.params[1] $.params[2] $.params[3] $.params[4]'
+    log =Mapa pra qual está se movendo: '$.param[0]'
+    log =Sequência de conversação: '$.param[1] $.param[2] $.param[3] $.param[4]'
     log ================================
     ]
-	do move $.params[0]
-	do talk resp $.params[1]
-	do talk resp $.params[2]
-	do talk resp $.params[3]
-	do talk resp $.params[4]
+	do move $.param[0]
+	do talk resp $.param[1]
+	do talk resp $.param[2]
+	do talk resp $.param[3]
+	do talk resp $.param[4]
 }
 
 automacro virarArruaceiro_morreuNoLabirinto_hpAlto {
@@ -294,19 +315,39 @@ automacro virarArruaceiro_morreuNoLabirinto_hpAlto {
 	ConfigKeyNot questArruaceiro none
 	JobLevel = 50
 	NotInMap in_rogue
-	CurrentHP > 80%
+	CurrentHP >= 80%
+	exclusive 1
 	call {
+		do stand
 		[
-		log ====================================
-		log Já esou com hp alto, vou tentar o labirinto denovo
-		log ====================================
+		log ==================================================
+		log Já esou com hp alto, vou retentar o labirinto
+		log ==================================================
 		]
+		log a opção de caminho é a &config(questArruaceiro)
 		# se vc tiver morrido no labirindo, essa macro que vai fazer voce ir la tentar denovo
 		# vai pegar qual o caminho certo e seguir ele
-		switch (&config(questArruaceiro)) {
-			case (= 1) call irAteLocal_questArruaceiro "cmd_fild09 107 195" "1" "2" "1" "0"  #local e respostas apropriadas
-			case (= 2) call irAteLocal_questArruaceiro "cmd_fild04 304 180" "2" "1" "1" "2"  #local e respostas apropriadas
-			case (= 3) call irAteLocal_questArruaceiro "cmd_fild09 335 143" "0" "2" "4" "0"  #local e respostas apropriadas
+		switch ( &config(questArruaceiro) ) {
+			case (= 1) {
+				log indo ate o local 1
+				call irAteLocal_questArruaceiro "cmd_fild09 107 195" "1" "2" "1" "0"  #local e respostas apropriadas
+			}
+			case (= 2) {
+				log indo ate o local 2
+				call irAteLocal_questArruaceiro "cmd_fild04 304 180" "2" "1" "1" "2"  #local e respostas apropriadas
+			}
+			case (= 3) {
+				log indo ate o local 3
+				call irAteLocal_questArruaceiro "cmd_fild09 335 143" "0" "2" "4" "0"  #local e respostas apropriadas
+			}
+			else {
+				[
+				log ================================
+				log =a macro deveria ter escolhido um caminho, mas não conseguiu, isso é um bug
+				log ================================
+				]
+				stop
+			}
 		}
 	}
 }
@@ -322,8 +363,8 @@ automacro virarArruaceiro_morreuNoLabirinto_hpBaixo {
 		[
 		log ====================================
 		log MORRI TENTANDO PASSAR PELO LABIRINTO
-		log HP ATUAL: $.CurrentHPLastPercent \%
-		log ESPRANDO HP FICAR ACIMA DE 80\%
+		log HP ATUAL: $.CurrentHPLastPercent%
+		log ESPERANDO HP FICAR ACIMA DE 80%
 		log ====================================
 		]
 		do sit

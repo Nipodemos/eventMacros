@@ -103,6 +103,7 @@ automacro upAteLv54_pegandoErvaAzul {
 	ConfigKeyNot quest_eden terminando
 	ConfigKeyNot lockMap cmd_fild02
 	ConfigKeyNot In_saveMap_sequence true
+	ConfigKeyNot virarArruaceiro true
 	InInventory "Erva Azul" < 7
 	exclusive 1
 	JobID 6 #gatuno
@@ -121,6 +122,7 @@ automacro upAteLv54_jaTenhoErvaAzul {
 	ConfigKeyNot quest_eden terminando
 	ConfigKeyNot lockMap iz_dun00
 	ConfigKeyNot In_saveMap_sequence true
+	ConfigKeyNot virarArruaceiro true
 	InInventory "Erva Azul" >= 7
 	JobID 6 #gatuno
 	priority 5
