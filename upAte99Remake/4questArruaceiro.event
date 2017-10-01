@@ -276,6 +276,7 @@ automacro virarArruaceiro_etapa4 {
 			]
 			stop
 		}
+		do conf lockMap none
         do stand
 		do conf attackAuto -1
         log sua posição atual é: $.map $.pos
@@ -324,6 +325,7 @@ automacro virarArruaceiro_morreuNoLabirinto_hpAlto {
 		log Já esou com hp alto, vou retentar o labirinto
 		log ==================================================
 		]
+		do conf lockMap none
 		log a opção de caminho é a &config(questArruaceiro)
 		# se vc tiver morrido no labirindo, essa macro que vai fazer voce ir la tentar denovo
 		# vai pegar qual o caminho certo e seguir ele
@@ -406,6 +408,7 @@ automacro virarArruaceiro7 {
 		#ahhhh o labirinto.... o bixin vai morrer algumas vezes aqui viu... ou não kkkk
 		do conf attackAuto -1
 		do conf itemsTakeAuto 0
+		do conf lockMap none
 		log ================================
 		log Iniciando Labirinto
 		log ================================
