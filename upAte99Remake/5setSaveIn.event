@@ -70,9 +70,18 @@
 	log =Iniciando seguência de salvamento em &config(saveMap_wanted)
 	log =============================================
 	]
-	$saveMap = &config(saveMap_wanted)
 	do conf -f In_saveMap_sequence true
 
+}
+
+automacro set_savemap_variables {
+	exclusive 1
+	run-once 1
+	ConfigKey In_saveMap_sequence true
+	priority -4
+	call {
+		$saveMap = &config(saveMap_wanted)
+	}
 }
 
 automacro jaToSalvoNessaCidade {
@@ -97,11 +106,11 @@ automacro jaToSalvoNessaCidade {
 		do conf storageAuto_npc_steps &config(saveMap_storage_sequence)
 
 		do conf saveMap $saveMap
-		do conf In_saveMap_sequence false
 		do conf saveMap_storage_sequence none
 		do conf saveMap_wanted none
 		do conf saveMap_kafra_position none
 		do conf saveMap_sellNpc_position none
+		do conf In_saveMap_sequence false
 	}
 }
 
@@ -137,9 +146,9 @@ automacro FalarComKafra {
 	delay 2
 	timeout 20
 	call {
-		log =======================================================
+		log ==============================================================
 		log Falando com kafra na posição &config(saveMap_kafra_position) usando a sequência '&config(saveMap_save_sequence)'
-		log =======================================================
+		log ==============================================================
 		do talknpc &config(saveMap_kafra_position) c r0
 	}
 }
@@ -160,12 +169,12 @@ automacro SalvoNaKafra {
 		do conf storageAuto_npc_type 3
 		do conf storageAuto_npc_steps &config(saveMap_storage_sequence)
 
-		do conf In_saveMap_sequence false
 		do conf saveMap_save_sequence none
 		do conf saveMap_storage_sequence none
 		do conf saveMap_wanted none
 		do conf saveMap_kafra_position none
 		do conf saveMap_sellNpc_position none
+		do conf In_saveMap_sequence false
 		[
 		log ===========================================
 		log =Salvo em &config(saveMap)

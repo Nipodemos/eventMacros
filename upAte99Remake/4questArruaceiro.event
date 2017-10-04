@@ -265,6 +265,7 @@ automacro virarArruaceiro_etapa4 {
 	JobLevel = 50
     CurrentHP >= 80%
 	priority 5 #prioridade baixa
+	delay 5
 	QuestActive 2022, 2023, 2024
 	call {
 		if ($.map = in_rogue && $.pos ~ 169 34, 246 25, 164 106) {
@@ -309,6 +310,8 @@ macro irAteLocal_questArruaceiro {
 	do talk resp $.param[2]
 	do talk resp $.param[3]
 	do talk resp $.param[4]
+	set exclusive 0
+	pause 5
 }
 
 automacro virarArruaceiro_morreuNoLabirinto_hpAlto {
