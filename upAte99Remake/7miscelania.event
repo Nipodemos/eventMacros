@@ -75,10 +75,12 @@ macro voltarAtacar {
 	]
 }
 automacro checarNoInicio {
-	OnCharLogIn 1
+	BaseLevel > 0
+	priority -50 #muito alta
 	run-once 1
 	exclusive 1
 	call {
+		$desired_lockMap = &config(desired_lockMap)
 		xConfConfiguratedOrNot()
 	}
 }

@@ -154,7 +154,7 @@ automacro upAteLv60 {
 	}
 }
 
-automacro upAteLv70 {
+automacro upAteLv71 {
 	BaseLevel 60..70
 	ConfigKeyNot quest_eden em_curso
 	ConfigKeyNot quest_eden terminando
@@ -201,7 +201,7 @@ automacro upAteLv99 {
 automacro estouLv99 {
 	BaseLevel = 99
 	exclusive 1
-	run-once 1
+	timeout 120
 	JobID 17 #arruaceiro
 	call {
 		log CHEGUEI NO LVL 99 FINALMENTE !!!!!!!

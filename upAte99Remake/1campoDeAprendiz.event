@@ -694,7 +694,6 @@ automacro mateiLunaticosIndoAteoNpc {
 }
 
 automacro mateiLunaticos {
-	ConfigKey quest_atual lunaticos
 	exclusive 1
 	QuestHuntCompleted 7124 1063
 	NpcNear /Mago|Mage/
