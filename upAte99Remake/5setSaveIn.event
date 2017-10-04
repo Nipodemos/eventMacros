@@ -166,6 +166,7 @@ automacro SalvoNaKafra {
 	ConfigKey In_saveMap_sequence true
 	InMap $saveMap
 	call {
+		[
 		do conf saveMap $saveMap
 		do conf storageAuto_npc $saveMap &config(saveMap_kafra_position)
 		do conf storageAuto 1
@@ -180,7 +181,7 @@ automacro SalvoNaKafra {
 		do conf saveMap_kafra_position none
 		do conf saveMap_sellNpc_position none
 		do conf In_saveMap_sequence false
-		[
+
 		log ===========================================
 		log =Salvo em &config(saveMap)
 		log ===========================================

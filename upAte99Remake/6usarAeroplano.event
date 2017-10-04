@@ -24,7 +24,7 @@ macro junopra {
 		}
 		case (=~ /einbroch/i) {
 			do conf -f aeroplano1 none
-			do conf -f aeroplano2 eibroch
+			do conf -f aeroplano2 einbroch
 		}
 		case (=~ /[jy]uno/) {
 			log VOCÊ QUER IR DE JUNO PRA JUNO?
@@ -103,32 +103,41 @@ macro rachelpra {
 	log Vamos ir de Rachel para $.param[0]
 	#se a cidade for izlude ou juno ele só pega 1 aeroplano
 	# se for outra cidade, ele pega os dois aeroplanos
-	if ( $.param[0] =~ /izlude/i ) {
-		do conf -f aeroplano1 izlude
-		do conf -f aeroplano2 none
-	} elsif ($.param[0] =~ /rachel/i ) {
-		log VOCÊ QUER IR DE RACHEL PRA RACHEL?
-		log PORQUE VOCÊ FARIA ISSO?
-	} elsif ( $.param[0] =~ /hugel/i ) {
-		do conf -f aeroplano1 juno
-		do conf -f aeroplano2 hugel
-	} elsif ( $.param[0] =~ /lighthalzen/i ) {
-		do conf -f aeroplano1 juno
-		do conf -f aeroplano2 lighthalzen
-	} elsif ($.param[0] =~ /einbroch/i ) {
-		do conf -f aeroplano1 juno
-		do conf -f aeroplano2 eibroch
-	} elsif ( $.param[0] =~ /[jy]uno/) {
-		do conf -f aeroplano1 juno
-		do conf -f aeroplano2 none
-	} else {
-		[
-		log Você digitou um nome inválido, por favor tente novamente
-		log Os valores podem ser izlude , rachel , juno ou yuno ,
-		log hugel , lighthalzen ou einbroch
-		log pode ser com letra maiuscula ou sem
-		]
-		stop
+
+	switch ($.param[0]) {
+	    case (=~ /izlude/i) {
+			do conf -f aeroplano1 izlude
+			do conf -f aeroplano2 none
+	    }
+	    case (=~ /rachel/i) {
+			log VOCÊ QUER IR DE RACHEL PRA RACHEL?
+			log PORQUE VOCÊ FARIA ISSO?
+	    }
+	    case (=~ /hugel/i) {
+			do conf -f aeroplano1 juno
+			do conf -f aeroplano2 hugel
+	    }
+		case (=~ /lighthalzen/i) {
+			do conf -f aeroplano1 juno
+			do conf -f aeroplano2 lighthalzen
+		}
+		case (=~ /einbroch/i) {
+			do conf -f aeroplano1 juno
+			do conf -f aeroplano2 einbroch
+		}
+		case (=~ /[jy]uno/) {
+			do conf -f aeroplano1 juno
+			do conf -f aeroplano2 none
+		}
+		else {
+			[
+			log Você digitou um nome inválido, por favor tente novamente
+			log Os valores podem ser izlude , rachel , juno ou yuno ,
+			log hugel , lighthalzen ou einbroch
+			log pode ser com letra maiuscula ou sem
+			]
+			stop
+		}
 	}
 	$aeroplano1 = &config(aeroplano1)
 	$aeroplano2 = &config(aeroplano2)
@@ -173,7 +182,7 @@ automacro dentroDoAeroplanoDomesticoVarNaoDefinida {
 	InMap airplane
 	timeout 50
 	call {
-		if ($aeroplano2 = undef) {
+		if (&defined($aeroplano2) = 0) {
 			$aeroplano2 = &config(aeroplano2)
 		}
 		log Estamos no aeroplano, aguardando chegada ao destino
@@ -196,46 +205,19 @@ macro sairDoAeroplano {
 #ele só está se locomovendo pra fazer qualquer outra coisa aleatoria que nao tem nada
 # a ver com esse macro
 automacro chegueiEmEinbroch {
-	InMap einbroch
-	ConfigKey aeroplano2 einbroch
-	run-once 1
-	exclusive 1
-	call objetivoCompleto
-}
-
-automacro chegueiEmHugel {
-	InMap hugel
-	ConfigKey aeroplano2 hugel
+	InMap $aeroplano2
+	ConfigKey aeroplano2 $aeroplano2
 	run-once 1
 	exclusive 1
 	call objetivoCompleto
 }
 
 automacro chegueiEmIzlude {
-	InMap izlude
-	ConfigKey aeroplano1 izlude
+	InMap $aeroplano1
+	ConfigKey aeroplano1 $aeroplano 1
 	run-once 1
 	exclusive 1
 	call objetivoCompleto
-}
-
-automacro chegueiEmLighthalzen {
-	InMap lighthalzen
-	ConfigKey aeroplano2 lighthalzen
-	run-once 1
-	exclusive 1
-	call objetivoCompleto
-}
-
-automacro chegueiEmRachel {
-	InMap ra_fild12
-	ConfigKey aeroplano1 rachel
-	run-once 1
-	exclusive 1
-	call {
-		do move rachel
-		call objetivoCompleto
-	}
 }
 
 macro objetivoCompleto {
@@ -256,13 +238,14 @@ automacro chegueiEmJuno {
 		# se não precisar ele vai pra proximo da kafra e completa o objetivo
 		log destino para aeroplano1 é: &config(aeroplano1)
 		log destino para aeroplano2 é: &config(aeroplano2)
+		
 		if (&config(aeroplano1) =~ /rachel|izlude/i  ) {
-		do move airplane_01
+			do move airplane_01
 		} elsif ( &config(aeroplano2) =~ /hugel|einbroch|lighthalzen/i ) {
-		do move airplane
+			do move airplane
 		} elsif ( &config(aeroplano1) =~  /[yj]uno/i || &config(aeroplano2) =~ /[yj]uno/i ) {
 			do move &rand(150, 154) &rand(182, 186)
-		call objetivoCompleto
+			call objetivoCompleto
 		} else {
 			log Falha em descobrir a rota correta, revise o código
 		}
