@@ -1,0 +1,28 @@
+automacro irno armazem {
+    InInventoryID 756 <= 4 #minerio
+    exclusive 1
+    call {
+		#está sem minério no inventário, indo pegar mais
+        do autostorage
+    }
+}
+
+automacro Conversa {
+    InInventoryID 756 >= 5
+    NpcNear /Dietrich/
+    CharCurrentWeight < 90%
+    exclusive 1
+    call {
+        do talk &npc(/Dietrich/)
+        do talk resp 0
+    }
+}
+
+automacro irAteoDietrich {
+    InInventoryID 756 >= 5
+	exclusive 1
+	NpcNotNear /Dietrich/
+    call {
+        do move COORDENADA PRÓXIMO DO DIETRICH
+    }
+}
