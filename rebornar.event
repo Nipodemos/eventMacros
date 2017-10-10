@@ -9,23 +9,23 @@
 	call {
 		do pm alanzimercador ajudarebornar
 		[
-		do iconf MuitoforteDamascus [Ice] 0 1 0
-		do iconf Camisa de Algodão 0 1 0
-		do iconf Faca [3] 0 1 0
-		do conf equipAuto_0_topHead none
-		do conf equipAuto_0_midHead none
-		do conf equipAuto_0_lowHead none
-		do conf equipAuto_0_rightHand none
-		do conf equipAuto_0_leftAccessory none
-		do conf equipAuto_0_rightAccessory none
-		do conf equipAuto_0_robe none
-		do conf equipAuto_0_armor none
-		do conf equipAuto_0_shoes none
-		do conf equipAuto_0_arrow none
-		do conf lockMap none
-		do conf attackAuto -1
-		do conf route_randomWalk 0
-		do conf relogAfterStorage 0
+			do iconf MuitoforteDamascus [Ice] 0 1 0
+			do iconf Camisa de Algodão 0 1 0
+			do iconf Faca [3] 0 1 0
+			do conf equipAuto_0_topHead none
+			do conf equipAuto_0_midHead none
+			do conf equipAuto_0_lowHead none
+			do conf equipAuto_0_rightHand none
+			do conf equipAuto_0_leftAccessory none
+			do conf equipAuto_0_rightAccessory none
+			do conf equipAuto_0_robe none
+			do conf equipAuto_0_armor none
+			do conf equipAuto_0_shoes none
+			do conf equipAuto_0_arrow none
+			do conf lockMap none
+			do conf attackAuto -1
+			do conf route_randomWalk 0
+			do conf relogAfterStorage 0
 		]
 		#se o mapa salvo nao for juno, faça com que seja (só por desencargo de consciencia)
 		if (&config (saveMap) != yuno) call SetSavein "yuno"
@@ -78,7 +78,7 @@ automacro DandoOuReceBendoZeny {
 			do pm alanzimercador coloqueiozeny
 			pause 2
 			do deal
-		} else {
+			} else {
 			pm alanzimercador $.zeny 
 			#se o zeny atual for menor que 1285000, vc manda pro mercador via pm quanto mais precisa
 		}
@@ -113,12 +113,12 @@ macro VaiRebornar {
 	$VaiRebornar = &config(VaiRebornar)
 	if ( $VaiRebornar == 1 ) {
 		[
-		do ai auto
-		do conf lockMap 0
-		do conf attackAuto 0
-		do conf route_randomWalk 0
-		do conf sitAuto_idle 0
-		do conf autoTalkCont 0
+			do ai auto
+			do conf lockMap 0
+			do conf attackAuto 0
+			do conf route_randomWalk 0
+			do conf sitAuto_idle 0
+			do conf autoTalkCont 0
 		]
 		do move yuno_in02
 		do conf VaiRebornar 2
@@ -160,151 +160,151 @@ macro VaiRebornar {
 		pause 1
 		if ( $.pos != 41 42 || $.pos != 50 85 || $.pos != 15 185 ) {
 			do move 50 85
-		call VaiRebornar
+			call VaiRebornar
 		}
 		pause 1
 		if ( $.pos != 41 42 || $.pos != 50 85 || $.pos != 15 185 ) {
-		do move 41 42
-		call VaiRebornar
+			do move 41 42
+			call VaiRebornar
 		}
-		}
-		if ( $VaiRebornar == 4 ) {
+	}
+	if ( $VaiRebornar == 4 ) {
 		do move 49 86
 		pause 0.5
 		do talknpc 48 86 c w1 c w1 c w1 c w1 c w1 c w1 c w1 c w1 c
 		do conf VaiRebornar 0
 		log REBORNEEEEEEEEEEEEEEEEEEEEEEEEEEEEEI CARAAAAAAAAAAAAAALHOOOOOOOOOOOOOOO
-		}
-		}
-		
-		#créditos por tudo abaixo dessa linha: HenryBk
-		#Save configurations
-		macro SetSaveInPayon {
-		add_key("saveMap_wanted", "payon")
-		add_key("saveMap_kafra_position", "181 104")
-		add_key("saveMap_sellNpc_position", "payon_in01 5 49")
-		
-		add_key("saveMap_save_sequence", "w2 c w2 r0 w2 n")
-		add_key("saveMap_storage_sequence", "w1 c w1 r1 n")
-		add_key("In_saveMap_sequence", "true")
-		}
-		
-		macro SetSaveinAldebaran {
-		add_key("saveMap_wanted", "aldebaran")
-		add_key("saveMap_kafra_position", "143 119")
-		add_key("saveMap_sellNpc_position", "aldebaran 165 107")
-		
-		add_key("saveMap_save_sequence", "c r0 n")
-		add_key("saveMap_storage_sequence", "w1 c w1 r1 n")
-		add_key("In_saveMap_sequence", "true")
-		}
-		
-		macro SetSaveinJuno {
-		add_key("saveMap_wanted", "yuno")
-		add_key("saveMap_kafra_position", "152 187")
-		add_key("saveMap_sellNpc_position", "yuno_in01 25 34")
-		
-		add_key("saveMap_save_sequence", "c r0 n")
-		add_key("saveMap_storage_sequence", "w1 c w1 r1 n")
-		add_key("In_saveMap_sequence", "true")
-		}
-		
-		macro SetSaveinRachel {
-		add_key("saveMap_wanted", "rachel")
-		add_key("saveMap_kafra_position", "109 138")
-		add_key("saveMap_sellNpc_position", "rachel 65 80")
-		
-		add_key("saveMap_save_sequence", "c r0 n")
-		add_key("saveMap_storage_sequence", "w1 c w1 r1 n")
-		add_key("In_saveMap_sequence", "true")
-		}
-		
-		macro SetSaveinProntera {
-		
-		add_key("saveMap_wanted", "prontera")
-		add_key("saveMap_kafra_position", "151 29")
-		add_key("saveMap_sellNpc_position", "prontera 113 42")
-		
-		add_key("saveMap_save_sequence", "c r0 n")
-		add_key("saveMap_storage_sequence", "w1 c w1 r1 n")
-		add_key("In_saveMap_sequence", "true")
-		}
-		
-		macro SetSaveInGeffen {
-		add_key("saveMap_wanted", "geffen")
-		add_key("saveMap_kafra_position", "120 62")
-		add_key("saveMap_sellNpc_position", "geffen_in 74 144")
-		
-		add_key("saveMap_save_sequence", "w2 c w2 r0 w2 n")
-		add_key("saveMap_storage_sequence", "w1 c w1 r1 n")
-		add_key("In_saveMap_sequence", "true")
-		}
-		
-		macro SetSaveInMorocc {
-		add_key("saveMap_wanted", "morocc")
-		add_key("saveMap_kafra_position", "156 97")
-		add_key("saveMap_sellNpc_position", "morocc_in 141 67")
-		
-		add_key("saveMap_save_sequence", "w2 c w2 r0 w2 n")
-		add_key("saveMap_storage_sequence", "w1 c w1 r1 n")
-		add_key("In_saveMap_sequence", "true")
-		}
-		
-		#### Kafra Save
-		automacro set_savemap_variables {
-		exclusive 1
-		run-once 1
-		ConfigKey In_saveMap_sequence true
-		priority -4
-		call {
+	}
+}
+
+#créditos por tudo abaixo dessa linha: HenryBk
+#Save configurations
+macro SetSaveInPayon {
+	add_key("saveMap_wanted", "payon")
+	add_key("saveMap_kafra_position", "181 104")
+	add_key("saveMap_sellNpc_position", "payon_in01 5 49")
+	
+	add_key("saveMap_save_sequence", "w2 c w2 r0 w2 n")
+	add_key("saveMap_storage_sequence", "w1 c w1 r1 n")
+	add_key("In_saveMap_sequence", "true")
+}
+
+macro SetSaveinAldebaran {
+	add_key("saveMap_wanted", "aldebaran")
+	add_key("saveMap_kafra_position", "143 119")
+	add_key("saveMap_sellNpc_position", "aldebaran 165 107")
+	
+	add_key("saveMap_save_sequence", "c r0 n")
+	add_key("saveMap_storage_sequence", "w1 c w1 r1 n")
+	add_key("In_saveMap_sequence", "true")
+}
+
+macro SetSaveinJuno {
+	add_key("saveMap_wanted", "yuno")
+	add_key("saveMap_kafra_position", "152 187")
+	add_key("saveMap_sellNpc_position", "yuno_in01 25 34")
+	
+	add_key("saveMap_save_sequence", "c r0 n")
+	add_key("saveMap_storage_sequence", "w1 c w1 r1 n")
+	add_key("In_saveMap_sequence", "true")
+}
+
+macro SetSaveinRachel {
+	add_key("saveMap_wanted", "rachel")
+	add_key("saveMap_kafra_position", "109 138")
+	add_key("saveMap_sellNpc_position", "rachel 65 80")
+	
+	add_key("saveMap_save_sequence", "c r0 n")
+	add_key("saveMap_storage_sequence", "w1 c w1 r1 n")
+	add_key("In_saveMap_sequence", "true")
+}
+
+macro SetSaveinProntera {
+	
+	add_key("saveMap_wanted", "prontera")
+	add_key("saveMap_kafra_position", "151 29")
+	add_key("saveMap_sellNpc_position", "prontera 113 42")
+	
+	add_key("saveMap_save_sequence", "c r0 n")
+	add_key("saveMap_storage_sequence", "w1 c w1 r1 n")
+	add_key("In_saveMap_sequence", "true")
+}
+
+macro SetSaveInGeffen {
+	add_key("saveMap_wanted", "geffen")
+	add_key("saveMap_kafra_position", "120 62")
+	add_key("saveMap_sellNpc_position", "geffen_in 74 144")
+	
+	add_key("saveMap_save_sequence", "w2 c w2 r0 w2 n")
+	add_key("saveMap_storage_sequence", "w1 c w1 r1 n")
+	add_key("In_saveMap_sequence", "true")
+}
+
+macro SetSaveInMorocc {
+	add_key("saveMap_wanted", "morocc")
+	add_key("saveMap_kafra_position", "156 97")
+	add_key("saveMap_sellNpc_position", "morocc_in 141 67")
+	
+	add_key("saveMap_save_sequence", "w2 c w2 r0 w2 n")
+	add_key("saveMap_storage_sequence", "w1 c w1 r1 n")
+	add_key("In_saveMap_sequence", "true")
+}
+
+#### Kafra Save
+automacro set_savemap_variables {
+	exclusive 1
+	run-once 1
+	ConfigKey In_saveMap_sequence true
+	priority -4
+	call {
 		$saveMap = &config(saveMap_wanted)
-		}
-		}
-		
-		automacro moveLocKafraOutside {
-		exclusive 1
-		ConfigKey In_saveMap_sequence true
-		ConfigKeyNot saveMap_wanted none
-		ConfigKeyNot saveMap $saveMap
-		NotInMap $saveMap
-		call move_to_near_kafra
-		}
-		
-		automacro moveLocKafraInside {
-		exclusive 1
-		ConfigKeyNot saveMap $saveMap
-		ConfigKeyNot saveMap_wanted none
-		NpcNotNear /(Kafra Employee|Funcionária Kafra)/
-		InMap $saveMap
-		call move_to_near_kafra
-		}
-		
-		macro move_to_near_kafra {
-		do move $saveMap &config(saveMap_kafra_position) &random("1","2","3","4","5","6")
-		}
-		
-		automacro talkKafra {
-		ConfigKey In_saveMap_sequence true
-		ConfigKeyNot saveMap $saveMap
-		ConfigKeyNot saveMap_wanted none
-		InMap $saveMap
-		NpcNear /(Kafra Employee|Funcionária Kafra)/
-		delay 2
-		timeout 20
-		call {
+	}
+}
+
+automacro moveLocKafraOutside {
+	exclusive 1
+	ConfigKey In_saveMap_sequence true
+	ConfigKeyNot saveMap_wanted none
+	ConfigKeyNot saveMap $saveMap
+	NotInMap $saveMap
+	call move_to_near_kafra
+}
+
+automacro moveLocKafraInside {
+	exclusive 1
+	ConfigKeyNot saveMap $saveMap
+	ConfigKeyNot saveMap_wanted none
+	NpcNotNear /(Kafra Employee|Funcionária Kafra)/
+	InMap $saveMap
+	call move_to_near_kafra
+}
+
+macro move_to_near_kafra {
+	do move $saveMap &config(saveMap_kafra_position) &random("1","2","3","4","5","6")
+}
+
+automacro talkKafra {
+	ConfigKey In_saveMap_sequence true
+	ConfigKeyNot saveMap $saveMap
+	ConfigKeyNot saveMap_wanted none
+	InMap $saveMap
+	NpcNear /(Kafra Employee|Funcionária Kafra)/
+	delay 2
+	timeout 20
+	call {
 		log talking to kafra at '&arg("$.NpcNearLastPos", 1) &arg("$.NpcNearLastPos", 2)' using sequence '&config(saveMap_save_sequence)'
 		do talknpc &arg("$.NpcNearLastPos", 1) &arg("$.NpcNearLastPos", 2) &config(saveMap_save_sequence)
-		}
-		}
-		
-		automacro SavedAtKafra {
-		exclusive 1
-		priority -5
-		NpcMsgName /O seu Ponto de Retorno foi salvo/ /(Kafra Employee|Funcionária Kafra)/
-		ConfigKeyNot saveMap $saveMap
-		ConfigKey In_saveMap_sequence true
-		InMap $saveMap
-		call {
+	}
+}
+
+automacro SavedAtKafra {
+	exclusive 1
+	priority -5
+	NpcMsgName /O seu Ponto de Retorno foi salvo/ /(Kafra Employee|Funcionária Kafra)/
+	ConfigKeyNot saveMap $saveMap
+	ConfigKey In_saveMap_sequence true
+	InMap $saveMap
+	call {
 		do conf saveMap $saveMap
 		do conf storageAuto_npc $saveMap &config(saveMap_kafra_position)
 		do conf storageAuto 1
@@ -319,10 +319,24 @@ macro VaiRebornar {
 		do conf saveMap_kafra_position none
 		do conf saveMap_sellNpc_position none
 		release set_savemap_variables
+	}
+}
+sub add_key {
+	my ($key, $value) = @_;
+	Log::warning "called add_key with key '$key' and value '$value'\n";
+	configModify($key, $value);
+}
+
+sub desequipar {
+	my $type = shift;
+
+	for (my $i = 0; $i < @{$char->{'inventory'}}; $i++) {
+		next if (!%{$char->{'inventory'}[$i]});
+
+		if ($char->{'inventory'}[$i]{'equipped'} & $type) {
+			$char->{'inventory'}[$i]->unequip();
+			return $i;
 		}
-		}
-		sub add_key {
-		my ($key, $value) = @_;
-		Log::warning "called add_key with key '$key' and value '$value'\n";
-		configModify($key, $value);
-		}														
+	}
+	return undef;
+}

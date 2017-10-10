@@ -858,7 +858,7 @@ automacro mateiPickys {
 	InMap new_4-3, new_5-3
 	NpcNear /Espadachi|Swordman/i
 	call {
-		do conf quest_atual none
+		do conf -f quest_atual none
 		do mconf 1049 0 0 0 #Picky
 		do talk $.NpcNearLastBinId
 		do talk resp 2
@@ -897,7 +897,7 @@ automacro completeiTodasAsQuests {
 	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
 	call {
 		log ======== Completei todas as Quests
-		do conf quest_atual todas_completadas
+		do conf -f quest_atual todas_completadas
 	}
 }
 
@@ -946,13 +946,13 @@ automacro continuar upando ate 12 bugged {
 		]
 		switch ( $.QuestActiveLastID ) {
 			case (= 7124) {
-				do conf quest_atual lunaticos
+				do conf -f quest_atual lunaticos
 			}
 			case (= 7123) {
-				do conf quest_atual pickys
+				do conf -f quest_atual pickys
 			}
 			else {
-				do conf quest_atual salgueiros
+				do conf -f quest_atual salgueiros
 			}
 		}
 	}
@@ -1049,7 +1049,7 @@ automacro endleveling {
 		do talk resp 1
 		do talk resp 1
 		log Agora vou virar gatuno!!!
-		do conf quest_atual none
+		do conf -f quest_atual none
 	}
 }
 
