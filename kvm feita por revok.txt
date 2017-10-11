@@ -98,7 +98,7 @@ automacro moverPertoDoNpcCroix {
 		[
 		log ============================================
 		log Exercito selecionado: &config(exercito)
-		log movendo-se pra proximo do npc KVM 
+		log movendo-se pra proximo do npc KVM
 		log ============================================
 		]
 		do move bat_room &rand (164,167) &rand (124, 129) # move para perto dos NPCs
@@ -117,7 +117,7 @@ automacro acessoAminiSalaCroix {
 		[
 		log ==========================================
 		log Acessando a salinha do exercito &config(exercito)
-		log movendo-se pra proximo do npc KVM 
+		log movendo-se pra proximo do npc KVM
 		log ==========================================
 		]
 		do talk $.NpcNearLastBinId # Oficial de KVM
@@ -137,7 +137,7 @@ automacro moverPertoDoNpcGuillaume {
 		[
 		log =============================================
 		log Exercito selecionado: &config(exercito)
-		log movendo-se pra proximo do npc KVM 
+		log movendo-se pra proximo do npc KVM
 		log =============================================
 		]
 		do move bat_room &rand (164,167) &rand (175, 170) # move para perto dos NPCs
@@ -172,7 +172,7 @@ automacro miniROOM_TentarEntrarNoChat {
 	priority -5 #prioridade máxima
 	ChatRoomNear /KVM/
 	InChatRoom 0
-	InMap bat_room 
+	InMap bat_room
 	exclusive 1
 	run-once 1
 	call {
@@ -235,10 +235,11 @@ automacro FimDaBatalha_pegarPontos {
 
 automacro tentarPegarPontosQueMereço {
 	ConfigKey PegarPontos sim
-	timeout 5
+	timeout 10
 	InMap bat_c01
 	NpcNear /KVM/
 	call {
+		do talk 11
 		do talk 12
 		do talk 13
 		do talk 14
@@ -252,7 +253,6 @@ automacro derrota {
 	call {
 		do conf PegarPontos none
 		$points = &eval(&config(pontosKVM) + 1)
-		#log \$points: $points
 		do conf -f pontosKVM $points
 		$oldarmy = &config (exercito)
 		if ( &config (exercito) == Croix ) {
