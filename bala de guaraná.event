@@ -1,0 +1,92 @@
+automacro nãoEstaEmBrasilis {
+	NotInMap brasilis
+	exclusive 1
+	timeout 120
+	call {
+		[
+		log ==============================================
+		log não estou em brasilis
+		log essa macro não vai pra brasilis automaticamente
+		log você, usuário tem que ir manualmente
+		log ===============================================
+		]
+	}
+}
+
+automacro compra {
+	Zeny >= 5000
+	CharCurrentWeight < 90%
+	InMap brasilis
+	InInventoryID 12414 < 2000 #bala de guaraná
+	NpcNear /Doceira/
+	exclusive 1
+	call {
+		while ($.weightpercent < 90 || &invamount(Bala de Guaraná) < 2000) {
+			do talk &npc(187 162)
+			do talk resp 0
+			log Tenho &invamount(Bala de Guaraná) balas
+		}
+	}
+}
+
+automacro irGuardar_tenho2milBalas {
+	InInventoryID 12414 > 1999 #bala de guaraná
+	InMap brasilis
+	Zeny >= 5000
+	exclusive 1
+	call irProNpcDoStorage
+}
+
+automacro irGuardar_passouDoPeso {
+	CharCurrentWeight >= 90%
+	InMap brasilis
+	Zeny >= 5000
+	exclusive 1
+	call irProNpcDoStorage
+}
+
+macro irProNpcDoStorage {
+	do move brasilis 197 218
+	do talknpc 197 221 c r1
+}
+
+automacro guardarGuaraná {
+	StorageOpened 1
+	InMap brasilis
+	InInventoryID 12414 > 1 #bala de guaraná
+	exclusive 1
+	call {
+		do storage add Bala de Guaraná
+		do storage addfromcart Bala de Guaraná if (&cartamount(Bala de Guaraná) > 0)
+		do storage close
+		[
+		log ======================================
+		log Tenho &storamount(Bala de Guaraná) balas no armazém
+		log ======================================
+		]
+		do move brasilis 189 160
+	}
+}
+
+automacro quit_SemZeny {
+	exclusive 1
+	Zeny < 5000
+	run-once 1
+	call modoOffLine "ACABOU O ZENY"
+}
+
+automacro quit_MaxBalas {
+	exclusive 1
+	InStorageID 12414 >= 28000 #bala de guaraná
+	run-once 1
+	call modoOffLine "ARMAZÉM CHEIO"
+}
+
+macro modoOffLine {
+	[
+	log =========================================
+	log $.param[0], ENTRANDO NO MODO OFFLINE
+	log =========================================
+	]
+	do eval Misc::offlineMode();
+}
