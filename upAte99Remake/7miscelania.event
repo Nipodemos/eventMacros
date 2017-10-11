@@ -81,7 +81,7 @@ automacro checarNoInicio {
 	exclusive 1
 	call {
 		do iconf 502 100 0 0
-		#$desired_lockMap = &config(desired_lockMap)
+		$desiredLockMap = &config(desired_lockMap)
 		xConfConfiguratedOrNot()
 	}
 }

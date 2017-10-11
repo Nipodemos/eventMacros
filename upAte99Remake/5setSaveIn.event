@@ -116,6 +116,7 @@ automacro jaToSalvoNessaCidade {
 		do conf saveMap_kafra_position none
 		do conf saveMap_sellNpc_position none
 		do conf In_saveMap_sequence false
+		release set_savemap_variables
 	}
 }
 
@@ -181,6 +182,7 @@ automacro SalvoNaKafra {
 		do conf saveMap_kafra_position none
 		do conf saveMap_sellNpc_position none
 		do conf In_saveMap_sequence false
+		release set_savemap_variables
 
 		log ===========================================
 		log =Salvo em &config(saveMap)
