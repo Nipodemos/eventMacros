@@ -98,7 +98,7 @@ macro configuraçõesBasicas {
 	do conf autoTalkCont 1
 	if ( &config(classe) = noviço) {
 		do conf sitAuto_sp_lower 0 #modifique para noviço
-	do conf sitAuto_sp_upper 0 #modifique para noviço	
+		do conf sitAuto_sp_upper 0 #modifique para noviço	
 	} else {
 		do conf sitAuto_hp_lower 20
 		do conf sitAuto_hp_upper 80
@@ -211,12 +211,11 @@ automacro upAteLv26 {
 	ConfigKeyNot lockMap pay_fild08
 	ConfigKeyNot In_saveMap_sequence true
 	BaseLevel 12..25
+	JobIDNot 161 #aprendiz t.
 	exclusive 1
 	priority 5
 	timeout 30
-	call {
-		call configurarMapa "payon" "pay_fild08"
-	}
+	call configurarMapa "payon" "pay_fild08"
 }
 
 automacro upAteLv35 {
