@@ -13,7 +13,7 @@
 			do conf -f saveMap_kafra_position 143 119
 			do conf -f saveMap_sellNpc_position aldebaran 165 107
 		}
-		case (=~ /juno/i ) {
+		case (=~ /juno|yuno/i ) {
 		    do conf -f saveMap_wanted yuno
 			do conf -f saveMap_kafra_position 152 187
 			do conf -f saveMap_sellNpc_position yuno_in01 25 34
