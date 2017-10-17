@@ -1,12 +1,16 @@
-﻿automacro parandoDePegarPotDeAprendiz {
-	InInventoryID 569 < 1
-	InStorageID 569 < 1
-	ConfigKey getAuto_0 Poção de Aprendiz
+﻿
+automacro configurarPotLaranja {
+	Zeny > 30000
+	ConfigKeyNot useSelf_item_0 Poção de Aprendiz
+	ConfigKeyNot useSelf_item_0 Poção Laranja
 	exclusive 1
 	call {
-		log as poções de aprendiz acabaram, removendo o getAuto
-		do conf getAuto_0 none
-		do conf sitAuto_hp_upper 95
+		do conf buyAuto_0 Poção Laranja
+		do conf buyAuto_0_maxAmount 100
+		do conf buyAuto_0_zeny 30000
+		do conf useSelf_item_0 Poção Laranja
+		do conf useSelf_item_0_hp < 50%
+		do iconf 512 100 0 0
 	}
 }
 
@@ -31,18 +35,15 @@ automacro configurarFurto {
 	}
 }
 
-automacro configurarPotLaranja {
-	Zeny > 30000
-	ConfigKeyNot useSelf_item_0 Poção de Aprendiz
-	ConfigKeyNot useSelf_item_0 Poção Laranja
+automacro parandoDePegarPotDeAprendiz {
+	InInventoryID 569 < 1
+	InStorageID 569 < 1
+	ConfigKey getAuto_0 Poção de Aprendiz
 	exclusive 1
 	call {
-		do conf buyAuto_0 Poção Laranja
-		do conf buyAuto_0_maxAmount 100
-		do conf buyAuto_0_zeny 30000
-		do conf useSelf_item_0 Poção Laranja
-		do conf useSelf_item_0_hp < 50%
-		do iconf 512 100 0 0
+		log as poções de aprendiz acabaram, removendo o getAuto
+		do conf getAuto_0 none
+		do conf sitAuto_hp_upper 95
 	}
 }
 
@@ -74,36 +75,16 @@ macro voltarAtacar {
 	do conf attackAuto 2
 	]
 }
+
 automacro checarNoInicio {
 	BaseLevel > 0
 	priority -50 #muito alta
 	run-once 1
 	exclusive 1
 	call {
-		do iconf 502 100 0 0
+		#do iconf 502 100 0 0
 		$desiredLockMap = &config(desired_lockMap)
 		xConfConfiguratedOrNot()
-	}
-}
-
-sub GetIndexAndEquipped {
-	my ($type, $id) = @_;
-	my $Item = $char->inventory->getByNameID($id);
-	if ($Item eq "" ) {
-	message "Erro: ou a ID do item está incorreta, ou você não possui esse equipamento.\n";
-	return -1;
-	}
-	my $EquipIndex = $Item->{binID};
-	if (exists $char->{equipment}{$type}) {
-		my $equipItem = $char->{equipment}{$type};
-		if ($equipItem->{nameID} == $id) {
-			message "Erro: Esse equip já está equipado.\n";
-			return -1;
-		} else {
-			return $EquipIndex;
-		}
-	} else {
-		return $EquipIndex;
 	}
 }
 
@@ -153,6 +134,28 @@ sub xConfConfiguratedOrNot {
 		message "Checando algumas coisas...\nTudo certo.\n";
 	}
 }
+
+sub GetIndexAndEquipped {
+	my ($type, $id) = @_;
+	my $Item = $char->inventory->getByNameID($id);
+	if ($Item eq "" ) {
+	message "Erro: ou a ID do item está incorreta, ou você não possui esse equipamento.\n";
+	return -1;
+	}
+	my $EquipIndex = $Item->{binID};
+	if (exists $char->{equipment}{$type}) {
+		my $equipItem = $char->{equipment}{$type};
+		if ($equipItem->{nameID} == $id) {
+			message "Erro: Esse equip já está equipado.\n";
+			return -1;
+		} else {
+			return $EquipIndex;
+		}
+	} else {
+		return $EquipIndex;
+	}
+}
+
 
 sub GetNamenyNameID {
 	my $name = $items_lut{$_[0]};
