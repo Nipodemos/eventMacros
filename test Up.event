@@ -25,9 +25,11 @@ automacro Up {
 			case (= 46..53) {
 				do iconf Erva Azul 7 1 0
 				if (&invamount(Erva Azul) >= 7) {
+					#ja tem erva suficiente, não precisa ir nas lontras
 					$mapa{lockMap} = iz_dun00
 					$mapa{city} = izlude
 				} else {
+					#upar nas lontras pra pegar mais erva azul
 					$mapa{lockMap} = cmd_fild02
 					$mapa{city} = comodo
 				}
