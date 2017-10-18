@@ -89,11 +89,11 @@ automacro DandoOuReceBendoZeny {
 	call {
 		#aceitando negociaçao
 		do deal
-		if(&eval($.zeny-1285000) > 0) {
+		$zenyPraDar = &eval($.zeny-1285000)
+		if( $zenyPraDar > 0) {
 			pause 2
 			#se o zeny atual for maior que 1285000, vc dá o excedente pro mercador
-			$zenyDado = &eval($.zeny-1285000)
-			do deal add z $zenyDado
+			do deal add z $zenyPraDar
 			do pm alanzimercador coloqueiozeny
 			pause 2
 			do deal

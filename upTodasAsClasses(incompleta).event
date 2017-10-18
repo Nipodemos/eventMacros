@@ -19,6 +19,13 @@ automacro TalkSprakkiOutside {
 	QuestInactive 7117
 	call {
 		[
+        do conf -f in_saveMap_sequence false
+        do conf -f membroDoEden none
+        do conf -f quest_atual none
+        do conf -f saveMap_storage_sequence none
+        do conf -f saveMap_wanted none
+        do conf -f saveMap_kafra_position none
+        do conf -f saveMap_sellNpc_position none
 		do conf autoMoveOnDeath 1
 		do conf autoMoveOnDeath_x none
 		do conf autoMoveOnDeath_y none
@@ -154,7 +161,7 @@ automacro talkSprakkiBugged2 {
 
 macro SprakiiBuggedTalk {
 	do talk $.NpcNearLastBinId
-	
+
 }
 
 automacro talkSprakki {
@@ -200,6 +207,12 @@ automacro talkBrade {
 	InMap new_1-2, new_2-2, new_3-2, new_4-2, new_5-2
 	priority 0
 	call {
+		do pconf 5055 0
+		do pconf 2510 0
+		do pconf 2414 0
+		do pconf 2112 0
+		do pconf 1243 0
+		do pconf 2352 0
 		do talk $.NpcNearLastBinId
 	}
 }
@@ -227,6 +240,12 @@ automacro talkBradeBugged {
 	InMap new_1-2, new_2-2, new_3-2, new_4-2, new_5-2
 	priority 0
 	call {
+		do pconf 5055 0
+		do pconf 2510 0
+		do pconf 2414 0
+		do pconf 2112 0
+		do pconf 1243 0
+		do pconf 2352 0
 		do talk $.NpcNearLastBinId
 	}
 }
@@ -236,6 +255,12 @@ automacro equipStuffForBrade {
 	QuestActive 7119
 	IsNotEquippedID topHead 5055, leftHand 2112, robe 2510, shoes 2414, armor 2352, rightHand 1243
 	call {
+		do pconf 5055 0
+		do pconf 2510 0
+		do pconf 2414 0
+		do pconf 2112 0
+		do pconf 1243 0
+		do pconf 2352 0
 		$check = GetIndexAndEquipped("topHead", 5055)
 		if ($check != -1) do eq $check
 		$check = GetIndexAndEquipped("robe", 2510)
@@ -479,7 +504,7 @@ automacro talkChocoAgain {
 	call {
 		do talk $.NpcNearLastBinId
 		do conf current_npc kafra
-		
+
 	}
 }
 
@@ -598,7 +623,7 @@ automacro questLunaticoBugged {
 		log Acabou de ocorrer um bug na sequencia do campo de treinamento
 		log Resolvendo isso
 		call moveBradeGrounds
-		do talk &npc(/Brade/)		
+		do talk &npc(/Brade/)
 	}
 }
 
@@ -650,7 +675,7 @@ automacro lockMap setado quando nao deveria {
 		do conf lockMap none
 		do conf attackAuto_inLockOnly 0
 	}
-	
+
 }
 
 macro moverPertoDosNpc {
@@ -669,7 +694,6 @@ automacro mateiLunaticosIndoAteoNpc {
 }
 
 automacro mateiLunaticos {
-	ConfigKey quest_atual lunaticos
 	exclusive 1
 	QuestHuntCompleted 7124 1063
 	NpcNear /Mago|Mage/
@@ -686,7 +710,9 @@ automacro ComeçarQuestPickyMoverPerto {
 	ConfigKey quest_atual pickys
 	NpcNotNear /Espadachim|Swordman/
 	QuestInactive 7123
+	QuestInactive 7124
 	exclusive 1
+	priority -5
 	run-once 1
 	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
 	call moverPertoDosNpc
@@ -696,7 +722,9 @@ automacro começarQuestPicky {
 	ConfigKey quest_atual pickys
 	NpcNear /Espadachim|Swordman/
 	QuestInactive 7123
+	QuestInactive 7124
 	exclusive 1
+	priority -5
 	run-once 1
 	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
 	call {
@@ -713,6 +741,8 @@ automacro começarQuestSalgueiroMoverPerto {
 	ConfigKey quest_atual salgueiros
 	QuestActive 7123
 	QuestInactive 7127
+	QuestInactive 7124
+	priority -5
 	exclusive 1
 	run-once 1
 	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
@@ -723,7 +753,9 @@ automacro começarQuestSalgueiro {
 	ConfigKey quest_atual salgueiros
 	QuestActive 7123
 	QuestInactive 7127
+	QuestInactive 7124
 	NpcNear /Thief|Gatuno/
+	priority -5
 	exclusive 1
 	run-once 1
 	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
@@ -735,15 +767,27 @@ automacro começarQuestSalgueiro {
 	}
 }
 
+automacro changeToHeavierTrainingMoveClose {
+	QuestActive 7123
+	QuestActive 7127
+	exclusive 1
+	NpcNotNear /Trainer/
+	InMap new_1-3, new_2-3, new_3-3
+	ConfigKey master RMS Renewal Test Server
+	call {
+		do move &rand(103,105) &rand(36,38)
+	}
+}
+
+
 automacro changeToHeavierTraining {
 	QuestActive 7123
 	QuestActive 7127
 	exclusive 1
 	NpcNear /Trainer/
 	InMap new_1-3, new_2-3, new_3-3
+	ConfigKey master RMS Renewal Test Server
 	call {
-		do move &rand(103,105) &rand(36,38)
-		pause 3
 		log mudando pra mapa onde tem pickys e salgueiros
 		do talk $.NpcNearLastBinId #Treinador
 		do talk resp 0
@@ -754,6 +798,7 @@ automacro changeToHeavierTraining {
 automacro treinoMaisPesadoMoverPerto {
 	QuestActive 7123
 	QuestActive 7127
+	ConfigKeyNot master RMS Renewal Test Server
 	exclusive 1
 	NpcNotNear /Treinador/
 	InMap new_1-3, new_2-3, new_3-3
@@ -763,6 +808,7 @@ automacro treinoMaisPesadoMoverPerto {
 automacro treinoMaisPesado {
 	QuestActive 7123
 	QuestActive 7127
+	ConfigKeyNot master RMS Renewal Test Server
 	exclusive 1
 	NpcNear /Treinador/
 	InMap new_1-3, new_2-3, new_3-3
@@ -778,7 +824,7 @@ automacro caçandoPickys {
 	InMap new_4-3, new_5-3
 	timeout 60
 	exclusive 1
-	call sePreparandoPraMatar 
+	call sePreparandoPraMatar
 }
 
 automacro caçandoSalgueiro {
@@ -786,15 +832,15 @@ automacro caçandoSalgueiro {
 	InMap new_4-3, new_5-3
 	timeout 60
 	exclusive 1
-	call sePreparandoPraMatar 
+	call sePreparandoPraMatar
 }
 
 macro sePreparandoPraMatar {
 	call voltarAtacar
 	do mconf 1113 0 0 0 #drops
 	do mconf 1004 0 0 0 #zangao
-	do mconf 1007 0 0 0 #fabre
-	do mconf $.QuestHuntOngoingLastMobID 1 0 0 
+	do mconf 1049 1 0 0 #picky
+	do mconf 1010 1 0 0 #Salgueiro
 	log ======== Indo matar pickys e salgueiros
 }
 
@@ -812,8 +858,7 @@ automacro mateiPickys {
 	InMap new_4-3, new_5-3
 	NpcNear /Espadachi|Swordman/i
 	call {
-		do mconf 1004 0 0 0 #zangao
-		do mconf 1007 0 0 0 #fabre
+		do conf -f quest_atual none
 		do mconf 1049 0 0 0 #Picky
 		do talk $.NpcNearLastBinId
 		do talk resp 2
@@ -835,14 +880,9 @@ automacro mateiSalgueiros {
 	NpcNear /Gatuno|Thief/i
 	InMap new_4-3, new_5-3
 	call {
-		do mconf 1004 0 0 0 #zangao
-		do mconf 1007 0 0 0 #fabre
-		do mconf 1049 0 0 0 #Picky
 		do mconf 1010 0 0 0 #Salgueiro
 		do talk $.NpcNearLastBinId
 		do talk resp 2
-		log ======== Completei todas as Quests
-		do conf quest_atual todas_completadas
 	}
 }
 
@@ -854,10 +894,10 @@ automacro completeiTodasAsQuests {
 	QuestInactive 7123
 	QuestInactive 7124
 	exclusive 1
-	run-once 1
 	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
 	call {
-		do conf quest_atual todas_completadas
+		log ======== Completei todas as Quests
+		do conf -f quest_atual todas_completadas
 	}
 }
 
@@ -866,9 +906,11 @@ automacro continuarUpandoAte12 {
 	QuestInactive 7127
 	QuestInactive 7123
 	QuestInactive 7124
+	InInventoryID 12323 > 50 #asa de mosca de iniciante
+	InInventoryID 12324 > 20 #asa de borboleta de iniciante
 	BaseLevel < 12
 	exclusive 1
-	run-once 1
+	timeout 180
 	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
 	call {
 		[
@@ -880,8 +922,10 @@ automacro continuarUpandoAte12 {
 		do mconf 1002 1 0 0 #poring
 		do mconf 1113 1 0 0 #drops
 		call voltarAtacar
+		log =================================
+		log upando até o lvl 12
+		log =================================
 		]
-		log Vou continuar upando até chegar nivel 12
 	}
 }
 automacro continuar upando ate 12 bugged {
@@ -892,19 +936,23 @@ automacro continuar upando ate 12 bugged {
 	run-once 1
 	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
 	call {
+		[
+		log ===================================================================
 		log Deveria upar ate o lvl 12 agora, mas nao completamos uma das quests
 		log O número da quest é $.QuestActiveLastID
 		log Resolvendo isso
 		log Se vc ver essa mensagem mais de uma vez provavelmente a macro está bugada
+		log ===================================================================
+		]
 		switch ( $.QuestActiveLastID ) {
 			case (= 7124) {
-				do conf quest_atual lunaticos
+				do conf -f quest_atual lunaticos
 			}
 			case (= 7123) {
-				do conf quest_atual pickys
+				do conf -f quest_atual pickys
 			}
 			else {
-				do conf quest_atual salgueiros
+				do conf -f quest_atual salgueiros
 			}
 		}
 	}
@@ -923,7 +971,7 @@ automacro seMorrerEnquantoUpaAteLv12 {
 automacro se morrer enquanto mata pickys_e_salgueiros {
 	QuestActive 7123, 7127
 	CurrentHP >= 50%
-	IsInCoordinate 95 21
+	priority 5
 	InMap new_1-3, new_2-3, new_3-3
 	exclusive 1
 	call mudarDeMapa
@@ -979,62 +1027,21 @@ automacro endleveling {
 	    call pararDeAtacar
 		do move &rand(103,105) &rand(36,38)
 		switch (&config(classe)) {
-			case (= espadachim) {
-				do talk &npc(/Espadachim/)
-			}
-			case (= gatuno) {
-				do talk &npc(/Gatuno/)
-			}
-			case (= mercador) {
-				do talk &npc(/Mercador/)
-			}
-			case (= mago) {
-				do talk &npc(/Mago/)
-			}
-			case (= noviço) {
-				do talk &npc(/Noviço/)
-			}
-			case (= arqueiro) {
-				do talk &npc(/Arqueiro/)
-			}
+			case (= espadachim) do talk &npc(/Espadachim/)
+			case (= gatuno)     do talk &npc(/Gatuno/)
+			case (= mercador)   do talk &npc(/Mercador/)
+			case (= mago)       do talk &npc(/Mago/)
+			case (= noviço)     do talk &npc(/Noviço/)
+			case (= arqueiro)   do talk &npc(/Arqueiro/)
 		}
-		do talk resp 1
-		do talk resp 1
-		log ======== Agora vou virar &config(classe)!!!
-		do conf quest_atual none
-	}
-}
-
-automacro endleveling2 {
-	exclusive 1
-	JobLevel 10
-	ConfigKey quest_atual todas_completadas
-	ConfigKey classe Espadachim, classe Gatuno, classe Mercador, classe Noviço, classe Mago, classe Arqueiro
-	InMap new_1-3, new_2-3, new_3-3, new_4-3, new_5-3
-	priority 1
-	call {
-	    call pararDeAtacar
-		do move &rand(103,105) &rand(36,38)
-		switch (&config(classe)) {
-			case (= Espadachim) {
-				do talk &npc(/Espadachim/)
-			}
-			case (= Gatuno) {
-				do talk &npc(/Gatuno/)
-			}
-			case (= Mercador) {
-				do talk &npc(/Mercador/)
-			}
-			case (= Mago) {
-				do talk &npc(/Mago/)
-			}
-			case (= Noviço) {
-				do talk &npc(/Noviço/)
-			}
-			case (= Arqueiro) {
-				do talk &npc(/Arqueiro/)
-			}
-		}
+		%mapaDo = ()
+		$mapaDo{espadachim} = izlude_in
+		$mapaDo{gatuno} = moc_prydb1
+		$mapaDo{mercador} = alberta_in
+		$mapaDo{mago} = geffen_in
+		$mapaDo{noviço} = prt_church
+		$mapaDo{arqueiro} = payon_in02
+		$classeDesejada = &config(classe)
 		do talk resp 1
 		do talk resp 1
 		log ======== Agora vou virar &config(classe)!!!
@@ -1044,11 +1051,12 @@ automacro endleveling2 {
 
 automacro EndLeveling Bugged {
 	JobLevel 10
-	ConfigKey quest_eden todas_completadas
+	ConfigKey quest_atual todas_completadas
 	ConfigKey classe none
 	timeout 20
 	exclusive 1
 	call {
+		[
 		log TEM UM PEQUENO ERRO
 		log VOCE ESQUECEU DE COLOCAR NO CONFIG.TXT QUAL CLASSE QUER SER
 		log PRA FAZER ISSO VC DIGITA AQUI NO CONSOLE
@@ -1057,6 +1065,7 @@ automacro EndLeveling Bugged {
 		log EXEMPLO: conf classe espadachim
 		log OUTRO EXEMPLO: conf classe mercador
 		log ATE ISSO SER RESOLVIDO A MACRO NAO VAI PROSSEGUIR
+		]
 	}
 }
 
@@ -1067,7 +1076,7 @@ automacro seClasseNaoExistir {
 	call {
 		log A config de classe ainda nao existe no config.txt
 		log Vamos mudar isso
-		add_key ("classe", "none")
+		do conf -f classe none
 		log Prontinho
 	}
 }
@@ -1091,114 +1100,62 @@ automacro virandoClasse1Bugged {
 }
 
 automacro virandoEspadachim {
-	InMap izlude_in
+	InMap $mapaDo{$classeDesejada}
 	JobID 0 #Aprendiz
 	JobLevel 10
 	SkillLevel NV_BASIC = 10
 	priority 1
 	exclusive 1
 	call {
-		do talk &npc(/Espadachim/)
-		do talk resp 1
-		do talk resp 0
-		pause 3
+		switch ($classeDesejada) {
+			case (= espadachim) {
+				do talk &npc(/Espadachim/)
+				do talk resp 1
+				do talk resp 0
+				$check = GetIndexAndEquipped("rightHand",13415) # alfange de iniciante
+				if ($check != -1) do eq $check
+				do iconf 13415 0 0 0
+			}
+			case (= gatuno) {
+				do move &rand(44,46) &rand(127,129)
+				do talknpc 42 133 c r1 c r1 c c c c  #Mestre Gatuno
+				$check = GetIndexAndEquipped("rightHand",13041) # main gauche de iniciante
+				if ($check != -1) do eq $check
+				do iconf 13041 0 0 0
+			}
+			case (= mercador) {
+				do talk &npc(/Mercador/)
+				do talk resp 0
+				$check = GetIndexAndEquipped("rightHand",1381) # Machado de batalha de iniciante
+				if ($check != -1) do eq $check
+				do iconf 1381 0 0 0
+			}
+			case (= mago) {
+				do move &rand(162,165) &rand(123, 126)
+				do talk &npc(/Instrutora/)
+				do talk resp 0
+				do talk resp 0
+				$check = GetIndexAndEquipped("rightHand",1639) # cajado de iniciante
+				if ($check != -1) do eq $check
+				do iconf 1639 0 0 0
+			}
+			case (= noviço) {
+				do move prt_church &rand(182,184) &rand(36,38)
+				do talk &npc(/Cleric|Padre/g)
+				do talk resp 0
+				$check = GetIndexAndEquipped("rightHand",1545) # Maça de iniciante
+				if ($check != -1) do eq $check
+				do iconf 1545 0 0 0
+			}
+			case (= arqueiro) {
+				do talk &npc(/Arqueiro/)
+				do talk resp 0
+				$check = GetIndexAndEquipped("rightHand",1742) # arco composto de iniciante
+				if ($check != -1) do eq $check
+				do iconf 1742 0 0 0
+			}
+		}
 		call deixeiDeSerAprendiz
-		$check = GetIndexAndEquipped("rightHand",13415) # alfange de iniciante
-		if ($check != -1) do eq $check
-		do iconf 13415 0 0 0
-	}
-}
-
-automacro virandoNoviço {
-	InMap prt_church
-	JobLevel 10
-	JobID 0
-	SkillLevel NV_BASIC = 10
-	priority 1
-	exclusive 1
-	call {
-		do move prt_church &rand(182,184) &rand(36,38)
-		do talk &npc(/Cleric|Padre/g)
-		do talk resp 0
-		pause 3
-		call deixeiDeSerAprendiz
-		$check = GetIndexAndEquipped("rightHand",1545) # Maça de iniciante
-		if ($check != -1) do eq $check
-		do iconf 1545 0 0 0
-	}
-}
-
-automacro virandoMercador {
-	InMap alberta_in
-	JobLevel 10
-	JobID 0
-	SkillLevel NV_BASIC = 10
-	exclusive 1
-	priority 1
-	call {
-		do talk &npc(/Mercador/)
-		do talk resp 0
-		pause 3
-		call deixeiDeSerAprendiz
-		$check = GetIndexAndEquipped("rightHand",1381) # Machado de batalha de iniciante
-		if ($check != -1) do eq $check
-		do iconf 1381 0 0 0
-	}
-}
-
-automacro virandoGatuno {
-	JobID 0
-	JobLevel 10
-	InMap moc_prydb1
-	priority 1
-	SkillLevel NV_BASIC = 10
-	exclusive 1
-	call {
-		do move &rand(44,46) &rand(127,129)
-		do talknpc 42 133 c r1 c r1 c c c c  #Mestre Gatuno
-		pause 3
-		call deixeiDeSerAprendiz
-		$check = GetIndexAndEquipped("rightHand",13041) # main gauche de iniciante
-		if ($check != -1) do eq $check
-		do iconf 13041 0 0 0
-	}
-}
-
-automacro virandoArqueiro {
-	JobID 0
-	JobLevel 10
-	InMap payon_in02
-	exclusive 1
-	priority 1
-	call {
-		do talk &npc(/Arqueiro/)
-		do talk resp 0
-		pause 3
-		call deixeiDeSerAprendiz
-		#1742
-		$check = GetIndexAndEquipped("rightHand",1742) # arco composto de iniciante
-		if ($check != -1) do eq $check
-		do iconf 1742 0 0 0
-		
-	}
-}
-
-automacro virandoMago {
-	JobID 0
-	JobLevel 10
-	InMap geffen_in
-	exclusive 1
-	priority 1
-	call {
-		do move &rand(162,165) &rand(123, 126)
-		do talk &npc(/Instrutora/)
-		do talk resp 0
-		do talk resp 0
-		pause 3
-		call deixeiDeSerAprendiz
-		$check = GetIndexAndEquipped("rightHand",1639) # cajado de iniciante
-		if ($check != -1) do eq $check
-		do iconf 1639 0 0 0
 	}
 }
 
@@ -1254,9 +1211,7 @@ automacro upAteLv12 {
 	JobID 6 #gatuno
 	priority 5
 	timeout 30
-	call {
-		call configurarMapa "payon" "pay_fild01"
-	}
+	call configurarMapa "payon" "pay_fild01"
 }
 
 automacro upAteLv26 {
@@ -1267,9 +1222,7 @@ automacro upAteLv26 {
 	JobID 6 #gatuno
 	priority 5
 	timeout 30
-	call {
-		call configurarMapa "payon" "pay_fild08"
-	}
+	call configurarMapa "payon" "pay_fild08"
 }
 
 
@@ -1281,9 +1234,7 @@ automacro upAteLv35 {
 	JobID 6 #gatuno
 	priority 5
 	timeout 30
-	call {
-		call configurarMapa "payon" "pay_fild07"
-	}
+	call configurarMapa "payon" "pay_fild07"
 }
 
 automacro upAteLv44 {
@@ -1294,9 +1245,7 @@ automacro upAteLv44 {
 	JobID 6 #gatuno
 	priority 5
 	timeout 30
-	call {
-		call configurarMapa "payon" "pay_fild09"
-	}
+	call configurarMapa "payon" "pay_fild09"
 }
 
 automacro upAteLv54 {
@@ -1307,9 +1256,7 @@ automacro upAteLv54 {
 	JobID 6 #gatuno
 	priority 5
 	timeout 30
-	call {
-		call configurarMapa "prontera" "gef_fild10"
-	}
+	call configurarMapa "prontera" "gef_fild10"
 }
 
 automacro upAteLv60 {
@@ -1321,9 +1268,7 @@ automacro upAteLv60 {
 	exclusive 1
 	priority 5
 	timeout 30
-	call {
-		call configurarMapa "izlude" "iz_dun02"
-	}
+	call configurarMapa "izlude" "iz_dun02"
 }
 
 automacro upAteLv70 {
@@ -1333,9 +1278,7 @@ automacro upAteLv70 {
 	ConfigKeyNot In_saveMap_sequence true
 	priority 5
 	timeout 30
-	call {
-		call configurarMapa "morocc" "moc_fild17"
-	}
+	call configurarMapa "morocc" "moc_fild17"
 }
 
 automacro upAteLv80 {
@@ -1346,9 +1289,7 @@ automacro upAteLv80 {
 	exclusive 1
 	priority 5
 	timeout 30
-	call {
-		call configurarMapa "prontera" "mjolnir_11"
-	}
+	call configurarMapa "prontera" "mjolnir_11"
 }
 
 automacro upAteLv92 {
@@ -1359,9 +1300,7 @@ automacro upAteLv92 {
 	exclusive 1
 	priority 5
 	timeout 30
-	call {
-		call configurarMapa "geffen" "gef_fild06"
-	}
+	call configurarMapa "geffen" "gef_fild06"
 }
 automacro IndoPraRachelPraUpAteLv99 {
 	ConfigKeyNot lockMap ra_fild12
@@ -1373,9 +1312,7 @@ automacro IndoPraRachelPraUpAteLv99 {
 	exclusive 1
 	priority 5
 	timeout 30
-	call {
-		call junopra "rachel"
-	}
+	call junopra "rachel"
 }
 
 automacro salvandoEmRachelPraUpAteLv99 {
@@ -1387,9 +1324,7 @@ automacro salvandoEmRachelPraUpAteLv99 {
 	JobID 17
 	exclusive 1
 	run-once 1
-	call {
-		call SetSaveIn "rachel"
-	}
+	call SetSaveIn "rachel"
 }
 
 automacro upAteLv99 {
@@ -1416,11 +1351,12 @@ automacro estouLv99 {
 }
 
 macro configurarMapa {
-	if ( &config(saveMap) = $.param1 ) {
-		do conf lockMap $.param2
+	if ( &config(saveMap) = $.param[0] ) {
+		do conf lockMap $.param[1]
 		call voltarAtacar
 	} else {
-		call SetSaveIn $.param1
+		$cidade = $.param[0]
+		call SetSaveIn $cidade
 	}
 }
 
@@ -1471,7 +1407,7 @@ automacro ConfigWasWrong {
     exclusive 1
     overrideAI 1
     priority -5
-    ConfigKeyNot autoTalkCont 0, attackAuto_inLockOnly 0
+    ConfigKeyNot autoTalkCont 1, attackAuto_inLockOnly 0
     call {
 		log Tem uma config que está errada
 		log A config é $.ConfigKeyNotLastKey
@@ -1485,9 +1421,10 @@ automacro ConfigWasWrong {
 
 
 macro SetSaveIn {
-	do conf -f saveMap_save_sequence c r0
+	call pararDeAtacar
+	do conf lockMap none
 	do conf -f saveMap_storage_sequence c r1
-	switch ( $.param1 ) {
+	switch ($.param[0]) {
 		case (=~ /einbroch/i ) {
 			do conf -f saveMap_wanted einbroch
 			do conf -f saveMap_kafra_position 242 205
@@ -1498,7 +1435,7 @@ macro SetSaveIn {
 			do conf -f saveMap_kafra_position 143 119
 			do conf -f saveMap_sellNpc_position aldebaran 165 107
 		}
-		case (=~ /juno/i ) {
+		case (=~ /juno|yuno/i ) {
 		    do conf -f saveMap_wanted yuno
 			do conf -f saveMap_kafra_position 152 187
 			do conf -f saveMap_sellNpc_position yuno_in01 25 34
@@ -1512,16 +1449,19 @@ macro SetSaveIn {
 		    do conf -f saveMap_wanted comodo
 			do conf -f saveMap_kafra_position 195 150
 			do conf -f saveMap_sellNpc_position cmd_in01 79 182
+			do conf buyAuto_0_npc cmd_in01 79 182
 		}
 		case (=~ /prontera/i ) {
 		    do conf -f saveMap_wanted prontera
 			do conf -f saveMap_kafra_position 151 29
 			do conf -f saveMap_sellNpc_position prontera 113 42
+			do conf buyAuto_0_npc prt_in 126 76
 		}
 		case (=~ /payon/i ) {
 			do conf -f saveMap_wanted payon
 			do conf -f saveMap_kafra_position 181 104
 			do conf -f saveMap_sellNpc_position payon_in01 5 49
+			do conf buyAuto_0_npc payon_in01 5 49
 		}
 		case (=~ /geffen/i ) {
 			do conf -f saveMap_wanted geffen
@@ -1532,11 +1472,13 @@ macro SetSaveIn {
 			do conf -f saveMap_wanted morocc
 			do conf -f saveMap_kafra_position 156 97
 			do conf -f saveMap_sellNpc_position morocc_in 141 67
+			do conf buyAuto_0_npc moc_ruins 114 63
 		}
 		case (=~ /izlude/i ) {
 			do conf -f saveMap_wanted izlude
 			do conf -f saveMap_kafra_position 134 88
-			do conf -f saveMap_sellNpc_position 105 99
+			do conf -f saveMap_sellNpc_position izlude 105 99
+			do conf buyAuto_0_npc izlude_in 115 61
 		}
 		case ( =~ /veins/i ) {
 			do conf -f saveMap_wanted veins
@@ -1545,18 +1487,62 @@ macro SetSaveIn {
 		}
 		else {
 			log nome da cidade inválido, tente novamente...
+			log nome é: $.param[0]
 			log Talvez o nome foi escrito errado?
 			stop
 		}
 	}
-	log Iniciando seguência de salvamento em &config(saveMap_wanted)
-	$saveMap = &config(saveMap_wanted)
+	[
+	log =============================================
+	log =Iniciando seguência de salvamento em &config(saveMap_wanted)
+	log =============================================
+	]
 	do conf -f In_saveMap_sequence true
-	
+
 }
 
-#### Kafra Save
-automacro moveLocKafraOutside {
+automacro set_savemap_variables {
+	exclusive 1
+	run-once 1
+	ConfigKey In_saveMap_sequence true
+	priority -4
+	call {
+		$saveMap = &config(saveMap_wanted)
+	}
+}
+
+automacro jaToSalvoNessaCidade {
+	exclusive 1
+	ConfigKey In_saveMap_sequence true
+	ConfigKey saveMap $saveMap
+	ConfigKeyNot saveMap_wanted none
+	call {
+		[
+		log ==============================================
+		log já esta salvo em $saveMap , nao precisa fazer a sequencia toda denovo
+		log mas só por precaução, as configurações serão feitas
+		log ==============================================
+		]
+
+		do conf saveMap $saveMap
+		do conf storageAuto_npc $saveMap &config(saveMap_kafra_position)
+		do conf storageAuto 1
+		do conf sellAuto 1
+		do conf sellAuto_npc &config(saveMap_sellNpc_position)
+		do conf storageAuto_npc_type 3
+		do conf storageAuto_npc_steps &config(saveMap_storage_sequence)
+
+		do conf saveMap $saveMap
+		do conf saveMap_storage_sequence none
+		do conf saveMap_wanted none
+		do conf saveMap_kafra_position none
+		do conf saveMap_sellNpc_position none
+		do conf In_saveMap_sequence false
+		release set_savemap_variables
+	}
+}
+
+automacro movendoPraKafraForaDaCidade {
 	exclusive 1
 	ConfigKey In_saveMap_sequence true
 	ConfigKeyNot saveMap_wanted none
@@ -1565,41 +1551,45 @@ automacro moveLocKafraOutside {
 	call move_to_near_kafra
 }
 
-automacro moveLocKafraInside {
+automacro movendoPraKafraDentroDaCidade {
 	exclusive 1
 	ConfigKeyNot saveMap $saveMap
 	ConfigKeyNot saveMap_wanted none
-	NpcNotNear /(Kafra Employee|Funcionária Kafra)/
+	NpcNotNear /(Kafra Employee|Funcionária Kafra|Corp. Ev. Incríveis)/
 	InMap $saveMap
 	call move_to_near_kafra
 }
 
-macro move_to_near_kafra {
-	do move $saveMap &config(saveMap_kafra_position) &random("1","2","3","4","5","6")
+macro move_to_near_Kafra {
+	log estou indo para a kafra em $saveMap &config(saveMap_kafra_position)
+	do move $saveMap &config(saveMap_kafra_position) &random("1","2","3","4","5")
 }
 
-automacro talkKafraEmployee {
+automacro FalarComKafra {
 	ConfigKey In_saveMap_sequence true
 	ConfigKeyNot saveMap $saveMap
 	ConfigKeyNot saveMap_wanted none
 	InMap $saveMap
-	NpcNear /(Kafra Employee|Funcionária Kafra)/
+	NpcNear /(Kafra Employee|Funcionária Kafra|Corp. Ev. Incríveis)/
 	delay 2
 	timeout 20
 	call {
-		log talking to kafra at '&arg("$.NpcNearLastPos", 1) &arg("$.NpcNearLastPos", 2)' using sequence '&config(saveMap_save_sequence)'
-		do talknpc &arg("$.NpcNearLastPos", 1) &arg("$.NpcNearLastPos", 2) &config(saveMap_save_sequence)
+		log ==============================================================
+		log Falando com kafra na posição &config(saveMap_kafra_position) usando a sequência '&config(saveMap_save_sequence)'
+		log ==============================================================
+		do talknpc &config(saveMap_kafra_position) c r0
 	}
 }
 
-automacro SavedAtKafra {
+automacro SalvoNaKafra {
 	exclusive 1
 	priority -5
-	NpcMsgName /O seu Ponto de Retorno foi salvo/ /(Kafra Employee|Funcionária Kafra)/
+	NpcMsgName /O seu Ponto (de Retorno )?foi salvo|saved here|foi salvo aqui na cidade/ /(Kafra Employee|Funcionária Kafra|Corp)/
 	ConfigKeyNot saveMap $saveMap
 	ConfigKey In_saveMap_sequence true
 	InMap $saveMap
 	call {
+		[
 		do conf saveMap $saveMap
 		do conf storageAuto_npc $saveMap &config(saveMap_kafra_position)
 		do conf storageAuto 1
@@ -1607,238 +1597,26 @@ automacro SavedAtKafra {
 		do conf sellAuto_npc &config(saveMap_sellNpc_position)
 		do conf storageAuto_npc_type 3
 		do conf storageAuto_npc_steps &config(saveMap_storage_sequence)
-		do conf In_saveMap_sequence false
+
 		do conf saveMap_save_sequence none
 		do conf saveMap_storage_sequence none
 		do conf saveMap_wanted none
 		do conf saveMap_kafra_position none
 		do conf saveMap_sellNpc_position none
-	}
-}
+		do conf In_saveMap_sequence false
+		release set_savemap_variables
 
-#Digite no console do eventMacro junopra --cidade
-#Pode ser tambem einbrochpra
-#ou rachelpra
-#se o nome estiver certo, ele vai mover-se pra cidade desejada
-macro junopra {
-	log Vamos ir de Juno para $.param1
-	#Se a cidade for izlude ou rachel , ele pega o aeroplano respectivo
-	if ( $.param1 =~ /izlude/i ) {
-		do conf -f aeroplano1 izlude
-		do conf -f aeroplano2 none
-	} elsif ( $.param1 =~ /rachel/i ) {
-		do conf -f aeroplano1 rachel
-		do conf -f aeroplano2 none
-	} elsif ( $.param1 =~ /hugel/i ) {
-		do conf -f aeroplano1 none
-		do conf -f aeroplano2 hugel
-	} elsif ( $.param1 =~ /lighthalzen/i ) {
-		do conf -f aeroplano1 none
-		do conf -f aeroplano2 lighthalzen
-	} elsif ( $.param1 =~ /einbroch/i ) {
-		do conf -f aeroplano1 none
-		do conf -f aeroplano2 eibroch
-	} elsif ( $.param1 =~ /[jy]uno/) {
-		log VOCÊ QUER IR DE JUNO PRA JUNO?
-	log PORQUE VOCÊ FARIA ISSO?
-	} else {
-		[
-		log Você digitou um nome inválido, por favor tente novamente
-		log Os valores podem ser:
-		log izlude , rachel , juno ou yuno 
-		log hugel , lighthalzen ou einbroch
-		log Escreva como quiser, desde que escreva certo
+		log ===========================================
+		log =Salvo em &config(saveMap)
+		log ===========================================
 		]
-		stop
-	}
-	$aeroplano1 = &config(aeroplano1)
-	$aeroplano2 = &config(aeroplano2)
-	if ($.map = airplane || $.map = airplane_01) {
-	log ja estamos no aeroplano, só esperar agora
-	} else {
-		if ( $.map != yuno ) do move yuno
-	}
-	log $aeroplano1, $aeroplano2
-}
-
-macro einbrochpra {
-	log Vamos ir de Eibroch para $.param1
-	#se a cidade for juno hugel ou lighthalzen ele só pega 1 aeroplano
-	# se for outra cidade, ele pega os dois aeroplanos
-	if ( $.param1 =~ /izlude/i ) {
-		do conf -f aeroplano1 izlude
-		do conf -f aeroplano2 juno
-	} elsif ($.param1 =~ /rachel/i ) {
-		do conf -f aeroplano1 rachel
-		do conf -f aeroplano2 juno
-	} elsif ( $.param1 =~ /hugel/i ) {
-		do conf -f aeroplano1 none
-		do conf -f aeroplano2 hugel
-	} elsif ( $.param1 =~ /lighthalzen/i ) {
-		do conf -f aeroplano1 none
-		do conf -f aeroplano2 lighthalzen
-	} elsif ($.param1 =~ /einbroch/i ) {
-		log VOCÊ QUER IR DE EIBROCH PRA EINBROCH?
-	log PORQUE VOCÊ FARIA ISSO?
-	} elsif ( $.param1 =~ /[jy]uno/) {
-		do conf -f aeroplano1 none
-		do conf -f aeroplano2 juno
-	} else {
-		[
-		log Você digitou um nome inválido, por favor tente novamente
-		log Os valores podem ser izlude , rachel , juno ou yuno , 
-		log hugel , lighthalzen ou einbroch
-		log pode ser com letra maiuscula ou sem
-		]
-		stop
-	}
-	$aeroplano1 = &config(aeroplano1)
-	$aeroplano2 = &config(aeroplano2)
-	if ($.map = airplane || $.map = airplane_01) {
-	log ja estamos no aeroplano, só esperar agora
-	} else {
-		do move airplane
-	}
-	log $aeroplano1, $aeroplano2
-}
-
-macro rachelpra {
-	log Vamos ir de Rachel para $.param1
-	#se a cidade for izlude ou juno ele só pega 1 aeroplano
-	# se for outra cidade, ele pega os dois aeroplanos
-	if ( $.param1 =~ /izlude/i ) {
-		do conf -f aeroplano1 izlude
-		do conf -f aeroplano2 none
-	} elsif ($.param1 =~ /rachel/i ) {
-		log VOCÊ QUER IR DE RACHEL PRA RACHEL?
-	log PORQUE VOCÊ FARIA ISSO?
-	} elsif ( $.param1 =~ /hugel/i ) {
-		do conf -f aeroplano1 juno
-		do conf -f aeroplano2 hugel
-	} elsif ( $.param1 =~ /lighthalzen/i ) {
-		do conf -f aeroplano1 juno
-		do conf -f aeroplano2 lighthalzen
-	} elsif ($.param1 =~ /einbroch/i ) {
-		do conf -f aeroplano1 juno
-		do conf -f aeroplano2 eibroch
-	} elsif ( $.param1 =~ /[jy]uno/) {
-		do conf -f aeroplano1 juno
-		do conf -f aeroplano2 none
-	} else {
-		[
-		log Você digitou um nome inválido, por favor tente novamente
-		log Os valores podem ser izlude , rachel , juno ou yuno , 
-		log hugel , lighthalzen ou einbroch
-		log pode ser com letra maiuscula ou sem
-		]
-		stop
-	}
-	$aeroplano1 = &config(aeroplano1)
-	$aeroplano2 = &config(aeroplano2)
-	if ( $.map = airplane || $.map = airplane_01) {
-	log ja estamos no aeroplano, só esperar agora
-	} else {
-		do move ra_fild12 294 208
-		do talk resp 0
-		log $aeroplano1, $aeroplano2
 	}
 }
-
-automacro dentroDoAeroplanoInternacional {
-	InMap airplane_01
-	LocalMsg /Bem-vindos a $aeroplano1|Welcome to $aeroplano1/i
-	exclusive 1
-	call sairDoAeroplano
-}
-
-automacro dentroDoAeroplanoDomestico {
-	InMap airplane
-	LocalMsg /Bem-vindos a $aeroplano2|Welcome to $aeroplano2/i
-	exclusive 1
-	call sairDoAeroplano
-}
-
-macro sairDoAeroplano {
-	do move 243 74
-}
-
-#Se estivermos na cidade, e o local desejado for essa cidade, ele completa o objetivo
-#se estivermos na cidade, mas nao for o objetivo, nada acontece, já que provavelmente
-#ele só está se locomovendo pra fazer qualquer outra coisa aleatoria que nao tem nada
-# a ver com esse macro
-automacro chegueiEmEinbroch {
-	InMap einbroch
-	ConfigKey aeroplano2 einbroch
-	run-once 1
-	exclusive 1
-	call objetivoCompleto
-}
-
-automacro chegueiEmHugel { 
-	InMap hugel
-	ConfigKey aeroplano2 hugel 
-	run-once 1
-	exclusive 1
-	call objetivoCompleto
-}
-
-automacro chegueiEmIzlude {
-	InMap izlude
-	ConfigKey aeroplano1 izlude
-	run-once 1
-	exclusive 1
-	call objetivoCompleto
-}
-
-automacro chegueiEmLighthalzen {
-	InMap lighthalzen
-	ConfigKey aeroplano2 lighthalzen
-	run-once 1
-	exclusive 1
-	call objetivoCompleto
-}
-
-automacro chegueiEmRachel {
-	InMap ra_fild12
-	ConfigKey aeroplano1 rachel
-	run-once 1
-	exclusive 1
-	call {
-		do move rachel
-		call objetivoCompleto
-	}
-}
-
-macro objetivoCompleto {
-	#Se estivermos na cidade, e o local desejado for essa cidade, ele completa o objetivo 
-	log cheguei em $.InMapLast , objetivo completo
-	do conf aeroplano2 none
-	do conf aeroplano1 none
-}
-
-automacro chegueiEmJuno {
-	InMap yuno
-	ConfigKeyNot aeroplano1 none, aeroplano2 none
-	exclusive 1
-	call {
-		# é aqui que ocorre a mágica, quando chega em juno
-		# ele detecta se precisa pegar outro aeroplano ou não
-		# se ele precisar ele vai
-		# se não precisar ele vai pra proximo da kafra e completa o objetivo
-		log destino para aeroplano1 é: &config(aeroplano1)
-		log destino para aeroplano2 é: &config(aeroplano2)
-		if (&config(aeroplano1) =~ /rachel|izlude/i  ) {
-		do move airplane_01
-		} elsif ( &config(aeroplano2) =~ /hugel|einbroch|lighthalzen/i ) {
-		do move airplane
-		} elsif ( &config(aeroplano1) =~  /[yj]uno/i || &config(aeroplano2) =~ /[yj]uno/i ) {
-			do move &rand(150, 154) &rand(182, 186)
-		call objetivoCompleto
-		} else {
-			log Falha em descobrir a rota correta, revise o código
-		}
-	}
-}
+#
+#
+#
+# FIM DA MACRO DE SALVAR NA KAFRA
+#
 
 sub GetIndexAndEquipped {
 	my ($type, $id) = @_;
@@ -1867,9 +1645,4 @@ sub nextMap {
 	} else {
 		return 0;
 	}
-}
-
-sub add_key {
-	my ($key, $value) = @_;
-	configModify($key, $value);
 }
