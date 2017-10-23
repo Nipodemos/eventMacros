@@ -428,12 +428,8 @@ automacro Eden40Caçar {
 	QuestHuntOngoing 7148 1686, 7149 1023, 7150 1273
 	exclusive 1
   	timeout 180
-	QuestInactive 2017
-	QuestInactive 2018
-	QuestInactive 2022
-	QuestInactive 2023
-	QuestInactive 2024
-	QuestInactive 2026
+	ConfigKeyNot virarArruaceiro true
+	JobLevel != 50
 	call {
 		call caçarMonstros
 		if ( &config(lockMap) != gef_fild10) do conf lockMap gef_fild10
@@ -576,7 +572,6 @@ automacro Eden40FinalizarCaças {
 automacro Eden60FinalizarCaças {
 	QuestHuntCompleted 7215 1278, 7216 1278
 	exclusive 1
-	JobID 17 #arruaceiro
 	call {
 		do mconf $.QuestHuntCompletedLastMobID 0 0 0
 		[
