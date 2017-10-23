@@ -1,0 +1,104 @@
+automacro nomeDoMercador {
+	run-once 1
+	BaseLevel > 0
+	exclusive 1
+	call {
+
+		$nomeDoMercador = &nick(NOME DO BOT QUE RECEBE OS ITENS)
+		$coordenadaPertoDoMercador = CIDADE E COORDENADAS
+
+		$pesoDoItem{Galho Seco} = 5
+		$pesoDoItem{Morango} = 2
+		$pesoDoItem{Amuleto dos Orcs} = 1
+		$pesoDoItem{Flor de Planta Carnívora} = 1
+		$pesoDoItem{Coração Incandescente} = 1
+	}
+}
+
+automacro PegandoFarm {
+	PrivMsgName /exemplo de codigo/ /$nomeDoMercador/ #Código enviado por PM para ativar a Macro
+	call {
+		do pm $.PrivMsgNameLastName ok, só vou vender primeiro
+		do autosell
+		do pm $.PrivMsgNameLastName ja vendi, to indo aí
+		do ai manual
+		### NÃO SE ESQUEÇA DE COLOCAR A COORDENADA PERTO DO SEU MERCADOR EM
+		do move $coordenadaPertoDoMercador #Mapa e Coordenadas para troca com o receptor
+	}
+}
+
+automacro MercadorPerto {
+    PlayerNear /$nomeDoMercador/
+	exclusive 1
+	checkOnAI manual
+    call {
+        do move $.PlayerNearLastPos
+		do deal $nomeDoMercador
+    }
+}
+automacro DandoItem {
+	SimpleHookEvent engaged_deal
+	checkOnAI manual
+	exclusive 1
+	call {
+		$zenyQueVouDar = &eval($.zeny - 100000)
+		do deal add z $zenyQueVouDar
+
+
+
+		@itens = keys (%peso)
+		$i = 0
+		$itensNaNegociacao = 0
+		while ($i < @itens && $itensNaNegociacao < 10) {
+			if ( &inventory($itens[$i]) > 0) {
+				do deal add $itens[$i]
+				$itensNaNegociacao++
+			}
+			$i++
+		}
+		$i = 0
+
+		do deal
+		pause 2
+		do deal
+	}
+}
+
+automacro ErroAoTentarNegociar {
+    SimpleHookEvent error_deal
+	checkOnAI manual
+	PlayerNotNear /$nomeDoMercador/
+	exclusive 1
+    call {
+        log ===================================
+		log tentamos negociar mas o mercador não está por perto
+		log movendo-se pra o local especificado denovo: ($coordenadaPertoDoMercador)
+		do move $coordenadaPertoDoMercador
+    }
+}
+
+automacro ErroAoTentarNegociar2 {
+    SimpleHookEvent error_deal
+	checkOnAI manual
+	PlayerNearDist /$nomeDoMercador/ > 2
+	exclusive 1
+    call {
+        [
+        log ================================
+        log =tentei negociar com o mercador, mas ele ta longe demais
+		log = tentando mover-se para mais perto ($.PlayerNearDistLastPos)
+        log ================================
+        ]
+		do move $.PlayerNearDistLastPos
+    }
+}
+
+automacro Concluido {
+	checkOnAI manual
+	console /.*finalizou*/
+	call {
+		do deal
+		pause 1
+		do ai on #lockMap do bot para voltar a farmar
+	}
+}
