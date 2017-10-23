@@ -5,10 +5,12 @@
 	JobLevel = 10
 	timeout 100
 	call {
+		[
 		log WTF?
 		log Deveria ser gatuno agora, mas nem isso eu sou
 		log tô todo bugado
 		log vamo virar gatuno, tá na hora
+		]
 		do move moc_prydb1 &rand(44,46) &rand(127,129)
 	}
 }
@@ -24,11 +26,13 @@ automacro upAteLv12Aprendiz {
 	timeout 30
 	InMapRegex /^(?!new_\d-\d|moc_prydb1)$/
 	call {
+		[
 		log pelo visto, ainda to no lvl de Classe $JobLevelLast ainda...
 		log o que aconteceu?
 		log a que ponto chegamos?
 		log nuss
 		log Tentando resolver isso...
+		]
 		call configurarMapa "payon" "pay_fild01"
 	}
 }
