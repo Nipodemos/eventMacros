@@ -77,60 +77,60 @@ automacro iniciandoQuestEden12MoverPerto {
 }
 
 automacro iniciandoQuestEden26MoverPerto {
-NpcNotNear /Boya/
-BaseLevel 26..32
-InInventoryID 6219 = 1
-JobID 6 #gatuno
-exclusive 1
-QuestInactive 7138
-QuestInactive 7139
-QuestInactive 7140
-ConfigKeyNot In_saveMap_sequence true
-ConfigKeyNot quest_eden em_curso
-ConfigKeyNot quest_eden terminando
-IsNotEquippedID armor 15010
-InInventoryID 15010 = 0
-call moverPertoDosNpcEden
+	NpcNotNear /Boya/
+	BaseLevel 26..32
+	InInventoryID 6219 = 1
+	JobID 6 #gatuno
+	exclusive 1
+	QuestInactive 7138
+	QuestInactive 7139
+	QuestInactive 7140
+	ConfigKeyNot In_saveMap_sequence true
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	IsNotEquippedID armor 15010
+	InInventoryID 15010 = 0
+	call moverPertoDosNpcEden
 }
 
 automacro IniciandoQuestEden40MoverPerto {
-QuestInactive 2017  #===========
-QuestInactive 2018  #
-QuestInactive 2022	#
-QuestInactive 2023  #=quests de arruaceiro
-QuestInactive 2024	#
-QuestInactive 2026	#===========
-QuestInactive 7147	#===========
-QuestInactive 7148	#
-QuestInactive 7149	#=quests eden
-QuestInactive 7150	#
-QuestInactive 7151	#=============
-NpcNotNear /Boya/
-BaseLevel 40..49
-JobID 6 #gatuno
-exclusive 1
-ConfigKeyNot In_saveMap_sequence true
-ConfigKeyNot quest_eden em_curso
-ConfigKeyNot quest_eden terminando
-IsNotEquippedID armor 15011
-InInventoryID 6219 = 1 #emblema do grupo eden
-InInventoryID 15011 = 0 #armadura que ganha com essa quest
-call moverPertoDosNpcEden
+	QuestInactive 2017  #===========
+	QuestInactive 2018  #
+	QuestInactive 2022	#
+	QuestInactive 2023  #=quests de arruaceiro
+	QuestInactive 2024	#
+	QuestInactive 2026	#===========
+	QuestInactive 7147	#===========
+	QuestInactive 7148	#
+	QuestInactive 7149	#=quests eden
+	QuestInactive 7150	#
+	QuestInactive 7151	#=============
+	NpcNotNear /Boya/
+	BaseLevel 40..49
+	JobID 6 #gatuno
+	exclusive 1
+	ConfigKeyNot In_saveMap_sequence true
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	IsNotEquippedID armor 15011
+	InInventoryID 6219 = 1 #emblema do grupo eden
+	InInventoryID 15011 = 0 #armadura que ganha com essa quest
+	call moverPertoDosNpcEden
 }
 
 automacro inciandoQuestEden60MoverPerto {
-NpcNotNear /Ur/
-BaseLevel 60..69
-exclusive 1
-InInventoryID 6219 = 1
-JobID 17 #arruaceiro
-QuestInactive 7214
-ConfigKeyNot In_saveMap_sequence true
-ConfigKeyNot quest_eden em_curso
-ConfigKeyNot quest_eden terminando
-IsNotEquippedID armor 15031
-InInventoryID 15031 = 0
-call moverPertoDosNpcEden
+	NpcNotNear /Ur/
+	BaseLevel 60..69
+	exclusive 1
+	InInventoryID 6219 = 1
+	JobID 17 #arruaceiro
+	QuestInactive 7214
+	ConfigKeyNot In_saveMap_sequence true
+	ConfigKeyNot quest_eden em_curso
+	ConfigKeyNot quest_eden terminando
+	IsNotEquippedID armor 15031
+	InInventoryID 15031 = 0
+	call moverPertoDosNpcEden
 }
 
 macro moverPertoDosNpcEden {
@@ -156,19 +156,9 @@ automacro iniciandoQuestEden12 {
 	ConfigKeyNot quest_eden terminando
 	IsNotEquippedID armor 15009
 	InInventoryID 15009 = 0
-	call {
-		[
-		log ===========================================
-		log =Iniciando a quest eden de nivel 12
-		log ===========================================
-		]
-		#do talknpc 25 35 c r1 c c c c c r0 c r0 c c c c c c #Boya
-		do talk $.NpcNearLastBinId
-		do talk resp 1
-		do talk resp 0
-		do talk resp 0
-	}
+	call iniciandoQuestEden 'r1 r0 r0'
 }
+
 
 automacro iniciandoQuestEden26 {
 	NpcNear /Boya/
@@ -184,16 +174,7 @@ automacro iniciandoQuestEden26 {
 	ConfigKeyNot quest_eden terminando
 	IsNotEquippedID armor 15010
 	InInventoryID 15010 = 0
-	call {
-		[
-		log ===========================================
-		log =Iniciando Quest eden do nivel 26
-		log ===========================================
-		]
-		#do talknpc 25 35 c c r1 c c c c c c #Boya
-		do talk $.NpcNearLastBinId
-		do talk resp 1
-	}
+	call iniciandoQuestEden 'r1'
 }
 
 automacro IniciandoQuestEden40 {
@@ -214,16 +195,7 @@ automacro IniciandoQuestEden40 {
 	ConfigKeyNot quest_eden terminando
 	IsNotEquippedID armor 15011
 	InInventoryID 15011 = 0
-	call {
-		[
-		log ===========================================
-		log =inicando quest eden do nivel 40
-		log ===========================================
-		]
-		#do talknpc 25 35 c r0 c c c c c c #Boya
-		do talk $.NpcNearLastBinId
-		do talk resp 0
-	}
+	call iniciandoQuestEden 'r0'
 }
 
 automacro inciandoQuestEden60 {
@@ -238,17 +210,17 @@ automacro inciandoQuestEden60 {
 	ConfigKeyNot quest_eden terminando
 	IsNotEquippedID armor 15031
 	InInventoryID 15031 = 0
-	call {
-		[
-		log ===========================================
-		log =iniciando quest eden do nivel 60
-		log ===========================================
-		]
-		#do talknpc 23 35 c r0 c c c c c r1 c c c c c c #Uru
-		do talk $.NpcNearLastBinId
-		do talk resp 0
-		do talk resp 1
-	}
+	call iniciandoQuestEden 'r0 r1'
+}
+
+macro iniciandoQuestEden {
+	[
+	log ==========================
+	log =Iniciando a quest eden
+	log ==========================
+	]
+	#$.param[0] tem como valor a sequencia de conversação correta
+	do talknpc $.NpcNearLastPos $.param[0]
 }
 
 automacro Eden12salvarNaKafra {
@@ -312,7 +284,7 @@ automacro Eden12IrNoMapa {
 	BaseLevel >= 15
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKey saveMap morocc
-	call irNoMapa
+	call irNoMapa 'moc_fild11' '182' '255' 'Filhote de Lobo' 'Escorpião' 'Condor'
 }
 
 automacro Eden26IrNoMapa {
@@ -321,7 +293,7 @@ automacro Eden26IrNoMapa {
 	exclusive 1
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKey saveMap payon
-	call irNoMapa
+	call irNoMapa 'pay_arche' '41' '136' 'Esqueleto' 'Poporing' 'Zumbi'
 }
 
 automacro Eden40IrNoMapa {
@@ -337,7 +309,7 @@ automacro Eden40IrNoMapa {
 	ConfigKeyNot virarArrauceiro true
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKey saveMap prontera
-	call irNoMapa
+	call irNoMapa 'in_orcs01' '35' '163' 'Guerreiro Orc' 'Filhote de Orc' 'Senhora Orc'
 }
 
 automacro Eden60IrNoMapa {
@@ -346,60 +318,29 @@ automacro Eden60IrNoMapa {
 	exclusive 1
 	ConfigKeyNot In_saveMap_sequence true
 	ConfigKey saveMap comodo
-	call irNoMapa
-}
+	call irNoMapa 'comodo' '173' '354'
+	}
 
 macro irNoMapa {
 	do conf -f quest_eden em_curso
-	switch ($.lvl) {
-	    case (>= 70) {
-			[
-			log ===========================================
-			log =indo fazer a quest eden 60
-			log ===========================================
-			]
-			do move comodo &rand(174,176) &rand(344,346)
-			#do talknpc 173 354 c c c c c #Mémbro do grupo Éden#2n
-			do talk &npc( 173 354 ) #Mémbro do grupo Éden#2n
-	    }
-	    case (>= 50) {
-			[
-			log ===========================================
-			log =indo fazer a quest eden 40
-			log ===========================================
-			]
-			do move in_orcs01 &rand(34,36) &rand(162,164)
-			do talk 0 #Absalon
-			do mconf Guerreiro Orc 0 0 0
-			do mconf Filhote de Orc 0 0 0
-			do mconf Senhora Orc 0 0 0
-	    }
-	    case (>= 26) {
-			[
-			log ===========================================
-			log =indo fazer a quest eden 26
-			log ===========================================
-			]
-			do move pay_arche &rand(44,46) &rand(132,134)
-			#do talknpc 41 136 c c c c c c c c #Coral
-			do talk &npc( 41 136 )
-			do mconf Esqueleto 0 0 0
-			do mconf Poporing 0 0 0
-			do mconf Zumbi 0 0 0
-	    }
-		case (>= 15) {
-			[
-			log ===========================================
-			log =indo fazer a quest eden 12
-			log ===========================================
-			]
-			do move moc_fild11 &rand(181,183) &rand(254,256)
-			do talk 0 #cão falante
-			do talk resp 1
-			do mconf Filhote de Lobo 0 0 0
-			do mconf Escorpião 0 0 0
-			do mconf Condor 0 0 0
-		}
+	[
+	log ===========================
+	log =indo fazer a quest eden
+	log ===========================
+	]
+	## $.param[0] tem como valor a cidade
+	## $.param[1] tem como valor a coordenada x
+	## $.param[2] tem como valor a coordenada y
+	## $.param[3] tem como valor o monstro 1
+	## $.param[4] tem como valor o monstro 2
+	## $.param[5] tem como valor o monstro 3
+	
+	do move $.param[0] $.param[1] $.param[2] &rand(1,5)
+	do talk &npc($.param[1] $.param[2])
+	if (&defined($.param[3]) = 1) {
+		do conf $.param[3] 0 0 0
+		do conf $.param[4] 0 0 0
+		do conf $.param[5] 0 0 0
 	}
 }
 
@@ -408,20 +349,14 @@ automacro Eden12Caçar {
 	QuestHuntOngoing 7129 1009, 7130 1107, 7131 1001
 	exclusive 1
 	timeout 120
-	call {
-		call caçarMonstros
-		if ( &config(lockMap) != moc_fild11) do conf lockMap moc_fild11
-	}
+	call caçarMonstros "moc_fild11"
 }
 
 automacro Eden26Caçar {
 	QuestHuntOngoing 7139 1076, 7140 1031
 	exclusive 1
 	timeout 180
-	call {
-		call caçarMonstros
-		if ( &config(lockMap) != pay_dun00) do conf lockMap pay_dun00
-	}
+	call caçarMonstros "pay_dun00"
 }
 
 automacro Eden40Caçar {
@@ -430,25 +365,22 @@ automacro Eden40Caçar {
   	timeout 180
 	ConfigKeyNot virarArruaceiro true
 	JobLevel != 50
-	call {
-		call caçarMonstros
-		if ( &config(lockMap) != gef_fild10) do conf lockMap gef_fild10
-	}
+	call caçarMonstros "gef_fild10"
 }
 
 automacro Eden60Caçar {
 	QuestHuntOngoing 7215 1278, 7216 1278
 	exclusive 1
 	timeout 60
-	call {
-		call caçarMonstros
-		if ( &config(lockMap) != beach_dun2) do conf lockMap beach_dun2
-	}
+	call caçarMonstros "beach_dun2"
 }
 
 macro caçarMonstros {
+	## $.param[0] tem como valor o lockMap que o bot
+	## vai caçar os monstros
 	[
 	call voltarAtacar
+	if ( &config(lockMap) != $.param[0]) do conf lockMap $.param[0]
 	do mconf $.QuestHuntOngoingLastMobID 2 0 0
 	log ===========================================
 	log =caçando monstro da quest eden

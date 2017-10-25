@@ -211,7 +211,7 @@ macro SetSaveIn {
 	}
 	[
 	log =============================================
-	log =Iniciando seguência de salvamento em &config(saveMap_wanted)
+	log =Iniciando sequência de salvamento em &config(saveMap_wanted)
 	log =============================================
 	]
 	do conf -f In_saveMap_sequence true

@@ -1621,17 +1621,24 @@ automacro SalvoNaKafra {
 sub GetIndexAndEquipped {
 	my ($type, $id) = @_;
 	my $Item = $char->inventory->getByNameID($id);
-	my $EquipIndex = $Item->{invIndex};
-	if (my $equipItem = $char->{equipment}{$1}) {
+	if ($Item eq "" ) {
+	message "Erro: ou a ID do item está incorreta, ou você não possui esse equipamento.\n";
+	return -1;
+	}
+	my $EquipIndex = $Item->{binID};
+	if (exists $char->{equipment}{$type}) {
+		my $equipItem = $char->{equipment}{$type};
 		if ($equipItem->{nameID} == $id) {
-		return -1;
+			message "Erro: Esse equip já está equipado.\n";
+			return -1;
 		} else {
 			return $EquipIndex;
 		}
-		} else {
-			return $EquipIndex;
-		}
+	} else {
+		return $EquipIndex;
+	}
 }
+
 
 sub GetNamenyNameID {
 	my $name = $items_lut{$_[0]};
