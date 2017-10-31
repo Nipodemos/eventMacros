@@ -1,3 +1,11 @@
+automacro alterarVelocidade {
+	ConfigKey master RMS Renewal Test Server
+	exclusive 1
+	run-once 1
+	call {
+		do c \@speed 10
+	}
+}
 automacro todobugadão {
 	InMapRegex /^(?!new_\d-\d|moc_prydb1)$/
 	JobID 0
@@ -23,16 +31,7 @@ automacro upAteLv12Aprendiz {
 	exclusive 1
 	timeout 30
 	InMapRegex /^(?!new_\d-\d|moc_prydb1)$/
-	call {
-		[
-		log pelo visto, ainda to no lvl de Classe $JobLevelLast ainda...
-		log o que aconteceu?
-		log a que ponto chegamos?
-		log nuss
-		log Tentando resolver isso...
-		]
-		call configurarMapa "payon" "pay_fild01"
-	}
+	call upar
 }
 
 automacro UpClasse1 {
@@ -40,12 +39,12 @@ automacro UpClasse1 {
 	BaseLevel != 99
 	ConfigKeyNot quest_eden em_curso
 	ConfigKeyNot quest_eden terminando
-	ConfigKeyNot lockMap pay_fild01
 	ConfigKeyNot In_saveMap_sequence true
+	ConfigKeyNot lockMap $mapa{lockMap}
 	JobLevel != 50
 	exclusive 1
-	priority 5 #baixa prioridade
-	timeout 600
+	priority 20 #baixa prioridade
+	timeout 30
     call upar
 }
 
@@ -54,73 +53,92 @@ automacro upClasse2 {
 	BaseLevel != 99
 	ConfigKeyNot quest_eden em_curso
 	ConfigKeyNot quest_eden terminando
-	ConfigKeyNot lockMap pay_fild01
 	ConfigKeyNot In_saveMap_sequence true
+	ConfigKeyNot lockMap $mapa{lockMap}
 	exclusive 1
-	priority 5 #baixa prioridade
-	timeout 600
+	priority 20 #baixa prioridade
+	timeout 30
     call upar
 }
 
-macro upar {
-	switch ($.lvl) {
-	    case (= 12..25) {
-			do iconf Erva Azul 7 1 0
-			$mapa{lockMap} = pay_fild08
-			$mapa{city} = payon
-	    }
-	    case (= 26..40) {
-			do iconf Unha Apodrecida 10 1 0
-			do iconf Osso 10 1 0
-			do iconf Mandíbula Horrenda 10 1 0
-			do mconf 1084 0 0 0 #cogumelo negro, troço inútil
-			$mapa{lockMap} = pay_dun00
-			$mapa{city} = payon
-	    }
-	    case (= 41..45) {
-			$mapa{lockMap} = pay_fild09
-			$mapa{city} = payon
-	    }
-		case (= 46..53) {
-			do iconf Erva Azul 7 1 0
-			if (&invamount(Erva Azul) >= 7) {
-				#ja tem erva suficiente, não precisa ir nas lontras
-				$mapa{lockMap} = iz_dun00
+automacro definindoVariaveisDeUp {
+	timeout 300
+	BaseLevel > 0
+	exclusive 1
+	priority -100
+	call {
+		switch ($.lvl) {
+			case (< 12) {
+				[
+				log pelo visto, ainda to no lvl de Classe $JobLevelLast ainda...
+				log o que aconteceu?
+				log a que ponto chegamos?
+				log nuss
+				log Tentando resolver isso...
+				]
+				$mapa{lockMap} = pay_fild01
+				$mapa{city} = payon
+			}
+	    	case (= 12..25) {
+				do iconf Erva Azul 7 1 0
+				$mapa{lockMap} = pay_fild08
+				$mapa{city} = payon
+	    	}
+	    	case (= 26..40) {
+				do iconf Unha Apodrecida 10 1 0
+				do iconf Osso 10 1 0
+				do iconf Mandíbula Horrenda 10 1 0
+				do mconf 1084 0 0 0 #cogumelo negro, troço inútil
+				$mapa{lockMap} = pay_dun00
+				$mapa{city} = payon
+	    	}
+	    	case (= 41..45) {
+				$mapa{lockMap} = pay_fild09
+				$mapa{city} = payon
+	    	}
+			case (= 46..53) {
+				do iconf Erva Azul 7 1 0
+				if (&invamount(Erva Azul) >= 7) {
+					#ja tem erva suficiente, não precisa ir nas lontras
+					$mapa{lockMap} = iz_dun00
+					$mapa{city} = izlude
+				} else {
+					#upar nas lontras pra pegar mais erva azul
+					$mapa{lockMap} = cmd_fild02
+					$mapa{city} = comodo
+				}
+			}
+			case (= 54..59) {
+				do mconf Hidra -1 0 0
+				$mapa{lockMap} = iz_dun02
 				$mapa{city} = izlude
-			} else {
-				#upar nas lontras pra pegar mais erva azul
-				$mapa{lockMap} = cmd_fild02
-				$mapa{city} = comodo
+			}
+			case (= 60..70) {
+				$mapa{lockMap} = moc_fild17
+				$mapa{city} = morocc
+			}
+			case (= 71..79) {
+				$mapa{lockMap} = mjolnir_11
+				$mapa{city} = prontera
+			}
+			case (= 80..98) {
+				$mapa{lockMap} = gef_fild06
+				$mapa{city} = geffen
+			}
+			else {
+				[
+				log ==========================================
+				log =Erro tentando definir qual mapa upar
+				log =Contate o criador dessa macro (Nipodemos)
+				log ==========================================
+				]
+				stop
 			}
 		}
-		case (= 54..59) {
-			do mconf Hidra -1 0 0
-			$mapa{lockMap} = iz_dun02
-			$mapa{city} = izlude
-		}
-		case (= 60..70) {
-			$mapa{lockMap} = moc_fild17
-			$mapa{city} = morocc
-		}
-		case (= 71..79) {
-			$mapa{lockMap} = mjolnir_11
-			$mapa{city} = prontera
-		}
-		case (= 80..98) {
-			$mapa{lockMap} = gef_fild06
-			$mapa{city} = geffen
-		}
-		else {
-			[
-			log ==========================================
-			log =Erro tentando definir qual mapa upar
-			log =Contate o criador dessa macro (Nipodemos)
-			log ==========================================
-			]
-			stop
-		}
 	}
+}
 
+macro upar {
 	if (&config(lockMap) = $mapa{lockMap}) {
 		[
 		log ================================
@@ -128,10 +146,13 @@ macro upar {
 		log =Continuarei upando
 		log ================================
 		]
+		call voltarAtacar
 		stop
 	}
+
 	if (&config(saveMap) = $mapa{city}) {
 		do conf lockMap $mapa{lockMap}
+		call voltarAtacar
 	} else {
 		call SetSaveIn "$mapa{city}"
 	}
@@ -241,7 +262,6 @@ automacro jaToSalvoNessaCidade {
 		log ==============================================
 		]
 
-		do conf saveMap $saveMap
 		do conf storageAuto_npc $saveMap &config(saveMap_kafra_position)
 		do conf storageAuto 1
 		do conf sellAuto 1
@@ -255,6 +275,7 @@ automacro jaToSalvoNessaCidade {
 		do conf saveMap_kafra_position none
 		do conf saveMap_sellNpc_position none
 		do conf In_saveMap_sequence false
+
 		release set_savemap_variables
 	}
 }
@@ -291,9 +312,9 @@ automacro FalarComKafra {
 	delay 2
 	timeout 20
 	call {
-		log ==============================================================
-		log Falando com kafra na posição &config(saveMap_kafra_position) usando a sequência '&config(saveMap_save_sequence)'
-		log ==============================================================
+		log =================================================
+		log Falando com kafra na posição &config(saveMap_kafra_position)
+		log =================================================
 		do talknpc &config(saveMap_kafra_position) c r0
 	}
 }
@@ -335,3 +356,19 @@ automacro SalvoNaKafra {
 #
 # FIM DA MACRO DE SALVAR NA KAFRA
 #
+
+
+macro pararDeAtacar {
+	[
+	do conf route_randomWalk 0
+	do conf attackAuto 1
+	]
+}
+
+macro voltarAtacar {
+	[
+	do conf route_randomWalk 1
+	do conf attackAuto 2
+	]
+}
+
