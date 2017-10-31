@@ -17,9 +17,7 @@ automacro EdenJoinMoveNpc {
 	#ConfigKeyNot membroDoEden sim
 	NpcNotNear /Lenore|Lime/
 	JobIDNot 0 #aprendiz
-	call {
-		do move moc_para01 &rand(33,35) &rand(25,27) #posição otima no Eden
-	}
+	call moverPertoDosNpcEden
 }
 
 automacro EdenJoinTalkNpc {
@@ -602,6 +600,7 @@ automacro EdenPegandoEquips_IndoProNpc {
 		do move moc_para01 &rand(112,114) &rand(31,33)
 	}
 }
+
 
 automacro EdenPegandoEquips12e26e40 {
 	ConfigKey quest_eden terminando

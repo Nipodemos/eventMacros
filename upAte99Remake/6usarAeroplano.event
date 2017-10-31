@@ -43,7 +43,7 @@ macro junopra {
 	$aeroplano1 = &config(aeroplano1)
 	$aeroplano2 = &config(aeroplano2)
 	if ($.map = airplane || $.map = airplane_01) {
-	log ja estamos no aeroplano, só esperar agora
+		log ja estamos no aeroplano, só esperar agora
 	} else {
 		if ( $.map != yuno ) do move yuno
 	}
@@ -92,7 +92,7 @@ macro einbrochpra {
 	$aeroplano1 = &config(aeroplano1)
 	$aeroplano2 = &config(aeroplano2)
 	if ($.map = airplane || $.map = airplane_01) {
-	log ja estamos no aeroplano, só esperar agora
+		log ja estamos no aeroplano, só esperar agora
 	} else {
 		do move airplane
 	}
@@ -142,7 +142,7 @@ macro rachelpra {
 	$aeroplano1 = &config(aeroplano1)
 	$aeroplano2 = &config(aeroplano2)
 	if ( $.map = airplane || $.map = airplane_01) {
-	log ja estamos no aeroplano, só esperar agora
+		log ja estamos no aeroplano, só esperar agora
 	} else {
 		do move ra_fild12 294 208
 		do talk resp 0
@@ -204,16 +204,18 @@ macro sairDoAeroplano {
 #se estivermos na cidade, mas nao for o objetivo, nada acontece, já que provavelmente
 #ele só está se locomovendo pra fazer qualquer outra coisa aleatoria que nao tem nada
 # a ver com esse macro
-automacro chegueiEmEinbroch {
+automacro chegueiEmCidade2 {
 	InMap $aeroplano2
+	NotInMap yuno
 	ConfigKey aeroplano2 $aeroplano2
 	run-once 1
 	exclusive 1
 	call objetivoCompleto
 }
 
-automacro chegueiEmIzlude {
+automacro chegueiEmCidade1 {
 	InMap $aeroplano1
+	NotInMap yuno
 	ConfigKey aeroplano1 $aeroplano 1
 	run-once 1
 	exclusive 1
@@ -225,10 +227,12 @@ macro objetivoCompleto {
 	log cheguei em $.InMapLast , objetivo completo
 	do conf aeroplano2 none
 	do conf aeroplano1 none
+	call SetSaveIn "$.InMapLast"
 }
 
 automacro chegueiEmJuno {
 	InMap yuno
+	priority -20 #prioridade alta
 	ConfigKeyNot aeroplano1 none, aeroplano2 none
 	exclusive 1
 	call {
