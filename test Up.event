@@ -31,7 +31,16 @@ automacro upAteLv12Aprendiz {
 	exclusive 1
 	timeout 30
 	InMapRegex /^(?!new_\d-\d|moc_prydb1)$/
-	call upar
+	call {
+		[
+		log pelo visto, ainda to no lvl de Classe $JobLevelLast ainda...
+		log o que aconteceu?
+		log a que ponto chegamos?
+		log nuss
+		log Tentando resolver isso...
+		]
+		call upar
+	}
 }
 
 automacro UpClasse1 {
@@ -69,13 +78,6 @@ automacro definindoVariaveisDeUp {
 	call {
 		switch ($.lvl) {
 			case (< 12) {
-				[
-				log pelo visto, ainda to no lvl de Classe $JobLevelLast ainda...
-				log o que aconteceu?
-				log a que ponto chegamos?
-				log nuss
-				log Tentando resolver isso...
-				]
 				$mapa{lockMap} = pay_fild01
 				$mapa{city} = payon
 			}
