@@ -29,6 +29,7 @@ macro junopra {
 		case (=~ /[jy]uno/) {
 			log VOCÊ QUER IR DE JUNO PRA JUNO?
 			log PORQUE VOCÊ FARIA ISSO?
+			stop
 		} else {
 			[
 			log Você digitou um nome inválido, por favor tente novamente
@@ -42,6 +43,8 @@ macro junopra {
 	}
 	$aeroplano1 = &config(aeroplano1)
 	$aeroplano2 = &config(aeroplano2)
+	do conf lockMap none
+	do ai manual
 	if ($.map = airplane || $.map = airplane_01) {
 		log ja estamos no aeroplano, só esperar agora
 	} else {
@@ -74,6 +77,7 @@ macro einbrochpra {
 		case (=~ /einbroch/i) {
 			log VOCÊ QUER IR DE EINBROCH PRA EINBROCH?
 			log PORQUE VOCÊ FARIA ISSO?
+			stop
 		}
 		case (=~ /[jy]uno/) {
 			do conf -f aeroplano1 none
@@ -91,6 +95,8 @@ macro einbrochpra {
 	}
 	$aeroplano1 = &config(aeroplano1)
 	$aeroplano2 = &config(aeroplano2)
+	do conf lockMap none
+	do ai manual
 	if ($.map = airplane || $.map = airplane_01) {
 		log ja estamos no aeroplano, só esperar agora
 	} else {
@@ -112,6 +118,7 @@ macro rachelpra {
 	    case (=~ /rachel/i) {
 			log VOCÊ QUER IR DE RACHEL PRA RACHEL?
 			log PORQUE VOCÊ FARIA ISSO?
+			stop
 	    }
 	    case (=~ /hugel/i) {
 			do conf -f aeroplano1 juno
@@ -141,6 +148,8 @@ macro rachelpra {
 	}
 	$aeroplano1 = &config(aeroplano1)
 	$aeroplano2 = &config(aeroplano2)
+	do conf lockMap none
+	do ai manual
 	if ( $.map = airplane || $.map = airplane_01) {
 		log ja estamos no aeroplano, só esperar agora
 	} else {
@@ -149,21 +158,24 @@ macro rachelpra {
 		log $aeroplano1, $aeroplano2
 	}
 }
+
 automacro dentroDoAeroplanoBugged {
 	InMap airplane, airplane_01
 	exclusive 1
+	CheckOnAI manual
 	ConfigKeyNot lockMap none
 	call {
 		do conf lockMap none
 	}
 }
 
-automacro dentroDoAeroplanoInternacionalVarNaoDefinida {
+automacro dentroDoAeroplanoInternacional_checagem {
 	ConfigKeyNot aeroplano1 none
 	InMap airplane_01
+	CheckOnAI manual
 	timeout 50
 	call {
-		if (&defined($aeroplano1)) {
+		if (&defined($aeroplano1) = 0) {
 			$aeroplano1 = &config(aeroplano1)
 		}
 		log Estamos no aeroplano, aguardando chegada ao destino
@@ -172,14 +184,16 @@ automacro dentroDoAeroplanoInternacionalVarNaoDefinida {
 
 automacro dentroDoAeroplanoInternacional {
 	InMap airplane_01
+	CheckOnAI manual
 	LocalMsg /Bem-vindo a $aeroplano1|Welcome to $aeroplano1/i
 	exclusive 1
 	call sairDoAeroplano
 }
 
-automacro dentroDoAeroplanoDomesticoVarNaoDefinida {
+automacro dentroDoAeroplanoDomestico_checagem {
 	ConfigKeyNot aeroplano2 none
 	InMap airplane
+	CheckOnAI manual
 	timeout 50
 	call {
 		if (&defined($aeroplano2) = 0) {
@@ -191,6 +205,7 @@ automacro dentroDoAeroplanoDomesticoVarNaoDefinida {
 
 automacro dentroDoAeroplanoDomestico {
 	InMap airplane
+	CheckOnAI manual
 	LocalMsg /Bem-vindos a $aeroplano2|Welcome to $aeroplano2/i
 	exclusive 1
 	call sairDoAeroplano
@@ -207,8 +222,8 @@ macro sairDoAeroplano {
 automacro chegueiEmCidade2 {
 	InMap $aeroplano2
 	NotInMap yuno
+	CheckOnAI manual
 	ConfigKey aeroplano2 $aeroplano2
-	run-once 1
 	exclusive 1
 	call objetivoCompleto
 }
@@ -216,22 +231,36 @@ automacro chegueiEmCidade2 {
 automacro chegueiEmCidade1 {
 	InMap $aeroplano1
 	NotInMap yuno
+	CheckOnAI manual
 	ConfigKey aeroplano1 $aeroplano 1
-	run-once 1
 	exclusive 1
 	call objetivoCompleto
 }
 
+automacro chegueiPertoDeRachel {
+	InMap ra_fild12
+	ConfigKey aeroplano1 rachel
+	exclusive 1
+	CheckOnAI manual
+	call {
+		log agora to bem perto de rachel
+		log indo pra la
+		do move rachel
+	}
+}
 macro objetivoCompleto {
 	#Se estivermos na cidade, e o local desejado for essa cidade, ele completa o objetivo
+	#E automaticamente salva na cidade, usando a macro SetSaveIn
 	log cheguei em $.InMapLast , objetivo completo
 	do conf aeroplano2 none
 	do conf aeroplano1 none
+	do ai on
 	call SetSaveIn "$.InMapLast"
 }
 
 automacro chegueiEmJuno {
 	InMap yuno
+	CheckOnAI manual
 	priority -20 #prioridade alta
 	ConfigKeyNot aeroplano1 none, aeroplano2 none
 	exclusive 1
