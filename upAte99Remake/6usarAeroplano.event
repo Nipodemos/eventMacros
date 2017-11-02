@@ -1,6 +1,9 @@
-﻿#Digite no console do eventMacro junopra --cidade
-#Pode ser tambem einbrochpra
-#ou rachelpra
+﻿#Digite no console do eventMacro 
+#eventMacro junopra --cidade
+#Pode ser tambem 
+#eventMacro einbrochpra --cidade
+#ou
+#eventMacro rachelpra --cidade
 #se o nome estiver certo, ele vai mover pra cidade desejada
 macro junopra {
 	log Vamos ir de Juno para $.param[0]
@@ -41,8 +44,8 @@ macro junopra {
 			stop
 		}
 	}
-	$aeroplano1 = &config(aeroplano1)
-	$aeroplano2 = &config(aeroplano2)
+	$varAeroplano1 = &config(aeroplano1)
+	$varAeroplano2 = &config(aeroplano2)
 	do conf lockMap none
 	do ai manual
 	if ($.map = airplane || $.map = airplane_01) {
@@ -50,7 +53,7 @@ macro junopra {
 	} else {
 		if ( $.map != yuno ) do move yuno
 	}
-	log $aeroplano1, $aeroplano2
+	log $varAeroplano1, $varAeroplano2
 }
 
 macro einbrochpra {
@@ -93,8 +96,8 @@ macro einbrochpra {
 			stop
 		}
 	}
-	$aeroplano1 = &config(aeroplano1)
-	$aeroplano2 = &config(aeroplano2)
+	$varAeroplano1 = &config(aeroplano1)
+	$varAeroplano2 = &config(aeroplano2)
 	do conf lockMap none
 	do ai manual
 	if ($.map = airplane || $.map = airplane_01) {
@@ -102,7 +105,7 @@ macro einbrochpra {
 	} else {
 		do move airplane
 	}
-	log $aeroplano1, $aeroplano2
+	log $varAeroplano1, $varAeroplano2
 }
 
 macro rachelpra {
@@ -146,8 +149,8 @@ macro rachelpra {
 			stop
 		}
 	}
-	$aeroplano1 = &config(aeroplano1)
-	$aeroplano2 = &config(aeroplano2)
+	$varAeroplano1 = &config(aeroplano1)
+	$varAeroplano2 = &config(aeroplano2)
 	do conf lockMap none
 	do ai manual
 	if ( $.map = airplane || $.map = airplane_01) {
@@ -155,7 +158,7 @@ macro rachelpra {
 	} else {
 		do move ra_fild12 294 208
 		do talk resp 0
-		log $aeroplano1, $aeroplano2
+		log $varAeroplano1, $varAeroplano2
 	}
 }
 
@@ -169,14 +172,29 @@ automacro dentroDoAeroplanoBugged {
 	}
 }
 
+automacro usarAeroplanoBugged {
+	CheckOnAI auto
+	exclusive 1
+	ConfigKeyNot aeroplano1 none, aeroplano2 none
+	call {
+		#se essa macro se ativar, significa que a AI ta no automático
+		#quando deveria estar no manual pra todas as outras macros se ativarem
+		#aconteceria se no meio do uso da macro (mover ate la ou dentro do aeroplano)
+		#o openkore foss fechado
+		do ai manual
+		$varAeroplano1 = &config(aeroplano1)
+		$varAeroplano2 = &config(aeroplano2)
+	}
+}
+
 automacro dentroDoAeroplanoInternacional_checagem {
 	ConfigKeyNot aeroplano1 none
 	InMap airplane_01
 	CheckOnAI manual
 	timeout 50
 	call {
-		if (&defined($aeroplano1) = 0) {
-			$aeroplano1 = &config(aeroplano1)
+		if (&defined($varAeroplano1) = 0) {
+			$varAeroplano1 = &config(aeroplano1)
 		}
 		log Estamos no aeroplano, aguardando chegada ao destino
 	}
@@ -185,7 +203,7 @@ automacro dentroDoAeroplanoInternacional_checagem {
 automacro dentroDoAeroplanoInternacional {
 	InMap airplane_01
 	CheckOnAI manual
-	LocalMsg /Bem-vindo a $aeroplano1|Welcome to $aeroplano1/i
+	LocalMsg /Bem-vindo a $varAeroplano1|Welcome to $varAeroplano1/i
 	exclusive 1
 	call sairDoAeroplano
 }
@@ -196,8 +214,8 @@ automacro dentroDoAeroplanoDomestico_checagem {
 	CheckOnAI manual
 	timeout 50
 	call {
-		if (&defined($aeroplano2) = 0) {
-			$aeroplano2 = &config(aeroplano2)
+		if (&defined($varAeroplano2) = 0) {
+			$varAeroplano2 = &config(aeroplano2)
 		}
 		log Estamos no aeroplano, aguardando chegada ao destino
 	}
@@ -206,7 +224,7 @@ automacro dentroDoAeroplanoDomestico_checagem {
 automacro dentroDoAeroplanoDomestico {
 	InMap airplane
 	CheckOnAI manual
-	LocalMsg /Bem-vindos a $aeroplano2|Welcome to $aeroplano2/i
+	LocalMsg /Bem-vindos a $varAeroplano2|Welcome to $varAeroplano2/i
 	exclusive 1
 	call sairDoAeroplano
 }
@@ -220,16 +238,16 @@ macro sairDoAeroplano {
 #ele só está se locomovendo pra fazer qualquer outra coisa aleatoria que nao tem nada
 # a ver com esse macro
 automacro chegueiEmCidade2 {
-	InMap $aeroplano2
+	InMap $varAeroplano2
 	NotInMap yuno
 	CheckOnAI manual
-	ConfigKey aeroplano2 $aeroplano2
+	ConfigKey aeroplano2 $varAeroplano2
 	exclusive 1
 	call objetivoCompleto
 }
 
 automacro chegueiEmCidade1 {
-	InMap $aeroplano1
+	InMap $varAeroplano1
 	NotInMap yuno
 	CheckOnAI manual
 	ConfigKey aeroplano1 $aeroplano 1
