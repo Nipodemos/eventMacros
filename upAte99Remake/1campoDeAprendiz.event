@@ -69,6 +69,7 @@ automacro TalkSprakkiOutside {
 		do iconf 13041 0 0 0
 		do iconf 2393 0 0 0
 		do iconf 2301 0 0 0
+		do iconf 958 10 1 0 #mandibula
 		]
 		do talk $.NpcNearLastBinId
 	}
