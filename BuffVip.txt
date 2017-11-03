@@ -3,155 +3,68 @@
 #Atualizada 14/07/2017 
 #By Snaadboy / Veins por scherinha
 #Copiar com os créditos
+
+
 automacro AcabouBuffVip {
-	status not Steamed Scorpion
-	inventory "Emblema do Grupo Valhalla" = 1
+	StatusInactiveHandle EFST_FOOD_AGI
+	InInventory "Emblema do Grupo Valhalla" = 1
 	exclusive 1
 	timeout 40
 	call {
-	
-	$mapaSalvo = @config (saveMap)
-	
-	if ($mapaSalvo = prontera) {
-	$posicaoProximoAoAgente = 145 92
-	$coordenadaAgenteVip = 146 93
-	}
-	
-	if ($mapaSalvo = geffen) {
-	$posicaoProximoAoAgente = 124 60
-	$coordenadaAgenteVip = 126 64
-	}
-	
-	if ($mapaSalvo = aldebaran) {
-	$posicaoProximoAoAgente = 144 114
-	$coordenadaAgenteVip = 144 116
-	}
-	
-	if ($mapaSalvo = payon) {
-	$posicaoProximoAoAgente = 184 102
-	$coordenadaAgenteVip = 184 102
-	}
-	
-	if ($mapaSalvo = morocc) {
-	$posicaoProximoAoAgente = 145 92
-	$coordenadaAgenteVip = 146 93
-	}
-	
-	if ($mapaSalvo = yuno) {
-	$posicaoProximoAoAgente = 147 185
-	$coordenadaAgenteVip = 149 187
-	}
-	
-	if ($mapaSalvo = veins) {
-	$posicaoProximoAoAgente = 209 109
-	$coordenadaAgenteVip = 210 109
-	}
-	
-	call irPegarBuff
+		$mapaSalvo = &config (saveMap)
+
+		if ($mapaSalvo = prontera) {
+			$coordenadaAgenteVip = 146 93
+		}
+
+		if ($mapaSalvo = geffen) {
+			$coordenadaAgenteVip = 126 64
+		}
+
+		if ($mapaSalvo = aldebaran) {
+			$coordenadaAgenteVip = 144 116
+		}
+
+		if ($mapaSalvo = payon) {
+			$coordenadaAgenteVip = 184 102
+		}
+
+		if ($mapaSalvo = morocc) {
+			$coordenadaAgenteVip = 146 93
+		}
+
+		if ($mapaSalvo = yuno) {
+			$coordenadaAgenteVip = 149 187
+		}
+
+		if ($mapaSalvo = veins) {
+			$coordenadaAgenteVip = 210 109
+		}
+		do conf -f irPegarBuff sim
+		do respawn
 	} 
 }
 
 
-
-macro irPegarBuff {
-	log Busca buff $mapaSalvo
-	do respawn
-	pause 2
-	do ai manual
-	do move $mapaSalvo $posicaoProximoAoAgente #Posição perto do Agente VIP
-	pause 3
-	do talknpc $coordenadaAgenteVip c c c r2 c c c c c r3 c c n #Agente VIP
-	pause 4
-	do is @inventory (Pílula de SP)
-	pause 3
-	do ai on
-	
+automacro irProNpcVip {
+	ConfigKey irPegarBuff sim
+	exclusive 1
+	NpcNotNear /Vip/
+	StatusInactiveHandle EFST_FOOD_AGI
+	call {
+		do move $mapaSalvo $coordenadaAgenteVip &rand(2,7)
 	}
-	
-
-macro salvarEmProntera {
-#Créditos HenryBk e nipodemos
-	$mapaQueQuerSalvar = prontera
-	$celulaProximaDela = 144 87
-	$posicaoDaKafra    = 146 89
-	$posicaoNPCdeVenda = prontera 113 42
-	log Vou salvar em $mapaQueQuerSalvar
-	log A posição da kafra é $posicaoDaKafra
-	log A posição do NPC de Vendas é $posicaoNPCdeVenda
-	log Vou começar o processo
-	call processoCompleto
 }
 
-macro salvarEmGeffen {
-	$mapaQueQuerSalvar = geffen
-	$celulaProximaDela = 201 121
-	$posicaoDaKafra    = 203 123
-	$posicaoNPCdeVenda = geffen 196 111
-	log Vou salvar em $mapaQueQuerSalvar
-	log A posição da kafra é $posicaoDaKafra
-	log A posição do NPC de Vendas é $posicaoNPCdeVenda
-	log Vou começar o processo
-	call processoCompleto
-}
-
-macro salvarEmAldebaran {
-	$mapaQueQuerSalvar = aldebaran
-	$celulaProximaDela = 142 117
-	$posicaoDaKafra    = 143 119
-	$posicaoNPCdeVenda = aldebaran 165 107
-	log Vou salvar em $mapaQueQuerSalvar
-	log A posição da kafra é $posicaoDaKafra
-	log A posição do NPC de Vendas é $posicaoNPCdeVenda
-	log Vou começar o processo
-	call processoCompleto
-}
-
-macro salvarEmPayon {
-	$mapaQueQuerSalvar = payon
-	$celulaProximaDela = 179 102
-	$posicaoDaKafra    = 181 104
-	$posicaoNPCdeVenda = payon 159 96
-	log Vou salvar em $mapaQueQuerSalvar
-	log A posição da kafra é $posicaoDaKafra
-	log A posição do NPC de Vendas é $posicaoNPCdeVenda
-	log Vou começar o processo
-	call processoCompleto
-}
-
-macro salvarEmMorooc {
-	$mapaQueQuerSalvar = morocc
-	$celulaProximaDela = 154 95
-	$posicaoDaKafra    = 156 97
-	$posicaoNPCdeVenda = morocc_in 141 67
-	log Vou salvar em $mapaQueQuerSalvar
-	log A posição da kafra é $posicaoDaKafra
-	log A posição do NPC de Vendas é $posicaoNPCdeVenda
-	log Vou começar o processo
-	call processoCompleto
-}
-
-macro salvarEmVeins {
-	$mapaQueQuerSalvar = veins
-	$celulaProximaDela = 207 127
-	$posicaoDaKafra    = 208 128
-	$posicaoNPCdeVenda = ve_in 243 303
-	log Vou salvar em $mapaQueQuerSalvar
-	log A posição da kafra é $posicaoDaKafra
-	log A posição do NPC de Vendas é $posicaoNPCdeVenda
-	log Vou começar o processo
-	call processoCompleto
-}
-
-macro processoCompleto {
-#do respawn
-do move $mapaQueQuerSalvar $celulaProximaDela
-do talknpc $posicaoDaKafra c r0
-log Salvei na Kafra, setando as variaveis
-pause 2
-do conf saveMap $mapaQueQuerSalvar
-do conf storageAuto 1
-do conf storageAuto_npc $mapaQueQuerSalvar $posicaoDaKafra
-do conf sellAuto 1
-do conf sellAuto_npc $posicaoNPCdeVenda
-log Estou salvo em @config(saveMap)
+automacro pertoDoNpcVip {
+	ConfigKey irPegarBuff sim
+	exclusive 1
+	NpcNear /Vip/
+	StatusInactiveHandle EFST_FOOD_AGI
+	InSaveMap 1
+	call {
+		do talknpc $coordenadaAgenteVip r2 r3
+		do is &inventory(Pílula de SP)
+		do conf -f irPegarBuff none
+	}
 }
