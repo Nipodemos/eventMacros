@@ -6,12 +6,16 @@ automacro nomeDoMercador {
 	CheckOnAI auto,manual,off
 	macro_delay .5
 	call {
-		##COLOQUE DENTRO DOS PARENTESIS O NOME DO  SEU MERCADOR
+
+
+		##COLOQUE DENTRO DOS PARENTESIS O NOME DO  SEU CHAR QUE VAI RECEBER TUDO
 		##SE NÃO COLOCAR A MACRO NAO VAI FUNCIONAR
 		$nomeDoMercador = &nick(NipoSorcerer) #NOME DO BOT QUE RECEBE OS ITENS
 
 
 		##ESSAS SERÃO AS COORDENADAS PADRÃO, VOCE TEM QUE MUDAR SENÃO DÁ TRETA
+		##ESSAS COORDENADS SÃO AS DE ONDE O MERCADOR ESTÁ, PROS ARRUACEIROS 
+		##SABEREM ONDE IR PRA SE ENCONTRAREM
 		##EXEMPLO : prontera 100 100
 		$coordenadaPertoDoMercador = CIDADE E COORDENADAS
 
@@ -37,7 +41,9 @@ automacro nomeDoMercador {
 		$pesoDoItem{1032} = 1 #Flor de Planta Carnívora
 		$pesoDoItem{7097} = 1 #Coração Incandescente
 
-		## ESSAS SÃO AS CONTAS QUE VC QUER QUE ELE PASSE
+		
+
+		## AQUI VC CONFIGURA AS CONTAS DOS SEUS CATADORES DE LOOT
 		## COLOQUE USUARIO E SLOT DE CADA UMA DELAS
 		## PODE SER QUANTAS VOCÊ QUISER
 		## EXEMPLO:
@@ -48,10 +54,10 @@ automacro nomeDoMercador {
 		## 
 		## 
 		## 
-
-		$slot{alanzi3} = 0
-		$slot{alanzi4} = 0
+		$slot{login1} = 0
+		$slot{login2} = 0
 		#$slot{login3} = 3
+
 
 
 		## SE AS SENHAS DE TODOS OS SEUS BOTS FOR A MESMA, NÃO PRECISA CONFIGURAR SENHA
@@ -65,9 +71,9 @@ automacro nomeDoMercador {
 		## EXEMPLO:
 		##
 		## $senha{suaMae} = i'm poppy
-
-		#$senha{login1} = 123456
-		#$senha{login2} = 123456
+		
+		$senha{login1} = 123456
+		$senha{login2} = 123456
 
 		## Opção de debug, útil para analisar algum erro na macro
 		$debug = 1
@@ -144,10 +150,14 @@ automacro PegandoFarm {
 		## assim que receber a mensagem do seu mercador
 		## ele vai começar todo o processo
 		if ($.PrivMsgLastName = $nomeDoMercador) {
+			[
 			do conf -f passarItens sim
-			do pm "$nomeDoMercador" ok
-			do pm "$nomeDoMercador" ok, ponto de encontro é: $coordenadaPertoDoMercador
+			do conf route_randomWalk 0
+			do conf lockMap none
+			do conf attackAuto 0
 			do conf -f coletarFarm_passo autosell
+			]
+			do pm "$nomeDoMercador" ok, ponto de encontro é: $coordenadaPertoDoMercador
 			
 		} elsif ($nomeDoMercador =~ /NOME DO BOT QUE RECEBE OS ITENS/){
 			#trigga se o usuário tiver esqueecido de fazer a configuração
@@ -190,10 +200,14 @@ automacro PegandoFarm_CoordenadaPersonalizada {
 		##esse if existe pra checar se a pessoa que te mandou pm é o seu mercador
 		##minha macro é a prova de inúteis qu tentam bugar a parada
 		if ($.PrivMsgLastName = $nomeDoMercador) {
-			
+			[
 			do conf -f passarItens sim
-			do pm "$nomeDoMercador" ok, ponto de encontro é: $coordenadaPertoDoMercador
+			do conf route_randomWalk 0
+			do conf lockMap none
+			do conf attackAuto 0
 			do conf -f coletarFarm_passo autosell
+			]
+			do pm "$nomeDoMercador" ok, ponto de encontro é: $coordenadaPertoDoMercador
 			
 		} elsif ($nomeDoMercador =~ /NOME DO BOT QUE RECEBE OS ITENS/){
 			#mais um check pra ver se o usuario nao fez cagada
@@ -248,6 +262,10 @@ automacro completeiAsVendas {
 	}
 }
 
+#me deu tanto trabalhdo essa macro T_T
+#pena que ela agora nao serve pra nada
+#o bot vai ter que ir no storage toda santa vez, nao adianta checar
+#
 #automacro ChecarSePrecisaIrProArmazem {
 #	ConfigKey passarItens sim
 #	ConfigKey coletarFarm_passo checarStorage
@@ -699,14 +717,6 @@ automacro ErroAoTentarNegociar2 {
 		log = tentando mover-se para mais perto ($.PlayerNearDistLastPos)
 		log ================================
 		]
-	}
-}
-
-sub checarSeArmazenJaFoiAberto {
-	if ($char->storage->wasOpenedThisSession()) {
-		return "sim";
-	} else {
-		return "nao";
 	}
 }
 
