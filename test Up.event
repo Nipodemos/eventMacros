@@ -6,6 +6,7 @@ automacro alterarVelocidade {
 		do c \@speed 10
 	}
 }
+
 automacro todobugadão {
 	InMapRegex /^(?!new_\d-\d|moc_prydb1)$/
 	JobID 0
@@ -32,13 +33,12 @@ automacro upAteLv12Aprendiz {
 	timeout 30
 	InMapRegex /^(?!new_\d-\d|moc_prydb1)$/
 	call {
-		[
 		log pelo visto, ainda to no lvl de Classe $JobLevelLast ainda...
 		log o que aconteceu?
 		log a que ponto chegamos?
 		log nuss
 		log Tentando resolver isso...
-		]
+
 		call upar
 	}
 }
@@ -75,6 +75,7 @@ automacro definindoVariaveisDeUp {
 	BaseLevel > 0
 	exclusive 1
 	priority -100
+	BaseLevel < 99 # não adianta essa macro triggar no lvl 99 né?
 	call {
 		switch ($.lvl) {
 			case (< 12) {
