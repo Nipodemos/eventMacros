@@ -1,0 +1,26 @@
+
+
+automacro killed_mvp {
+	SimpleHookEvent packet/mvp_other, packet/mvp_item, packet/mvp_you
+	exclusive 1
+	InLockMap 1
+	call {
+		switch (&config(lockMap)) {
+			case (= treasure02) {
+				#change to eddga
+				do conf lockMap pay_fild11
+			}
+			case (= pay_fild11) {
+				#change to golden thief bug
+				do conf lockMap prt_sewb4
+			}
+			case (= prt_sewb4) {
+				#last MVP on the list
+				do conf lockMap none
+			}
+			else {
+				log error, lockMap is configured incorrectly
+			}
+		}
+	}
+}
