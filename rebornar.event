@@ -4,8 +4,8 @@
 	run-once 1
 	ConfigKey estagio_Reborn none
 	Zeny != 1285000
-	BaseLevel 99
-	JobLevel 50
+	BaseLevel = 99
+	JobLevel = 50
 	priority -5 #prioridade alta
 	call {
 	
@@ -17,7 +17,7 @@
 		
 		
 		
-		do pm $nomeMercador ajudaRebornar
+		do pm "$nomeMercador" ajudaRebornar
 	}
 }
 
@@ -50,8 +50,20 @@ automacro chegueilvl99 {
 		do conf sellAuto 1
 		do conf sellAuto_npc yuno_in01 25 34
 		]
+		#deseequipando tudo
+		desequipar("topHead")
+		desequipar("midHead")
+		desequipar("lowHead")
+		desequipar("rightHand")
+		desequipar("leftHand")
+		desequipar("armor")
+		desequipar("robe")
+		desequipar("shoes")
+		desequipar("rightAccessory")
+		desequipar("leftAccessory")
+		desequipar("arrow")
 		#esvazia tudo pra ficar com 0 de peso
-		do autosell
+		do autosell #se bem me lembro, ele ta autostorage logo depois, o que é bom
 		[
 		log ============================
 		log TENTANDO FICAR COM 0 DE PESO
@@ -75,7 +87,7 @@ automacro irNoLocalPraNegociar {
 	ConfigKey saveMap yuno
 	call {
 		#movendo pra local especifico
-		do pm $nomeMercador ajudaRebornar
+		do pm "$nomeMercador" ajudaRebornar
 		do move yuno &rand(145,147) &rand(115,117)
 	}
 }
@@ -95,11 +107,11 @@ automacro DandoOuReceBendoZeny {
 			pause 2
 			#se o zeny atual for maior que 1285000, vc dá o excedente pro mercador
 			do deal add z $zenyPraDar
-			do pm $nomeMercador coloqueiozeny
+			do pm "$nomeMercador" coloqueiozeny
 			pause 2
 			do deal
 		} else {
-			do pm $nomeMercador $.zeny
+			do pm "$nomeMercador" $.zeny
 			#se o zeny atual for menor que 1285000, vc manda pro mercador via pm quanto mais precisa
 		}
 	}
@@ -211,61 +223,6 @@ automacro Rebornar_ultimoEstagio {
 	}
 }
 
-macro VaiRebornar {
-	set exclusive 1
-	$VaiRebornar = &config(VaiRebornar)
-	if ( $VaiRebornar == 1 ) {
-		[
-		do ai auto
-		do conf lockMap 0
-		do conf attackAuto 0
-		do conf route_randomWalk 0
-		do conf sitAuto_idle 0
-		do conf autoTalkCont 0
-		]
-		do move yuno_in02
-		do conf VaiRebornar 2
-		call VaiRebornar
-	}
-	if ( $VaiRebornar == 2 ) {
-		do move 90 166
-		pause 0.5
-		do talknpc 88 164 c w1 c w1 c w1 r0
-		pause 0.5
-		do move 93 202
-		pause 0.5
-		do talknpc 93 207 c w1 c w1 c w1 c w1 c w1 c w1 c w1 c
-		pause 0.5
-		do move yuno_in05
-		do conf VaiRebornar 3
-		call VaiRebornar
-	}
-	if ( $VaiRebornar == 3 ) {
-		do ai manual
-		if ( $.pos == 41 42 ) {
-			pause 1
-			do talknpc 49 43 c
-			do conf VaiRebornar 4
-			call VaiRebornar
-		}
-		if ( $.pos == 15 185 ) do move 50 85
-		if ( $.pos == 50 85 ) do move 41 42
-		if ( $.pos != 41 42 || $.pos != 50 85 || $.pos != 15 185 ) do move 15 185
-		if ( $.pos != 41 42 || $.pos != 50 85 || $.pos != 15 185 ) do move 50 85
-		if ( $.pos != 41 42 || $.pos != 50 85 || $.pos != 15 185 ) do move 41 42
-
-		call VaiRebornar
-	}
-	if ( $VaiRebornar == 4 ) {
-		do move 49 86
-		pause 0.5
-		do talknpc 48 86 c w1 c w1 c w1 c w1 c w1 c w1 c w1 c w1 c
-		do conf VaiRebornar 0
-		log REBORNEEEEEEEEEEEEEEEEEEEEEEEEEEEEEI CARAAAAAAAAAAAAAALHOOOOOOOOOOOOOOO
-		stop
-	}
-}
-
 automacro ConfigEstáErrada2 {
 	exclusive 1
 	overrideAI 1
@@ -285,14 +242,5 @@ automacro ConfigEstáErrada2 {
 
 sub desequipar {
 	my $type = shift;
-
-	for (my $i = 0; $i < @{$char->{'inventory'}}; $i++) {
-		next if (!%{$char->{'inventory'}[$i]});
-
-		if ($char->{'inventory'}[$i]{'equipped'} & $type) {
-			$char->{'inventory'}[$i]->unequip();
-			return $i;
-		}
-	}
-	return undef;
+	$char->{equipment}{$type}->unequip();
 }
