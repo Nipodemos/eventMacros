@@ -41,40 +41,6 @@ automacro nomeDoMercador {
 		$pesoDoItem{1032} = 1 #Flor de Planta Carnívora
 		$pesoDoItem{7097} = 1 #Coração Incandescente
 
-		
-
-		## AQUI VC CONFIGURA AS CONTAS DOS SEUS CATADORES DE LOOT
-		## COLOQUE USUARIO E SLOT DE CADA UMA DELAS
-		## PODE SER QUANTAS VOCÊ QUISER
-		## EXEMPLO:
-		##	
-		## $slot{nipodemos} = 0
-		## 
-		## $slot{suaMae} = 3
-		## 
-		## 
-		## 
-		$slot{login1} = 0
-		$slot{login2} = 0
-		#$slot{login3} = 3
-
-
-
-		## SE AS SENHAS DE TODOS OS SEUS BOTS FOR A MESMA, NÃO PRECISA CONFIGURAR SENHA
-		## ELE VAI PEGAR A SENHA PADRÃO DO PRIMEIRO BOT QUE VC MANDA MENSAGEM
-		## MAS SE TIVER SENHA DIFERENTE, COLOQUE NO SEGUINTE FORMATO:
-		##								
-		##							  
-		##
-		## $senha{contaComSenha} = senha
-		##
-		## EXEMPLO:
-		##
-		## $senha{suaMae} = i'm poppy
-		
-		$senha{login1} = 123456
-		$senha{login2} = 123456
-
 		## Opção de debug, útil para analisar algum erro na macro
 		$debug = 1
 
