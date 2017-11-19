@@ -1405,6 +1405,7 @@ macro configurarMapa {
 
 automacro nivelDeClasse50 {
 	JobLevel = 50
+	JobID $IDClasse1 #todas as classes 1
 	exclusive 1
 	timeout 20
 	NotInMap izlude
