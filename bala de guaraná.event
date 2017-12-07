@@ -26,13 +26,14 @@ automacro compra {
 			do talk resp 0
 			log Tenho &invamount(Bala de Guaraná) balas
 		}
+		
+		if ($.weightpercent >= 90 || &invamount(Bala de Guaraná) >= 2000) call irProNpcDoStorage
 	}
 }
 
 automacro irGuardar_tenho2milBalas {
 	InInventoryID 12414 > 1999 #bala de guaraná
 	InMap brasilis
-	Zeny >= 5000
 	exclusive 1
 	call irProNpcDoStorage
 }
@@ -53,6 +54,7 @@ macro irProNpcDoStorage {
 automacro guardarGuaraná {
 	StorageOpened 1
 	InMap brasilis
+	priority -50 #prioridade alta
 	InInventoryID 12414 > 1 #bala de guaraná
 	exclusive 1
 	call {
