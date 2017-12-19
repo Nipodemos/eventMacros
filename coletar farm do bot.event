@@ -74,8 +74,8 @@ automacro nomeDoMercador {
 			#mandando mensagem por bot
 		}
 		
-
-		my $i = 1
+	
+		$i = 1
 		while (&config(IDdoItem$i) =~ /\d+/) {
 			$config = &config(IDdoItem$i) #pega a config, que pode conter outros caracteres alem da id
 			$item = extrairID("$config") #extrai somente a id do item
@@ -735,7 +735,7 @@ automacro ErroAoTentarNegociar2 {
 
 sub checarMensagem {
 	my ($mensagem) = @_;
-	if ($mensagem =~ /(\w+ \d+ \d+)|(\w+ \d+,\d+)/) {
+	if ($mensagem =~ /(\w+ \d+ \d+)/) {
 		return $1;
 	} else {
 		error "Erro ao tentar definir as coordenadas personalizadas.\n";
