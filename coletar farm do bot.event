@@ -47,7 +47,7 @@ automacro nomeDoMercador {
 			do conf -f nomeDoMercador NOME DO BOT QUE RECEBE OS ITENS
 		}
 
-		$nomeDoMercador = &nick(&config(nomeDoMercador)) #NOME DO BOT QUE RECEBE OS ITENS
+		$nomeDoMercador = &config(nomeDoMercador) #NOME DO BOT QUE RECEBE OS ITENS
 
 
 		##ESSAS SERÃO AS COORDENADAS PADRÃO, VOCE TEM QUE MUDAR SENÃO DÁ TRETA
