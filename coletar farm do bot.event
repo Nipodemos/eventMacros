@@ -17,7 +17,7 @@ automacro receiverName {
 		##OF RECEIVER
 		#This message is irrelevant case you send a
 		#custom coordinate via PM
-		$mensagem = come here
+		$message = come here
 
 		## Debug option, useful to check errors
 		$debug = 1
@@ -83,11 +83,8 @@ automacro receiverName {
 			$i++
 		}
 
-		call configurarStorage
+		call configureStorage
 		
-		#esse switch é pra decidir qual kafra será usada pra pegar os itens
-		#será de preferencia da mesma cidade que vai encontrar com o mercador
-		#o local padrão é prontera
 		if ($debug = 1) {
 			[
 			log ====================================
@@ -100,7 +97,10 @@ automacro receiverName {
 	}
 }
 
-macro configurarStorage {
+macro configureStorage {
+	#this swtich is necessary to decide which kafra you will use to store
+	#it will be the closest do receiver coodinates
+	#or prontera
 	[
 	switch ($coordsOfTheReceiver) {
 		case (=~ /payon/) {
@@ -121,10 +121,10 @@ macro configurarStorage {
 }
 
 automacro PegandoFarm {
-	PrivMsg /^\s*$mensagem\s*$/ #Código enviado por PM para ativar a Macro
+	PrivMsg /^\s*$message\s*$/ #Código enviado por PM para ativar a Macro
 	exclusive 1
 	call {
-		## assim que receber a mensagem do seu mercador
+		## assim que receber a message do seu mercador
 		## ele vai começar todo o processo
 		if ($.PrivMsgLastName = $receiverName) {
 			[
@@ -136,22 +136,11 @@ automacro PegandoFarm {
 			]
 			do pm "$receiverName" ok, ponto de encontro é: $coordsOfTheReceiver
 			
-		} elsif ($receiverName =~ /name of receiver THAT RECEIVE THE ITEMS/i){
-			#trigga se o usuário tiver esqueecido de fazer a configuração
-			[
-			log ================================
-			log =VOCÊ ESQUECEU DE CONFIGURAR O NOME DO MERCADOR
-			log =INTERROMPENDO MACRO IMEDIATAMENTE
-			log ================================
-			]
-			do eval Misc::offlineMode();
-			stop
-			
 		} else {
 			[
 			log ================================
-			log =UMA PESSOA ALEATORIA MANDOU A MENSAGEM PRA MIM
-			log =IGNORANDO COMPLETAMENTE
+			log =A random person send me pm
+			log =ignoring completly
 			log ================================
 			]
 			
@@ -165,14 +154,12 @@ automacro PegandoFarm_CoordenadaPersonalizada {
 	priority -5
 	exclusive 1
 	call {
-		## O mercador enviou uma coordenada personalizada, então será pra essa corrdenada que vc vai
-		## O ideal seria se a coordenada fosse 1 celula ao lado, em vez da posição exata do mercador
-		## mas whatever
-		$coordsOfTheReceiver = checarMensagem("$.PrivMsgLastMsg")
+		## The receiver sent a custom coord, so it will be to that coordinate that you will go
+		$coordsOfTheReceiver = checarmessage("$.PrivMsgLastMsg")
 		log coordsOfTheReceiver: $coordsOfTheReceiver if ($debug = 1)
 		if ($coordsOfTheReceiver = -1) stop
 		do conf -f coordsOfTheReceiver $coordsOfTheReceiver
-		call configurarStorage
+		call configureStorage
 		
 		##esse if existe pra checar se a pessoa que te mandou pm é o seu mercador
 		##minha macro é a prova de inúteis qu tentam bugar a parada
@@ -186,23 +173,12 @@ automacro PegandoFarm_CoordenadaPersonalizada {
 			do conf -f passToReceiver_step autosell
 			]
 			
-		} elsif ($receiverName =~ /name of receiver THAT RECEIVE THE ITEMS/i){
-			#mais um check pra ver se o usuario fez cagada
-			[
-			log ================================
-			log =VOCÊ ESQUECEU DE CONFIGURAR O NOME DO MERCADOR
-			log =INTERROMPENDO MACRO IMEDIATAMENTE
-			log ================================
-			]
-			do eval Misc::offlineMode();
-			stop
-			
 		} else {
 			[
-			log ==========================================
-			log =UMA PESSOA ALEATORIA MANDOU A MENSAGEM PRA MIM
-			log =IGNORANDO COMPLETAMENTE
-			log ==========================================
+			log ================================
+			log =A random person send me pm
+			log =ignoring completly
+			log ================================
 			]
 			
 		}
@@ -296,7 +272,7 @@ automacro PegandoItensDoStorage {
 			$quantidadeQuePossoCarregar = &eval(int(($.maxweight-$.weight)/$pesoDoItem{$idDoItemAtual}))
 			#essa parte do peso que é mais complicada, olha esse eval doidão kkkkk
 
-			log Nome: '$nomeDoItemAtual', id: '$idDoItemAtual' if($debug = 1)
+			log Nome: '$nomeDoItemAtual', id: '$idDoItemAtual', if($debug = 1)
 
 			if ( $qtdNoStorage > 0) {
 				
@@ -337,13 +313,13 @@ automacro pegueiItensDoStorage {
 	CheckOnAI auto,manual
 	call {
 		do pm "$receiverName" ja peguei tudo que dava, to indo ai
-		do conf -f passToReceiver_step irNoMercador
+		do conf -f passToReceiver_step goToReceiver
 	}
 }
 
-automacro irNoMercador {
+automacro goToReceiver {
 	ConfigKey inPassToReceiver_sequence true
-	ConfigKey passToReceiver_step irNoMercador
+	ConfigKey passToReceiver_step goToReceiver
 	PlayerNotNear /$receiverName/
 	exclusive 1
 	timeout 30
@@ -355,13 +331,22 @@ automacro irNoMercador {
 
 automacro MercadorPerto {
 	PlayerNear /.*$receiverName.*/
-	timeout 40
+	timeout 5
 	ConfigKey inPassToReceiver_sequence true
-	ConfigKey passToReceiver_step irNoMercador
+	ConfigKey passToReceiver_step goToReceiver
 	CheckOnAI auto,manual
 	call {
-		do move $.PlayerNearLastPos 1
-		do pm "$receiverName" aceita aí
+		if ($.PlayerNearLastDist >= 3) {
+			[
+			log ===================================
+			log = Receiver is on screen but too far to deal
+			log = Waiting he gets closer
+			log = distance: $.PlayerNearLastDist
+			log ===================================
+			]
+			stop
+		}
+		do pm "$receiverName" accept deal please
 		do deal &player($receiverName)
 	}
 }
@@ -462,7 +447,7 @@ automacro NegociaçãoFinalizada_checandoPorMaisItens {
 		if ($itensNaNegociacao >= 10 && @itens > 10 ) {
 			log tem mais itens pra passar
 			do pm "$receiverName" tem mais itens pra te passar mano
-			do conf -f passToReceiver_step irNoMercador
+			do conf -f passToReceiver_step goToReceiver
 			stop
 		}
 
@@ -561,20 +546,19 @@ automacro ErroAoTentarNegociar2 {
 		[
 		log ================================
 		log = tentei negociar com o mercador, mas ele ta longe demais
-		log = tentando mover-se para mais perto ($.PlayerNearDistLastPos)
 		log ================================
 		]
 	}
 }
 
-sub checarMensagem {
-	my ($mensagem) = @_;
-	if ($mensagem =~ /(\w+ \d+ \d+)/) {
+sub checarmessage {
+	my ($message) = @_;
+	if ($message =~ /(\w+ \d+ \d+)/) {
 		return $1;
 	} else {
 		error "Erro ao tentar definir as coordenadas personalizadas.\n";
 		error "provavelmente não foi enviado corretamente CIDADE E COORDENADA\n";
-		error "Mensagem recebida: '$mensagem'";
+		error "message recebida: '$message'";
 		return -1;
 	}
 }
