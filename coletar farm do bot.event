@@ -1,5 +1,5 @@
-automacro nomeDoMercador {
-	priority -20 #prioridade altíssima
+automacro receiverName {
+	priority -20 #high priority
 	run-once 1
 	BaseLevel > 0
 	exclusive 1
@@ -9,78 +9,77 @@ automacro nomeDoMercador {
 
 		################################################################
 		#                                                              #
-		#               Coisas que vc pode alterar na macro            #
+		#            Things for you to change on eventMacro            #
 		#                                                              #
 		################################################################
 
-		##ESSA É A MENSAGEM QUE VAI ATIVAR TODA A MACRO, É O QUE VC RECEBE
-		## DO MERCADOR
-		#essa mnsagem nao intefere em nada caso 
-		#vc mandar coordenada personalizada via pm
-		$mensagem = vem aqui
+		##THIS IS THE MESSAGE THAT ACTIVATES THE WHOLE MACRO
+		##OF RECEIVER
+		#This message is irrelevant case you send a
+		#custom coordinate via PM
+		$mensagem = come here
 
-		## Opção de debug, útil para analisar algum erro na macro
+		## Debug option, useful to check errors
 		$debug = 1
-
 		################################################################
-		#          Fim das coisas que vc pode alterar na macro         #
+		#        End of things for you to change on eventMacro         #
 		################################################################
 
-		if (&config(nomeDoMercador) =~ /\w+|\d+/)  { #se tiver qualquer letra ou númro, significa que existe
-			if (&config() =~ /nome do bot/i) { 
-				#se tiver isso significa que ta com o valor padrão, 
-				# o que é inaceitavel
+		if (&config(receiverName) =~ /\w+/)  { #if there is any number or letter, it means it exist
+			if (&config(receiverName) =~ /name of receiver/i) { 
+				#if this trigger, it means it's wrong
+				# is unecceptable
 				[
 				log ================================
-				log =VOCÊ ESQUECEU DE CONFIGURAR O NOME DO MERCADOR
-				log =PRA CONFIGURAR É SÓ IR NO CONFIG.TXT
-				log =E COLOCAR NUMA LINHA EM BRANCO:
-				log =nomeDoMercador NOME DELE
-				log =EXEMPLO: nomeDoMercador nipodemos
-				log =INTERROMPENDO MACRO IMEDIATAMENTE
+				log =You forgot to configure the receiver name
+				log =to configure is just go to config.txt
+				log =and insert on a black link
+				log =receiverName nameOfHim
+				log =EXAMPLE: receiverName nipodemos
+				log =Interrupting
 				log ================================
 				]
 				do eval Misc::offlineMode();
 				stop
 			}
 		} else { #se chegar aqui é porque nao existe no config.txt
-			do conf -f nomeDoMercador NOME DO BOT QUE RECEBE OS ITENS
+			do conf -f receiverName name of receiver THAT RECEIVE THE ITEMS
 		}
 
-		$nomeDoMercador = &config(nomeDoMercador) #NOME DO BOT QUE RECEBE OS ITENS
+		$receiverName = &config(receiverName) #name of receiver THAT RECEIVE THE ITEMS
 
 
-		##ESSAS SERÃO AS COORDENADAS PADRÃO, VOCE TEM QUE MUDAR SENÃO DÁ TRETA
-		##ESSAS COORDENADS SÃO AS DE ONDE O MERCADOR ESTÁ, PROS ARRUACEIROS 
-		##SABEREM ONDE IR PRA SE ENCONTRAREM
-		##EXEMPLO : prontera 100 100
+		##these are the common coordinates, you have to change
+		##these coordinates are of where the receiver is, for the collectors to know 
+		##where to find the receiver
+		##EXAMPLE : prontera 100 100
 
-		if (&config(pontoDeEncontro) =~ /\w+ \d+ \d+/ ) {
-			#coordenada configurada corretamente
-			$coordenadaPertoDoMercador = &config(pontoDeEncontro)
+		if (&config(meetPoint) =~ /\w+ \d+ \d+/ ) {
+			#coordinates configured correctly
+			$coordsOfTheReceiver = &config(meetPoint)
 		} else {
 			[
-			log PONTO DE ENCONTRO NAO ESTA CONFIGURADO NO CONFIG.TXT
-			log (OU TALVEZ TENHA UM ERRO DE DIGITAÇÃO)
-			log PRECISAMOS DELA PRA MACRO PROSSEGUIR
-			log MODO CORRETO DE CONFIGURAR PONTO DE ENCONTRO:
-			log pontoDeEncontro CIDADE COORDENADA_X COORDENADA_Y
-			log EXEMPLO: pontoDeEncontro prontera 150 124
-			log OU VC PODE MANDAR PM PRO BOT COM AS COORDENADAS
+			log meetPoint is not configurated on config.txt
+			log (or maybe a typo)
+			log we need it for macro to proceed
+			log correct way of configure:
+			log meetPoint city coord_X coord_Y
+			log EXAMPLE: meetPoint prontera 150 124
+			log Or you can send a pm with the coordinates
 			]
-			do conf -f pontoDeEncontro INSIRA CIDADE E COORDENADAS AQUI
+			do conf -f meetPoint INSERT CITY AND COORDINATES HERE
 
-			#não vamos interromper a macro aqui porque a pessoa pode simplesmnte definir via PM
-			#mandando mensagem por bot
+			#we will not interrupt macro here, because he can define this later by
+			#sending a message to bot
 		}
 		
 	
 		$i = 1
-		while (&config(IDdoItem$i) =~ /\d+/) {
-			$config = &config(IDdoItem$i) #pega a config, que pode conter outros caracteres alem da id
-			$item = extrairID("$config") #extrai somente a id do item
-			$peso = extrairPeso("$item") #consegue o peso do item no arquivo item_weights na pasta tabkes
-			$pesoDoItem{$item} = $peso #configura a variavel que será usada na macro
+		while (&config(IDofItem$i) =~ /\d+/) {
+			$config = &config(IDofItem$i) #gets id in config, that can contains othere charateres
+			$item = extrairID("$config") #extract only the id of the item
+			$peso = extrairPeso("$item") #gets the weight of item in file item_weights on tables folder
+			$pesoDoItem{$item} = $peso #configure a hash with weight and ID
 			$i++
 		}
 
@@ -92,9 +91,9 @@ automacro nomeDoMercador {
 		if ($debug = 1) {
 			[
 			log ====================================
-			log =nome do mercador :$nomeDoMercador
-			log =coordenada perto do mercador: $coordenadaPertoDoMercador
-			log =posicao da kafra: $coordenadaDaKafra
+			log =receiverName :$receiverName
+			log =meetPoint: $coordsOfTheReceiver
+			log =kafraPosition: $kafraCoords
 			log ====================================
 			]
 		}
@@ -103,19 +102,19 @@ automacro nomeDoMercador {
 
 macro configurarStorage {
 	[
-	switch ($coordenadaPertoDoMercador) {
+	switch ($coordsOfTheReceiver) {
 		case (=~ /payon/) {
-			$coordenadaDaKafra = payon 181 104
+			$kafraCoords = payon 181 104
 		}
 		case (=~ /geffen/) {
-			$coordenadaDaKafra = geffen 120 62
+			$kafraCoords = geffen 120 62
 		}
 		case (=~ /izlude/) {
-			$coordenadaDaKafra = izlude 134 88
+			$kafraCoords = izlude 134 88
 		}
 		else {
 			## cidade padrão pra dar storage é prontera
-			$coordenadaDaKafra = prontera 151 29
+			$kafraCoords = prontera 151 29
 		}
 	}
 	]
@@ -127,17 +126,17 @@ automacro PegandoFarm {
 	call {
 		## assim que receber a mensagem do seu mercador
 		## ele vai começar todo o processo
-		if ($.PrivMsgLastName = $nomeDoMercador) {
+		if ($.PrivMsgLastName = $receiverName) {
 			[
-			do conf -f passarItens sim
+			do conf -f inPassToReceiver_sequence true
 			do conf route_randomWalk 0
 			do conf lockMap none
 			do conf attackAuto 0
-			do conf -f coletarFarm_passo autosell
+			do conf -f passToReceiver_step autosell
 			]
-			do pm "$nomeDoMercador" ok, ponto de encontro é: $coordenadaPertoDoMercador
+			do pm "$receiverName" ok, ponto de encontro é: $coordsOfTheReceiver
 			
-		} elsif ($nomeDoMercador =~ /NOME DO BOT QUE RECEBE OS ITENS/){
+		} elsif ($receiverName =~ /name of receiver THAT RECEIVE THE ITEMS/i){
 			#trigga se o usuário tiver esqueecido de fazer a configuração
 			[
 			log ================================
@@ -169,25 +168,25 @@ automacro PegandoFarm_CoordenadaPersonalizada {
 		## O mercador enviou uma coordenada personalizada, então será pra essa corrdenada que vc vai
 		## O ideal seria se a coordenada fosse 1 celula ao lado, em vez da posição exata do mercador
 		## mas whatever
-		$coordenadaPertoDoMercador = checarMensagem("$.PrivMsgLastMsg")
-		log coordenadaPertoDoMercador: $coordenadaPertoDoMercador if ($debug = 1)
-		if ($coordenadaPertoDoMercador = -1) stop
-		do conf -f coordenadaPertoDoMercador $coordenadaPertoDoMercador
+		$coordsOfTheReceiver = checarMensagem("$.PrivMsgLastMsg")
+		log coordsOfTheReceiver: $coordsOfTheReceiver if ($debug = 1)
+		if ($coordsOfTheReceiver = -1) stop
+		do conf -f coordsOfTheReceiver $coordsOfTheReceiver
 		call configurarStorage
 		
 		##esse if existe pra checar se a pessoa que te mandou pm é o seu mercador
 		##minha macro é a prova de inúteis qu tentam bugar a parada
-		if ($.PrivMsgLastName = $nomeDoMercador) {
-			do pm "$nomeDoMercador" ok, ponto de encontro é: $coordenadaPertoDoMercador
+		if ($.PrivMsgLastName = $receiverName) {
+			do pm "$receiverName" ok, ponto de encontro é: $coordsOfTheReceiver
 			[
-			do conf -f passarItens sim
+			do conf -f inPassToReceiver_sequence true
 			do conf route_randomWalk 0
 			do conf lockMap none
 			do conf attackAuto 0
-			do conf -f coletarFarm_passo autosell
+			do conf -f passToReceiver_step autosell
 			]
 			
-		} elsif ($nomeDoMercador =~ /NOME DO BOT QUE RECEBE OS ITENS/){
+		} elsif ($receiverName =~ /name of receiver THAT RECEIVE THE ITEMS/i){
 			#mais um check pra ver se o usuario fez cagada
 			[
 			log ================================
@@ -211,14 +210,14 @@ automacro PegandoFarm_CoordenadaPersonalizada {
 }
 
 automacro fazerAutoSell {
-	ConfigKey passarItens sim
-	ConfigKey coletarFarm_passo autosell
+	ConfigKey inPassToReceiver_sequence true
+	ConfigKey passToReceiver_step autosell
 	exclusive 1
 	priority 20 #prioridade baixa
 	run-once 1
 	CheckOnAI auto,manual
 	call {
-		do pm "$nomeDoMercador" vou fazer o autosell
+		do pm "$receiverName" vou fazer o autosell
 		do ai on
 		do autosell
 	}
@@ -227,112 +226,42 @@ automacro fazerAutoSell {
 #AI_storage_done
 
 automacro completeiAsVendas {
-	ConfigKey passarItens sim
-	ConfigKey coletarFarm_passo autosell
+	ConfigKey inPassToReceiver_sequence true
+	ConfigKey passToReceiver_step autosell
 	SimpleHookEvent AI_sell_auto_done
 	exclusive 1
 	priority -5 #prioridade alta
 	call {
 		##completado as vendas, vamos ver se precisa de storage
 		do ai manual
-		do conf -f coletarFarm_passo irNoStorage
+		do conf -f passToReceiver_step irNoStorage
 		release fazerAutoSell
 	}
 }
 
-#me deu tanto trabalhdo essa macro T_T
-#pena que ela agora nao serve pra nada
-#o bot vai ter que ir no storage toda santa vez, nao adianta checar
-#
-#automacro ChecarSePrecisaIrProArmazem {
-#	ConfigKey passarItens sim
-#	ConfigKey coletarFarm_passo checarStorage
-#	CheckOnAI auto,manual
-#	exclusive 1
-#	call {
-#		do ai manual
-#		#checar se o armazem ja foi aberto nessa sessão
-#		$armazemJaFoiAberto = checarSeArmazenJaFoiAberto()
-#		log Armazen foi aberto? R: $armazemJaFoiAberto if ($debug = 1)
-#
-#		if ($armazemJaFoiAberto = sim ) {
-#			## ja que o armazen foi aberto, vamos checar se a gente precisa ir nele
-#			## as vezes nao tem nenhum item no armzem que a gente queira
-#			## dificil mas possível, e economiza tempo
-#			@itens = &keys(%pesoDoItem)
-#			
-#			$i = 0
-#			while ($i < @itens) {
-#				$nomeDoItemAtual = pegarNomePelaId("$itens[$i]")
-#				log nome do item: $nomeDoItemAtual if ($debug = 1)
-#				if ( &storamount($nomeDoItemAtual) > 0) {
-#					$precisaIrNoStorage = sim
-#					$i = @itens
-#				}
-#				$i++
-#			}
-#			$i = undef
-#			
-#		} else {
-#			##se nao foi aberto nessa sessão, precisamos abrir de qualquer jeito
-#			##então vamos la
-#			$precisaIrNoStorage = sim
-#		}
-		
-		
-#			do pm "$nomeDoMercador" ja vendi, agora vou pegar do armazem
-#			do conf -f coletarFarm_passo irNoStorage
-			
-#		} else {
-#			
-#			if ($coordenadaPertoDoMercador = CIDADE E COORDENADAS) {
-#				[
-#				log ===============================================
-#				log =VOCÊ ESQUECEU DE DEFINIR AS COORDENADAS PADRÃO
-#				log =SEM ELAS O BOT NÃO SABE ONDE ELE VAI IR
-#				log =INTERROMPENDO MACRO IMEDIATAMENTE
-#				log ===============================================
-#				]
-#				$precisaIrNoStorage = undef
-#				do eval Misc::offlineMode();
-#				stop
-#				
-#			} else {
-#				do pm "$nomeDoMercador" ja vendi, to indo ai
-#				do conf -f coletarFarm_passo irNoMercador
-#				release MercadorPerto
-#				do move $coordenadaPertoDoMercador #Mapa e Coordenadas para troca com o receptor
-#				
-#			}
-#		}
-#		$precisaIrNoStorage = undef
-#		release MercadorPerto
-#	}
-#}
-
 automacro Kafra_irNoNpc {
 	NpcNotNear /Kafra Employee|Funcionária Kafra/
 	exclusive 1
-	ConfigKey coletarFarm_passo irNoStorage
-	ConfigKey passarItens sim
+	ConfigKey passToReceiver_step irNoStorage
+	ConfigKey inPassToReceiver_sequence true
 	CheckOnAI auto,manual
 	call {
-		do pm "$nomeDoMercador" ja vendi, agora vou pegar itens do storage
-		do move $coordenadaDaKafra &rand(1,5)
+		do pm "$receiverName" ja vendi, agora vou pegar itens do storage
+		do move $kafraCoords &rand(1,5)
 	}
 }
 
 automacro Kafra_PertoDoNpc {
 	NpcNear /Kafra Employee|Funcionária Kafra/
-	ConfigKey coletarFarm_passo irNoStorage
-	ConfigKey passarItens sim
+	ConfigKey passToReceiver_step irNoStorage
+	ConfigKey inPassToReceiver_sequence true
 	CheckOnAI auto,manual
 	exclusive 1
 	timeout 30
 	priority 2
 	call {
 		do talk $.NpcNearLastBinId
-		do pm "$nomeDoMercador" ja abri o storage, falta pouco
+		do pm "$receiverName" ja abri o storage, falta pouco
 		do talk resp 1
 		#storage aberto, agora outra macro vai cuidar disso
 	}
@@ -341,20 +270,32 @@ automacro Kafra_PertoDoNpc {
 automacro PegandoItensDoStorage {
 	StorageOpened 1
 	exclusive 1
-	ConfigKey passarItens sim
+	ConfigKey inPassToReceiver_sequence true
 	CheckOnAI auto,manual
 	call {
 		@itens = &keys(%pesoDoItem)
 		$i = 0
-		log qtd de itens no array: @itens if ($debug = 1)
+		log qtd de itens no array: '@itens' if ($debug = 1)
+		
+		if (@itens < 1) {
+			[
+			log ===================================
+			log = no items configurated, check your
+			log = config.txt
+			log = Interrupting
+			log ===================================
+			]
+			do eval Misc::offlineMode();
+			stop 
+		}
 		while ($i < @itens && $.weightpercent < 90) {
 			$idDoItemAtual = $itens[$i]
 			$nomeDoItemAtual = pegarNomePelaId("$idDoItemAtual")
 			$qtdNoStorage = &storamount($nomeDoItemAtual)
+			
 			$quantidadeQuePossoCarregar = &eval(int(($.maxweight-$.weight)/$pesoDoItem{$idDoItemAtual}))
 			#essa parte do peso que é mais complicada, olha esse eval doidão kkkkk
 
-			log quantos itens tem: '@itens'
 			log Nome: '$nomeDoItemAtual', id: '$idDoItemAtual' if($debug = 1)
 
 			if ( $qtdNoStorage > 0) {
@@ -385,56 +326,56 @@ automacro PegandoItensDoStorage {
 		}
 		$i = undef
 		do storage close
-		do conf -f coletarFarm_passo termineiStorage
+		do conf -f passToReceiver_step termineiStorage
 	}
 }
 
 automacro pegueiItensDoStorage {
-	ConfigKey coletarFarm_passo termineiStorage
+	ConfigKey passToReceiver_step termineiStorage
 	exclusive 1
-	ConfigKey passarItens sim
+	ConfigKey inPassToReceiver_sequence true
 	CheckOnAI auto,manual
 	call {
-		do pm "$nomeDoMercador" ja peguei tudo que dava, to indo ai
-		do conf -f coletarFarm_passo irNoMercador
+		do pm "$receiverName" ja peguei tudo que dava, to indo ai
+		do conf -f passToReceiver_step irNoMercador
 	}
 }
 
 automacro irNoMercador {
-	ConfigKey passarItens sim
-	ConfigKey coletarFarm_passo irNoMercador
-	PlayerNotNear /$nomeDoMercador/
+	ConfigKey inPassToReceiver_sequence true
+	ConfigKey passToReceiver_step irNoMercador
+	PlayerNotNear /$receiverName/
 	exclusive 1
 	timeout 30
 	CheckOnAI auto,manual
 	call {
-		do move $coordenadaPertoDoMercador
+		do move $coordsOfTheReceiver
 	}
 }
 
 automacro MercadorPerto {
-	PlayerNear /$nomeDoMercador/
+	PlayerNear /.*$receiverName.*/
 	timeout 40
-	ConfigKey passarItens sim
-	ConfigKey coletarFarm_passo irNoMercador
+	ConfigKey inPassToReceiver_sequence true
+	ConfigKey passToReceiver_step irNoMercador
 	CheckOnAI auto,manual
 	call {
 		do move $.PlayerNearLastPos 1
-		do pm "$nomeDoMercador" aceita aí
-		do deal &player($nomeDoMercador)
+		do pm "$receiverName" aceita aí
+		do deal &player($receiverName)
 	}
 }
 
 automacro DandoItem {
 	SimpleHookEvent engaged_deal
-	ConfigKey passarItens sim
+	ConfigKey inPassToReceiver_sequence true
 	CheckOnAI auto,manual
 	timeout 60
-	PlayerNear /$nomeDoMercador/
+	PlayerNear /$receiverName/
 	exclusive 1
 	call {
 		if ($.PlayerNearLastDist < 3) {
-			do conf -f coletarFarm_passo dentroDaNegociacao
+			do conf -f passToReceiver_step dentroDaNegociacao
 			$zenyQueVouDar = &eval($.zeny - 100000)
 			if ($zenyQueVouDar > 0 ) {
 				log zeny que vou dar: $zenyQueVouDar
@@ -461,7 +402,7 @@ automacro DandoItem {
 			}
 			$i = 0
 			set exclusive 0
-			do pm "$nomeDoMercador" já passei tudo, finaliza aí
+			do pm "$receiverName" já passei tudo, finaliza aí
 			pause 2
 			do deal
 		} else {
@@ -481,8 +422,8 @@ automacro Negociacao_clicarNoBotaoFinalizar {
 	SimpleHookEvent finalized_deal
 	timeout 20
 	CheckOnAI auto,manual
-	ConfigKey passarItens sim
-	ConfigKey coletarFarm_passo dentroDaNegociacao
+	ConfigKey inPassToReceiver_sequence true
+	ConfigKey passToReceiver_step dentroDaNegociacao
 	call {
 		pause 2
 		do deal
@@ -492,22 +433,22 @@ automacro Negociacao_clicarNoBotaoFinalizar {
 automacro NegociaçãoFinalizada {
 	SimpleHookEvent complete_deal
 	CheckOnAI auto,manual
-	ConfigKey passarItens sim
-	ConfigKey coletarFarm_passo dentroDaNegociacao
+	ConfigKey inPassToReceiver_sequence true
+	ConfigKey passToReceiver_step dentroDaNegociacao
 	exclusive 1
 	call {
-		do conf -f coletarFarm_passo passeiOsItens
+		do conf -f passToReceiver_step passeiOsItens
 	}
 }
 
 automacro NegociaçãoFinalizada_checandoPorMaisItens {
 	CheckOnAI auto,manual
-	ConfigKey passarItens sim
-	ConfigKey coletarFarm_passo passeiOsItens
+	ConfigKey inPassToReceiver_sequence true
+	ConfigKey passToReceiver_step passeiOsItens
 	exclusive 1
 	call {
 		release MercadorPerto
-		do conf -f coletarFarm_passo none
+		do conf -f passToReceiver_step none
 		
 		@itens = &keys(%pesoDoItem)
 
@@ -520,8 +461,8 @@ automacro NegociaçãoFinalizada_checandoPorMaisItens {
 		# negociacao só (quando vc quer passar mais de 10 itens)
 		if ($itensNaNegociacao >= 10 && @itens > 10 ) {
 			log tem mais itens pra passar
-			do pm "$nomeDoMercador" tem mais itens pra te passar mano
-			do conf -f coletarFarm_passo irNoMercador
+			do pm "$receiverName" tem mais itens pra te passar mano
+			do conf -f passToReceiver_step irNoMercador
 			stop
 		}
 
@@ -544,9 +485,9 @@ automacro NegociaçãoFinalizada_checandoPorMaisItens {
 				log ==========================================
 				]
 				$i = @itens
-				do pm "$nomeDoMercador" aqui, tem mais coisas no armazen
-				do pm "$nomeDoMercador" vou la buscar, fica ai em
-				do conf -f coletarFarm_passo irNoStorage
+				do pm "$receiverName" aqui, tem mais coisas no armazen
+				do pm "$receiverName" vou la buscar, fica ai em
+				do conf -f passToReceiver_step irNoStorage
 				stop
 			}
 			$i++
@@ -562,138 +503,31 @@ automacro NegociaçãoFinalizada_checandoPorMaisItens {
 		log ================================
 		]
 		
-		do pm "$nomeDoMercador" ja te passei tudo que eu tinha, TUDO
-		do conf -f coletarFarm_passo acabou
+		do pm "$receiverName" ja te passei tudo que eu tinha, TUDO
+		do conf -f passToReceiver_step acabou
 	}
 }
 
-# outro pedaço da macro INACREDITAVELMENTE COMPLICADO que nao serve mais pra nada =/
-#
-#
-#
-#automacro trocarDeConta {
-#	ConfigKey coletarFarm_passo trocarDeConta
-#	exclusive 1
-#	CheckOnAI auto,manual
-#	call {
-#
-#		#esse if checa se o usuário lembrou de colocar 
-#		#uma senha pra todos os username
-#		#checa se a quantidade de usernames é igual a de senhas
-#		@login = &keys(%slot)
-#		if ( $login[0] = usuario1) {
-#			[
-#			log ====================================================
-#			log VOCE TEM QUE COLOCAR USERNAME PRA TODAS AS CONTAS
-#			log INTERROMPENDO MACRO IMEDIATAMENTE
-#			log ====================================================
-#			]
-#			do eval Misc::offlineMode();
-#			stop
-#		}
-#		do pm $nomeDoMercador fazendo checagem de usuário para trocar
-#		call adicionarLoginAListaDeUtilizados
-#
-#		$i = 0
-#		while ($i < @login) { 
-#			##esse while faz o loop por todas as contas que estão na lista pra serem utilizadas
-#			#a cada loop ele checa se o nome existe na lista de contas ja utilizadas
-#			$nomeAtual = $login[$i]
-#			log nome Atual de logins da lista de tem que logar : $nomeAtual if ($debug = 1)
-#			log qtd de contas que ja foram utilizadas : @contasUtilizadas if ($debug = 1)
-#			$j = 0
-#			if ($contasUsadas =~ /, $nomeAtual/) {
-#				log $nomeAtual consta nas contas que ja foram utilizadas if ($debug = 1)
-#				## fazer nada
-#			} else {
-#
-#				if ( $debug = 1) {
-#						log Encontrado nome não utilizado : $nomeAtual
-#						log username : $nomeAtual
-#						log senha : $senha{$nomeAtual} if (&exists($senha{$nomeAtual}))
-#						log slot : $slot{$nomeAtual}	
-#				}
-#
-#				do conf username $nomeAtual
-#				do conf password $senha{$nomeAtual} if (&exists($senha{$nomeAtual}))
-#				do conf char $slot{$nomeAtual}
-#				do pm $nomeDoBot vou trocar para o conta: &config(username)
-#				$i = @login #gambiarra pra terminar o while
-#				$nomeAtual = undef
-#				$precisaIrNoStorage = undef
-#				$armazemJaFoiAberto = undef
-#				log ESSA É A PARTE QUE ELE RELOGA
-#				#do pm $nomeDoBot vou trocar para o conta: &config(username)
-#				#do conf -f coletarFarm_passo autosell
-#				#do relog
-#				stop
-#			}
-#			$i++
-#		}
-#		log se essa mensagem aparecer tem algo errado
-#		$i = undef
-#	}
-#}
-#
-#
-#macro adicionarLoginAListaDeUtilizados {
-#	$contasUsadas = &config(contasUsadas)
-#	@contasUtilizadas = &split(", ",$contasUsadas )
-#	$contaLogadaAtualmente = &config(username)
-#	
-#	if ($debug = 1) {
-#		log conta logada atualmente "$contaLogadaAtualmente"
-#	}
-#	
-#	$i = 0
-#	if (@contasUtilizadas = 0) {
-#		#significa que é a primeira conta a ser adicionada na lista
-#		do conf -f contasUsadas , &config(username)
-#		log configurado
-#		stop
-#	}
-#	
-#	while ($i < @contasUtilizadas) {
-#		## esse while serve somente pra checar see conta logada ja eexiste na lista
-#		## na teoria isso é impossível, mas isso aqui evita de colocar valores duplicados
-#		log $contasUtilizadas[$i] if ($debug = 1)
-#		if ($contaLogadaAtualmente = $contasUtilizadas[$i]) {
-#			if ($debug = 1) {
-#				log essa conta ja existe na lista
-#				log interrompendo macro
-#			}
-#			stop
-#		}
-#		$i++
-#	}
-#	
-#	##se chegar ate aqui, significa que é uma conta a ser adicionada na lista de ja utilizadas
-#	##adicionando:
-#	$contaAdicional = &eval(return ("$contasUsadas, $contaLogadaAtualmente"))
-#	log contas que ja foram utilizadas : $contaAdicional if ($debug = 1)
-#	do conf -f contasUsadas $contaAdicional
-#}
-
 automacro acabou {
-	ConfigKey passarItens sim
-	ConfigKey coletarFarm_passo acabou
+	ConfigKey inPassToReceiver_sequence true
+	ConfigKey passToReceiver_step acabou
+	CheckOnAI auto,manual
 	exclusive 1
 	call {
 		[
 		log FINALMENTE ACABOU!!!!!!
 		]
-		do conf -f passarItens none
-		do conf -f coletarFarm_passo none
-		do conf -f coordenadaPertoDoMercador none
-		do conf -f contasUsadas none
+		do conf -f deal_sequence none
+		do conf -f passToReceiver_step none
+		do conf -f coordsOfTheReceiver none
 		do ai on
 	}
 }
 
 automacro estouPassandoItens {
-	ConfigKeyNot coletarFarm_passo autosell
-	ConfigKeyNot coletarFarm_passo none
-	ConfigKey passarItens sim
+	ConfigKeyNot passToReceiver_step autosell
+	ConfigKeyNot passToReceiver_step none
+	ConfigKey inPassToReceiver_sequence true
 	CheckOnAI auto #só pra eu lembrar que isso só é chcado na ai auto
 	exclusive 1
 	call {
@@ -704,23 +538,23 @@ automacro estouPassandoItens {
 automacro ErroAoTentarNegociar {
 	SimpleHookEvent error_deal
 	CheckOnAI manual
-	PlayerNotNear /$nomeDoMercador/
+	PlayerNotNear /$receiverName/
 	exclusive 1
 	call {
 
 		[
 		log ===============================================
 		log tentamos negociar mas o mercador não está por perto
-		log movendo-se pra o local especificado denovo: ($coordenadaPertoDoMercador)
+		log movendo-se pra o local especificado denovo: ($coordsOfTheReceiver)
 		log ===============================================
-		do move $coordenadaPertoDoMercador
+		do move $coordsOfTheReceiver
 		]
 	}
 }
 
 automacro ErroAoTentarNegociar2 {
 	SimpleHookEvent error_deal
-	ConfigKey passarItens sim
+	ConfigKey inPassToReceiver_sequence true
 	CheckOnAI auto,manual
 	exclusive 1
 	call {
