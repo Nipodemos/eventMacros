@@ -1,9 +1,9 @@
 automacro receiverName {
-	priority -20 #high priority
+	priority -999 #high priority
 	run-once 1
 	BaseLevel > 0
 	exclusive 1
-	CheckOnAI auto,manual,off
+	CheckOnAI auto,manual
 	macro_delay .5
 	call {
 
@@ -56,7 +56,7 @@ automacro receiverName {
 
 		if (&config(meetPoint) =~ /\w+ \d+ \d+/ ) {
 			#coordinates configured correctly
-			$coordsOfTheReceiver = &config(meetPoint)
+			$meetPoint = &config(meetPoint)
 		} else {
 			[
 			log meetPoint is not configurated on config.txt
@@ -77,9 +77,9 @@ automacro receiverName {
 		$i = 1
 		while (&config(IDofItem$i) =~ /\d+/) {
 			$config = &config(IDofItem$i) #gets id in config, that can contains othere charateres
-			$item = extrairID("$config") #extract only the id of the item
-			$peso = extrairPeso("$item") #gets the weight of item in file item_weights on tables folder
-			$pesoDoItem{$item} = $peso #configure a hash with weight and ID
+			$item = extractID("$config") #extract only the id of the item
+			$weight = extractWeight("$item") #gets the weight of item in file item_weights on tables folder
+			$weightOfItem{$item} = $weight #configure a hash with weight and ID
 			$i++
 		}
 
@@ -89,7 +89,7 @@ automacro receiverName {
 			[
 			log ====================================
 			log =receiverName :$receiverName
-			log =meetPoint: $coordsOfTheReceiver
+			log =meetPoint: $meetPoint
 			log =kafraPosition: $kafraCoords
 			log ====================================
 			]
@@ -102,7 +102,7 @@ macro configureStorage {
 	#it will be the closest do receiver coodinates
 	#or prontera
 	[
-	switch ($coordsOfTheReceiver) {
+	switch ($meetPoint) {
 		case (=~ /payon/) {
 			$kafraCoords = payon 181 104
 		}
@@ -113,7 +113,7 @@ macro configureStorage {
 			$kafraCoords = izlude 134 88
 		}
 		else {
-			## cidade padrão pra dar storage é prontera
+			## city it will go if is not the other ones
 			$kafraCoords = prontera 151 29
 		}
 	}
@@ -121,20 +121,20 @@ macro configureStorage {
 }
 
 automacro PegandoFarm {
-	PrivMsg /^\s*$message\s*$/ #Código enviado por PM para ativar a Macro
+	PrivMsg /^\s*$message\s*$/ #Phrase send by pm to active the whole macro
 	exclusive 1
 	call {
-		## assim que receber a message do seu mercador
-		## ele vai começar todo o processo
+		## as soon as he receives the message of you receiver
+		## he will start the whole process
 		if ($.PrivMsgLastName = $receiverName) {
 			[
-			do conf -f inPassToReceiver_sequence true
+			do conf -f onDeliveryItemsProcess true
 			do conf route_randomWalk 0
 			do conf lockMap none
 			do conf attackAuto 0
 			do conf -f passToReceiver_step autosell
 			]
-			do pm "$receiverName" ok, ponto de encontro é: $coordsOfTheReceiver
+			do pm "$receiverName" ok, meetPoint is: $meetPoint
 			
 		} else {
 			[
@@ -149,24 +149,24 @@ automacro PegandoFarm {
 }
 
 automacro PegandoFarm_CoordenadaPersonalizada {
-	PrivMsg /\w+ \d+ \d+/  #/ pra detectar as novas coordenadas
+	PrivMsg /\w+ \d+ \d+/  #/ to detect new coordinates
 	CheckOnAI auto, manual
 	priority -5
 	exclusive 1
 	call {
 		## The receiver sent a custom coord, so it will be to that coordinate that you will go
-		$coordsOfTheReceiver = checkMessage("$.PrivMsgLastMsg")
-		log coordsOfTheReceiver: $coordsOfTheReceiver if ($debug = 1)
-		if ($coordsOfTheReceiver = -1) stop
-		do conf -f coordsOfTheReceiver $coordsOfTheReceiver
+		$meetPoint = checkMessage("$.PrivMsgLastMsg")
+		log meetPoint: $meetPoint if ($debug = 1)
+		if ($meetPoint = -1) stop
+		do conf -f meetPoint $meetPoint
 		call configureStorage
 		
-		##esse if existe pra checar se a pessoa que te mandou pm é o seu mercador
-		##minha macro é a prova de inúteis qu tentam bugar a parada
+		##this if exsit to check if the person who send the pm is the real receiver 
+		##work against useless people who tries to bother
 		if ($.PrivMsgLastName = $receiverName) {
-			do pm "$receiverName" ok, ponto de encontro é: $coordsOfTheReceiver
+			do pm "$receiverName" ok, meetPoint is: $meetPoint
 			[
-			do conf -f inPassToReceiver_sequence true
+			do conf -f onDeliveryItemsProcess true
 			do conf route_randomWalk 0
 			do conf lockMap none
 			do conf attackAuto 0
@@ -185,15 +185,15 @@ automacro PegandoFarm_CoordenadaPersonalizada {
 	}
 }
 
-automacro fazerAutoSell {
-	ConfigKey inPassToReceiver_sequence true
+automacro makeAutoSell {
+	ConfigKey onDeliveryItemsProcess true
 	ConfigKey passToReceiver_step autosell
 	exclusive 1
-	priority 20 #prioridade baixa
+	priority 20 #low priority 
 	run-once 1
 	CheckOnAI auto,manual
 	call {
-		do pm "$receiverName" vou fazer o autosell
+		do pm "$receiverName" i will autosell
 		do ai on
 		do autosell
 	}
@@ -201,8 +201,8 @@ automacro fazerAutoSell {
 
 #AI_storage_done
 
-automacro completeiAsVendas {
-	ConfigKey inPassToReceiver_sequence true
+automacro completedTheAutoSell {
+	ConfigKey onDeliveryItemsProcess true
 	ConfigKey passToReceiver_step autosell
 	SimpleHookEvent AI_sell_auto_done
 	exclusive 1
@@ -210,48 +210,49 @@ automacro completeiAsVendas {
 	call {
 		##completado as vendas, vamos ver se precisa de storage
 		do ai manual
-		do conf -f passToReceiver_step irNoStorage
-		release fazerAutoSell
+		do conf -f passToReceiver_step goToStorage
+		release makeAutoSell
 	}
 }
 
-automacro Kafra_irNoNpc {
-	NpcNotNear /Kafra Employee|Funcionária Kafra/
+automacro kafra_goToNpc {
+	NpcNotNear /Kafra Employee/ #TODO get kafra in korean
 	exclusive 1
-	ConfigKey passToReceiver_step irNoStorage
-	ConfigKey inPassToReceiver_sequence true
+	ConfigKey passToReceiver_step goToStorage
+	ConfigKey onDeliveryItemsProcess true
 	CheckOnAI auto,manual
 	call {
-		do pm "$receiverName" ja vendi, agora vou pegar itens do storage
-		do move $kafraCoords &rand(1,5)
+		do pm "$receiverName" already sold, i will get items from storage now
+		do move $kafraCoords &rand(3,8)
 	}
 }
 
-automacro Kafra_PertoDoNpc {
-	NpcNear /Kafra Employee|Funcionária Kafra/
-	ConfigKey passToReceiver_step irNoStorage
-	ConfigKey inPassToReceiver_sequence true
+automacro kafra_nearNpc {
+	NpcNear /Kafra Employee/ #TODO get kafra in korean
+	ConfigKey passToReceiver_step goToStorage
+	ConfigKey onDeliveryItemsProcess true
 	CheckOnAI auto,manual
 	exclusive 1
 	timeout 30
 	priority 2
 	call {
 		do talk $.NpcNearLastBinId
-		do pm "$receiverName" ja abri o storage, falta pouco
+		do pm "$receiverName" i have opened storage already, wait just a little bit more
 		do talk resp 1
-		#storage aberto, agora outra macro vai cuidar disso
+		#opened storage, now other automacro will take care of this
 	}
 }
 
-automacro PegandoItensDoStorage {
+automacro gettingItemsFromStorage {
 	StorageOpened 1
 	exclusive 1
-	ConfigKey inPassToReceiver_sequence true
+	ConfigKey onDeliveryItemsProcess true
+	ConfigKey passToReceiver_step goToStorage
 	CheckOnAI auto,manual
 	call {
 		@itens = &keys(%pesoDoItem)
 		$i = 0
-		log qtd de itens no array: '@itens' if ($debug = 1)
+		log qt of items in array : '@itens' if ($debug = 1)
 		
 		if (@itens < 1) {
 			[
@@ -265,67 +266,66 @@ automacro PegandoItensDoStorage {
 			stop 
 		}
 		while ($i < @itens && $.weightpercent < 90) {
-			$idDoItemAtual = $itens[$i]
-			$nomeDoItemAtual = pegarNomePelaId("$idDoItemAtual")
-			$qtdNoStorage = &storamount($nomeDoItemAtual)
+			$idOfCurrentItem = $itens[$i]
+			$nameOfCurrentItem = getNameById("$idOfCurrentItem")
+			$qtOnStorage = &storamount($nameOfCurrentItem)
 			
-			$quantidadeQuePossoCarregar = &eval(int(($.maxweight-$.weight)/$pesoDoItem{$idDoItemAtual}))
-			#essa parte do peso que é mais complicada, olha esse eval doidão kkkkk
+			$qtICanCarry = &eval(int(($.maxweight-$.weight)/$weightOfItem{$idOfCurrentItem}))
+			#this eval was reeeeeeeaaaaally hard to make hahaahahah
 
-			log Nome: '$nomeDoItemAtual', id: '$idDoItemAtual', if($debug = 1)
+			log Nome: '$nameOfCurrentItem', id: '$idOfCurrentItem', if($debug = 1)
 
-			if ( $qtdNoStorage > 0) {
+			if ( $qtOnStorage > 0) {
 				
-				#vai pegar o item da lista de itens definida anteriormente (se tiver no armazem)
-				#e vai pegar a quantidade máxima que o bot suporta de peso
-				if ( $qtdNoStorage > $quantidadeQuePossoCarregar) {
-					#se a qtd do item no storage for maior que a capacidade que a gente consegue carregar
-					#vai pegar só o que dá
-					log quantidade que eu vou pegar de $nomeDoItemAtual: '$quantidadeQuePossoCarregar' if ($debug = 1)
-					do storage get $nomeDoItemAtual $quantidadeQuePossoCarregar
+				#it will get the item quantity and checks how much we can get
+				if ( $qtOnStorage > $qtICanCarry) {
+					#if the item amount on storage is biggeer than the amount he can carry
+					#it will gets only what he can carry
+					log amount that i will get of $nameOfCurrentItem: '$qtICanCarry' if ($debug = 1)
+					do storage get $nameOfCurrentItem $qtICanCarry
 				} else {
-					#senão, pega tudo mesmo 
-					log quantidade que eu vou pegar de $nomeDoItemAtual: '$qtdNoStorage' if ($debug = 1)
-					do storage get $nomeDoItemAtual
+					#or else, get all the amount
+					log quantidade que eu vou pegar de $nameOfCurrentItem: '$qtOnStorage' if ($debug = 1)
+					do storage get $nameOfCurrentItem
 				}
 
 
-				while (&storamount($nomeDoItemAtual) > 0 && $.weightpercent < 90) {
-					## se entrar nesse if, provavelmente é um equipamento que só pode ser pego 1 por vez
-					## então nao vou colocar a parte calcular o peso, ja quee é irrelevante
-					do storage get $nomeDoItemAtual
+				while (&storamount($nameOfCurrentItem) > 0 && $.weightpercent < 90) {
+					## when enter in this if, problably is an equipment
+					## so will keep getting 1 by one, until there is no more
+					do storage get $nameOfCurrentItem
 				}
 			} else {
-				log Não tem $nomeDoItemAtual no armazem
+				log Do not have $nameOfCurrentItem on storage
 			}
 			$i++
 		}
 		$i = undef
 		do storage close
-		do conf -f passToReceiver_step termineiStorage
+		do conf -f passToReceiver_step finishedStorage
 	}
 }
 
-automacro pegueiItensDoStorage {
-	ConfigKey passToReceiver_step termineiStorage
+automacro finishedGetItemsFromStorage {
+	ConfigKey passToReceiver_step finishedStorage
 	exclusive 1
-	ConfigKey inPassToReceiver_sequence true
+	ConfigKey onDeliveryItemsProcess true
 	CheckOnAI auto,manual
 	call {
-		do pm "$receiverName" ja peguei tudo que dava, to indo ai
+		do pm "$receiverName" already get all i can carry, going there
 		do conf -f passToReceiver_step goToReceiver
 	}
 }
 
 automacro goToReceiver {
-	ConfigKey inPassToReceiver_sequence true
+	ConfigKey onDeliveryItemsProcess true
 	ConfigKey passToReceiver_step goToReceiver
 	PlayerNotNear /$receiverName/
 	exclusive 1
 	timeout 30
 	CheckOnAI auto,manual
 	call {
-		do move $coordsOfTheReceiver
+		do move $meetPoint 1
 		if (&config(dealAuto) != 2) do conf dealAuto 2
 		if (&config(dealAuto_names) != $receiverName) do conf dealAuto_names $receiverName
 	}
@@ -334,7 +334,7 @@ automacro goToReceiver {
 automacro ReceiverNear {
 	PlayerNear /.*$receiverName.*/
 	timeout 5
-	ConfigKey inPassToReceiver_sequence true
+	ConfigKey onDeliveryItemsProcess true
 	ConfigKey passToReceiver_step goToReceiver
 	CheckOnAI auto,manual
 	call {
@@ -354,12 +354,13 @@ automacro ReceiverNear {
 		]
 		do pm "$receiverName" accept deal please
 		do deal &player($receiverName)
+		pause 7
 	}
 }
 
-automacro givingItems {
+automacro inDeal_givingItems {
 	SimpleHookEvent engaged_deal
-	ConfigKey inPassToReceiver_sequence true
+	ConfigKey onDeliveryItemsProcess true
 	CheckOnAI auto,manual
 	timeout 60
 	PlayerNear /$receiverName/
@@ -376,32 +377,31 @@ automacro givingItems {
 			@itens = &keys(%pesoDoItem)
 
 			$i = 0
-			$itensNaNegociacao = 0
-			while ($i < @itens && $itensNaNegociacao < 10) {
-				log dentro do while pra passar itens if ($debug = 1)
-				$idDoItemAtual = $itens[$i]
-				$nomeDoItemAtual = pegarNomePelaId("$idDoItemAtual")
-				$qtdDoItemAtualNoInventario = &invamount($nomeDoItemAtual)
+			$amountOfItemsOnDeal = 0
+			while ($i < @itens && $amountOfItemsOnDeal < 10) {
+				log inside while that pass items in deal if ($debug = 1)
+				$idOfCurrentItem = $itens[$i]
+				$nameOfCurrentItem = getNameById("$idOfCurrentItem")
+				$qtdDoItemAtualNoInventario = &invamount($nameOfCurrentItem)
 
 				if ( $qtdDoItemAtualNoInventario > 0) {
-					log item: $nomeDoItemAtual, quantidade: $qtdDoItemAtualNoInventario if ($debug = 1)
-					## debug: log dentro do if pra passar itens
-					do deal add &inventory($nomeDoItemAtual)
-					$itensNaNegociacao++
+					log item: $nameOfCurrentItem, amount: $qtdDoItemAtualNoInventario if ($debug = 1)
+					do deal add &inventory($nameOfCurrentItem)
+					$amountOfItemsOnDeal++
 				}
 				$i++
 			}
 			$i = 0
 			set exclusive 0
-			do pm "$receiverName" já passei tudo, finaliza aí
+			do pm "$receiverName" i have added all, finalize the deals
 			pause 2
 			do deal
 		} else {
 			[
 			log =======================================
-			log =Tamo no meio da negociação, mas o mercador ta longe
-			log =provavelmente é alguem tentando levar a melhor
-			log =IGNORANDO COMPLETAMENTE
+			log =we are in a middle of a deal, but the master is too far
+			log =problably is just some fool
+			log =COMPLETLY IGNORING IT
 			log =======================================
 			]
 			stop
@@ -413,7 +413,7 @@ automacro checkDeal {
 	macro_delay 0.2
 	exclusive 1
 	ConfigKey passToReceiver_step inDeal
-	ConfigKey inPassToReceiver_sequence true
+	ConfigKey onDeliveryItemsProcess true
 	CheckOnAI auto,manual
 	timeout 60
 	call {
@@ -422,11 +422,11 @@ automacro checkDeal {
 	}
 }
 
-automacro Negociacao_clicarNoBotaoFinalizar {
+automacro inDeal_clicarNoBotaoFinalizar {
 	SimpleHookEvent finalized_deal
 	timeout 20
 	CheckOnAI auto,manual
-	ConfigKey inPassToReceiver_sequence true
+	ConfigKey onDeliveryItemsProcess true
 	ConfigKey passToReceiver_step inDeal
 	call {
 		pause 2
@@ -434,10 +434,10 @@ automacro Negociacao_clicarNoBotaoFinalizar {
 	}
 }
 
-automacro Negociação_finalizada {
+automacro inDeal_completed {
 	SimpleHookEvent complete_deal
 	CheckOnAI auto,manual
-	ConfigKey inPassToReceiver_sequence true
+	ConfigKey onDeliveryItemsProcess true
 	ConfigKey passToReceiver_step inDeal
 	exclusive 1
 	call {
@@ -445,9 +445,9 @@ automacro Negociação_finalizada {
 	}
 }
 
-automacro NegociaçãoFinalizada_checandoPorMaisItens {
+automacro dealCompleted_checkingMoreItens {
 	CheckOnAI auto,manual
-	ConfigKey inPassToReceiver_sequence true
+	ConfigKey onDeliveryItemsProcess true
 	ConfigKey passToReceiver_step passeiOsItens
 	exclusive 1
 	call {
@@ -457,73 +457,71 @@ automacro NegociaçãoFinalizada_checandoPorMaisItens {
 		@itens = &keys(%pesoDoItem)
 
 		if ($debug = 1) {
-			log \$itensNaNegociacao: $itensNaNegociacao
+			log \$amountOfItemsOnDeal: $amountOfItemsOnDeal
 			log \@itens = @itens	
 		}
 
-		# esse if checa se tem mais itens pra passar que nao cabe numa
-		# negociacao só (quando vc quer passar mais de 10 itens)
-		if ($itensNaNegociacao >= 10 && @itens > 10 ) {
-			log tem mais itens pra passar
-			do pm "$receiverName" tem mais itens pra te passar mano
+		# this if checks if it has more itens to delivery after deal end
+		# (it happens if you want to pass more than 10 itens)
+		if ($amountOfItemsOnDeal >= 10 && @itens > 10 ) {
+			log it has more items to delivery
+			do pm "$receiverName" i have more items to delivery to you
 			do conf -f passToReceiver_step goToReceiver
 			stop
 		}
 
-		# esse while checa se tem itens no storage que nao 
-		# nao deu pra levar por conta que tava pesado
-		# se tiver, ele faz a checagem do storage denovo
+		# this while checks if there is more of the items on storage
+		# happens when he can't carry everything
+		# if it has, he will go to storage again
 		$i = 0
 		while ($i < @itens) {
-			$idDoItemAtual = $itens[$i]
-			$nomeDoItemAtual = pegarNomePelaId("$idDoItemAtual")
+			$idOfCurrentItem = $itens[$i]
+			$nameOfCurrentItem = getNameById("$idOfCurrentItem")
 
 			if ($debug = 1) {
-				log qtdNoStorage = &storamount($nomeDoItemAtual) 	
+				log qtOnStorage = &storamount($nameOfCurrentItem) 	
 			}
 
-			if (&storamount($nomeDoItemAtual) > 0) {
+			if (&storamount($nameOfCurrentItem) > 0) {
 				[
 				log ==========================================
-				log =ainda tem mais itens pra pegar do armazem
+				log =still have &storamount($nameOfCurrentItem) $nameOfCurrentItem on storage
+				log =going to get
 				log ==========================================
 				]
-				$i = @itens
-				do pm "$receiverName" aqui, tem mais coisas no armazen
-				do pm "$receiverName" vou la buscar, fica ai em
-				do conf -f passToReceiver_step irNoStorage
+				$i = undef
+				do pm "$receiverName" still have items on storage, i will get
+				do conf -f passToReceiver_step goToStorage
 				stop
 			}
 			$i++
 		}
 
 		
-		log final do while, acabou! if ($debug = 1)
-		## se chegar nessa parte, significa que ja entregamos todos os itens
-		## tanto do storage quanto do do inventario
+		log end of while, it is over! if ($debug = 1)
+		## if it gets here, it means that the bot dont have anymore the items, delivered all of them
 		[
-		log ================================
-		log =Pronto, tudo entregue
-		log ================================
+		log ========================================
+		log =all my items were delivery succeesfully to the receiver
+		log ========================================
 		]
 		
-		do pm "$receiverName" ja te passei tudo que eu tinha, TUDO
-		do conf -f passToReceiver_step acabou
+		do pm "$receiverName" passed everything, it is over
+		do conf -f passToReceiver_step done
 	}
 }
 
 automacro acabou {
-	ConfigKey inPassToReceiver_sequence true
-	ConfigKey passToReceiver_step acabou
+	ConfigKey onDeliveryItemsProcess true
+	ConfigKey passToReceiver_step done
 	CheckOnAI auto,manual
 	exclusive 1
 	call {
 		[
-		log FINALMENTE ACABOU!!!!!!
+		log I HAVE DELIVERED ALL ITEMS
 		]
-		do conf -f deal_sequence none
+		do conf -f onDeliveryItemsProcess none
 		do conf -f passToReceiver_step none
-		do conf -f coordsOfTheReceiver none
 		do ai on
 	}
 }
@@ -531,8 +529,8 @@ automacro acabou {
 automacro estouPassandoItens {
 	ConfigKeyNot passToReceiver_step autosell
 	ConfigKeyNot passToReceiver_step none
-	ConfigKey inPassToReceiver_sequence true
-	CheckOnAI auto #só pra eu lembrar que isso só é chcado na ai auto
+	ConfigKey onDeliveryItemsProcess true
+	CheckOnAI auto #just for me to remember that it will only be checked on auto
 	exclusive 1
 	call {
 		do ai manual
@@ -545,26 +543,25 @@ automacro ErroAoTentarNegociar {
 	PlayerNotNear /$receiverName/
 	exclusive 1
 	call {
-
 		[
 		log ===============================================
 		log tentamos negociar mas o mercador não está por perto
-		log movendo-se pra o local especificado denovo: ($coordsOfTheReceiver)
+		log movendo-se pra o local especificado denovo: ($meetPoint)
 		log ===============================================
-		do move $coordsOfTheReceiver
+		do move $meetPoint
 		]
 	}
 }
 
 automacro ErroAoTentarNegociar2 {
 	SimpleHookEvent error_deal
-	ConfigKey inPassToReceiver_sequence true
+	ConfigKey onDeliveryItemsProcess true
 	CheckOnAI auto,manual
 	exclusive 1
 	call {
 		[
 		log ================================
-		log = tentei negociar com o mercador, mas ele ta longe demais
+		log = tried to deal with receiver, but an error happened
 		log ================================
 		]
 	}
@@ -577,7 +574,7 @@ automacro DealCancelled {
 		[
 		log ===================================
 		log = we were in a deal, but it was cancelled
-		log = i will ask to Reciever to deal again #'
+		log = i will ask to Reciever to deal again
 		log ===================================
 		]
 		
@@ -591,24 +588,24 @@ sub checkMessage {
 	if ($message =~ /(\w+ \d+ \d+)/) {
 		return $1;
 	} else {
-		error "Erro ao tentar definir as coordenadas personalizadas.\n";
-		error "provavelmente não foi enviado corretamente CIDADE E COORDENADA\n";
-		error "message recebida: '$message'";
+		error "Error while trying to define custom coords.\n";
+		error "problably was not sended correctly the CITY and COORDINATES\n";
+		error "message received: '$message'";
 		return -1;
 	}
 }
 
-sub extrairID {
+sub extractID {
 	my ($config) = @_;
 	if ($config =~ /^\s*(\d+)/) {
-		return $1; #a id extraida
+		return $1; #the extracted ID
 	} else {
-		Log::error ("Não foi possível encontrar a ID do Item, cheque seu config.txt\nValor encontrado: '$config'\n");
+		error "unable to find item ID, check your config.txt\nValue found: '$config'\n";
 		return;
 	}
 }
 
-sub extrairPeso {
+sub extractWeight {
 	my ($idPassada) = @_;
 	open (my $fh, '<', 'tables/item_weights.txt') or die "File item_weights.txt not found";
 	my @item_weights = <$fh>;
@@ -627,19 +624,19 @@ sub extrairPeso {
 	return ;
 }
 
-sub pegarNomePelaId {
+sub getNameById {
 	my ($id) = @_;
-	if ($id =~ /\d+/) { #checa se a id é composta somente por números
+	if ($id =~ /\d+/) { #check if the Id is made only of numbers
 
 		if ($items_lut{$id}) { #checa se a id do item existe
 			return $items_lut{$id};
 		} else {
-			error "número não é uma Id de um item('$id')\n";
+			error "number is not the ID of a item ('$id')\n";
 			return -1;
 		}
 	} else {
-		warning "Erro ao tentar conseguir o nome do item ('$id')\n".
-		"forneça somente números (a ID do item)\n";
+		warning "Error while trying to get the item ('$id')\n".
+		"it accepts only numbers (the ID of item)\n";
 		return -1;
 	}
 }
