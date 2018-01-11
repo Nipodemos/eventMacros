@@ -155,7 +155,7 @@ automacro PegandoFarm_CoordenadaPersonalizada {
 	exclusive 1
 	call {
 		## The receiver sent a custom coord, so it will be to that coordinate that you will go
-		$coordsOfTheReceiver = checarmessage("$.PrivMsgLastMsg")
+		$coordsOfTheReceiver = checkMessage("$.PrivMsgLastMsg")
 		log coordsOfTheReceiver: $coordsOfTheReceiver if ($debug = 1)
 		if ($coordsOfTheReceiver = -1) stop
 		do conf -f coordsOfTheReceiver $coordsOfTheReceiver
@@ -326,10 +326,12 @@ automacro goToReceiver {
 	CheckOnAI auto,manual
 	call {
 		do move $coordsOfTheReceiver
+		if (&config(dealAuto) != 2) do conf dealAuto 2
+		if (&config(dealAuto_names) != $receiverName) do conf dealAuto_names $receiverName
 	}
 }
 
-automacro MercadorPerto {
+automacro ReceiverNear {
 	PlayerNear /.*$receiverName.*/
 	timeout 5
 	ConfigKey inPassToReceiver_sequence true
@@ -346,12 +348,16 @@ automacro MercadorPerto {
 			]
 			stop
 		}
+		[
+		if (&config(dealAuto) != 2) do conf dealAuto 2
+		if (&config(dealAuto_names) != $receiverName) do conf dealAuto_names $receiverName
+		]
 		do pm "$receiverName" accept deal please
 		do deal &player($receiverName)
 	}
 }
 
-automacro DandoItem {
+automacro givingItems {
 	SimpleHookEvent engaged_deal
 	ConfigKey inPassToReceiver_sequence true
 	CheckOnAI auto,manual
@@ -360,11 +366,11 @@ automacro DandoItem {
 	exclusive 1
 	call {
 		if ($.PlayerNearLastDist < 3) {
-			do conf -f passToReceiver_step dentroDaNegociacao
-			$zenyQueVouDar = &eval($.zeny - 100000)
-			if ($zenyQueVouDar > 0 ) {
-				log zeny que vou dar: $zenyQueVouDar
-				do deal add z $zenyQueVouDar
+			do conf -f passToReceiver_step inDeal
+			$zenyToGive = &eval($.zeny - 100000)
+			if ($zenyToGive > 0 ) {
+				log zeny i will give: $zenyToGive
+				do deal add z $zenyToGive
 			}
 
 			@itens = &keys(%pesoDoItem)
@@ -403,23 +409,36 @@ automacro DandoItem {
 	}
 }
 
+automacro checkDeal {
+	macro_delay 0.2
+	exclusive 1
+	ConfigKey passToReceiver_step inDeal
+	ConfigKey inPassToReceiver_sequence true
+	CheckOnAI auto,manual
+	timeout 60
+	call {
+		$check = checkIfIsInDeal()
+		if ($check = -1 ) do conf passToReceiver_step goToReceiver
+	}
+}
+
 automacro Negociacao_clicarNoBotaoFinalizar {
 	SimpleHookEvent finalized_deal
 	timeout 20
 	CheckOnAI auto,manual
 	ConfigKey inPassToReceiver_sequence true
-	ConfigKey passToReceiver_step dentroDaNegociacao
+	ConfigKey passToReceiver_step inDeal
 	call {
 		pause 2
 		do deal
 	}
 }
 
-automacro NegociaçãoFinalizada {
+automacro Negociação_finalizada {
 	SimpleHookEvent complete_deal
 	CheckOnAI auto,manual
 	ConfigKey inPassToReceiver_sequence true
-	ConfigKey passToReceiver_step dentroDaNegociacao
+	ConfigKey passToReceiver_step inDeal
 	exclusive 1
 	call {
 		do conf -f passToReceiver_step passeiOsItens
@@ -432,7 +451,7 @@ automacro NegociaçãoFinalizada_checandoPorMaisItens {
 	ConfigKey passToReceiver_step passeiOsItens
 	exclusive 1
 	call {
-		release MercadorPerto
+		release ReceiverNear
 		do conf -f passToReceiver_step none
 		
 		@itens = &keys(%pesoDoItem)
@@ -551,7 +570,23 @@ automacro ErroAoTentarNegociar2 {
 	}
 }
 
-sub checarmessage {
+automacro DealCancelled {
+	SimpleHookEvent packet/deal_cancelled
+	exclusive 1
+	call {
+		[
+		log ===================================
+		log = we were in a deal, but it was cancelled
+		log = i will ask to Reciever to deal again #'
+		log ===================================
+		]
+		
+		if (&config(passToReceiver_step) = inDeal) do conf passToReceiver_step goToReceiver
+		
+	}
+}
+
+sub checkMessage {
 	my ($message) = @_;
 	if ($message =~ /(\w+ \d+ \d+)/) {
 		return $1;
@@ -567,8 +602,7 @@ sub extrairID {
 	my ($config) = @_;
 	if ($config =~ /^\s*(\d+)/) {
 		return $1; #a id extraida
-	}
-	else {
+	} else {
 		Log::error ("Não foi possível encontrar a ID do Item, cheque seu config.txt\nValor encontrado: '$config'\n");
 		return;
 	}
@@ -576,7 +610,7 @@ sub extrairID {
 
 sub extrairPeso {
 	my ($idPassada) = @_;
-	open (my $fh, '<', 'tables/item_weights.txt') or die "Arquivo item_weights nao encontrado";
+	open (my $fh, '<', 'tables/item_weights.txt') or die "File item_weights.txt not found";
 	my @item_weights = <$fh>;
 	close ($fh);
 	chomp @item_weights;
@@ -606,6 +640,16 @@ sub pegarNomePelaId {
 	} else {
 		warning "Erro ao tentar conseguir o nome do item ('$id')\n".
 		"forneça somente números (a ID do item)\n";
+		return -1;
+	}
+}
+
+sub checkIfIsInDeal {
+	if (%currentDeal) {
+		use Data::Dumper;
+		warning Dumper(%currentDeal);
+		return 1;
+	} else {
 		return -1;
 	}
 }
