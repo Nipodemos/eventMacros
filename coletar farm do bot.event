@@ -250,7 +250,7 @@ automacro gettingItemsFromStorage {
 	ConfigKey passToReceiver_step goToStorage
 	CheckOnAI auto,manual
 	call {
-		@itens = &keys(%pesoDoItem)
+		@itens = &keys(%weightOfItem)
 		$i = 0
 		log qt of items in array : '@itens' if ($debug = 1)
 		
@@ -374,7 +374,7 @@ automacro inDeal_givingItems {
 				do deal add z $zenyToGive
 			}
 
-			@itens = &keys(%pesoDoItem)
+			@itens = &keys(%weightOfItem)
 
 			$i = 0
 			$amountOfItemsOnDeal = 0
@@ -454,7 +454,7 @@ automacro dealCompleted_checkingMoreItens {
 		release ReceiverNear
 		do conf -f passToReceiver_step none
 		
-		@itens = &keys(%pesoDoItem)
+		@itens = &keys(%weightOfItem)
 
 		if ($debug = 1) {
 			log \$amountOfItemsOnDeal: $amountOfItemsOnDeal
