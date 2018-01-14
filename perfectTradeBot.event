@@ -1,3 +1,13 @@
+automacro checkItemsAmount {
+    JobIDNot 0
+    exclusive 1
+    timeout 300 # 5 minutes
+    call {
+        
+    }
+}
+
+
 automacro receiverName {
 	priority -999 #high priority
 	run-once 1
@@ -59,15 +69,12 @@ automacro receiverName {
 			$meetPoint = &config(meetPoint)
 		} else {
 			[
+			log =========================================
 			log meetPoint is not configurated on config.txt
-			log (or maybe a typo)
-			log we need it for macro to proceed
-			log correct way of configure:
-			log meetPoint city coord_X coord_Y
-			log EXAMPLE: meetPoint prontera 150 124
-			log Or you can send a pm with the coordinates
+			log defining default meetPoint
+			log =========================================
 			]
-			do conf -f meetPoint INSERT CITY AND COORDINATES HERE
+			do conf -f meetPoint prontera 217 211
 
 			#we will not interrupt macro here, because he can define this later by
 			#sending a message to bot
@@ -82,6 +89,8 @@ automacro receiverName {
 			$weightOfItem{$item} = $weight #configure a hash with weight and ID
 			$i++
 		}
+
+		getCards() #this will create an entire array with all cards IDs
 
 		call configureStorage
 		
@@ -101,23 +110,16 @@ macro configureStorage {
 	#this swtich is necessary to decide which kafra you will use to store
 	#it will be the closest do receiver coodinates
 	#or prontera
-	[
+
 	switch ($meetPoint) {
-		case (=~ /payon/) {
-			$kafraCoords = payon 181 104
-		}
-		case (=~ /geffen/) {
-			$kafraCoords = geffen 120 62
-		}
-		case (=~ /izlude/) {
-			$kafraCoords = izlude 134 88
-		}
+		case (=~ /payon/)  $kafraCoords = payon 181 104
+		case (=~ /geffen/) $kafraCoords = geffen 120 62
+		case (=~ /izlude/) $kafraCoords = izlude 134 88
 		else {
-			## city it will go if is not the other ones
-			$kafraCoords = prontera 151 29
+			$kafraCoords = prontera 282 199
 		}
 	}
-	]
+
 }
 
 automacro PegandoFarm {
@@ -199,8 +201,6 @@ automacro makeAutoSell {
 	}
 }
 
-#AI_storage_done
-
 automacro completedTheAutoSell {
 	ConfigKey onDeliveryItemsProcess true
 	ConfigKey passToReceiver_step autosell
@@ -249,12 +249,13 @@ automacro gettingItemsFromStorage {
 	ConfigKey onDeliveryItemsProcess true
 	ConfigKey passToReceiver_step goToStorage
 	CheckOnAI auto,manual
+    macro_delay 0.5
 	call {
 		@itens = &keys(%weightOfItem)
 		$i = 0
 		log qt of items in array : '@itens' if ($debug = 1)
 		
-		if (@itens < 1) {
+		if (@itens < 1 || a@itens = a) {
 			[
 			log ===================================
 			log = no items configurated, check your
@@ -265,6 +266,8 @@ automacro gettingItemsFromStorage {
 			do eval Misc::offlineMode();
 			stop 
 		}
+        
+        #this loops the items defined at config.txt
 		while ($i < @itens && $.weightpercent < 90) {
 			$idOfCurrentItem = $itens[$i]
 			$nameOfCurrentItem = getNameById("$idOfCurrentItem")
@@ -300,7 +303,33 @@ automacro gettingItemsFromStorage {
 			}
 			$i++
 		}
-		$i = undef
+		$i = 0
+        
+        #this loops the id of all cards
+        while ( $i < @cardsIDs && $.weightpercent < 90) {
+        	$idOfCurrentItem = $cardsIDs[$i]
+            $nameOfCurrentItem = getNameByID("$idOfCurrentItem")
+            $qtOnStorage = &storamount($idOfCurrentItem)
+        	$qtICanCarry = &eval(int(($.maxweight-$.weight)/$weightOfItem{$idOfCurrentItem}))
+            
+            if ( $qtOnStorage > 0) {
+				
+				#it will get the item quantity and checks how much we can get
+				if ( $qtOnStorage > $qtICanCarry) {
+					#if the item amount on storage is biggeer than the amount he can carry
+					#it will gets only what he can carry
+					log amount that i will get of $nameOfCurrentItem: '$qtICanCarry' if ($debug = 1)
+					do storage get $nameOfCurrentItem $qtICanCarry
+				} else {
+					#or else, get all the amount
+					log quantidade que eu vou pegar de $nameOfCurrentItem: '$qtOnStorage' if ($debug = 1)
+					do storage get $nameOfCurrentItem
+				}
+            }
+        	$i++
+        }
+        
+
 		do storage close
 		do conf -f passToReceiver_step finishedStorage
 	}
@@ -349,7 +378,7 @@ automacro ReceiverNear {
 			stop
 		}
 		[
-		if (&config(dealAuto) != 2) do conf dealAuto 2
+		if (&config(dealAuto) != 3) do conf dealAuto 3
 		if (&config(dealAuto_names) != $receiverName) do conf dealAuto_names $receiverName
 		]
 		do pm "$receiverName" accept deal please
@@ -368,7 +397,7 @@ automacro inDeal_givingItems {
 	call {
 		if ($.PlayerNearLastDist < 3) {
 			do conf -f passToReceiver_step inDeal
-			$zenyToGive = &eval($.zeny - 100000)
+			$zenyToGive = &eval($.zeny - 10000)
 			if ($zenyToGive > 0 ) {
 				log zeny i will give: $zenyToGive
 				do deal add z $zenyToGive
@@ -378,7 +407,7 @@ automacro inDeal_givingItems {
 
 			$i = 0
 			$amountOfItemsOnDeal = 0
-			while ($i < @itens && $amountOfItemsOnDeal < 10) {
+			while ($i < @itens && $amountOfItemsOnDeal < 8) {
 				log inside while that pass items in deal if ($debug = 1)
 				$idOfCurrentItem = $itens[$i]
 				$nameOfCurrentItem = getNameById("$idOfCurrentItem")
@@ -392,8 +421,23 @@ automacro inDeal_givingItems {
 				$i++
 			}
 			$i = 0
+            
+            #this loops the id of all cards
+        	while ( $i < @cardsIDs && $amountOfItemsOnDeal < 8) {
+        		$idOfCurrentItem = $cardsIDs[$i]
+        	    $nameOfCurrentItem = getNameByID("$idOfCurrentItem")
+        	    $qtOnInventory = &invamount($idOfCurrentItem)
+        		$qtICanCarry = &eval(int(($.maxweight-$.weight)/1))
+        	    
+        	    if ( $qtOnInventory > 0) {
+					log item: $nameOfCurrentItem, amount: $qtOnInventory if ($debug = 1)
+					do deal add &inventory($nameOfCurrentItem)
+					$amountOfItemsOnDeal++
+        	    }
+        		$i++
+        	}
 			set exclusive 0
-			do pm "$receiverName" i have added all, finalize the deals
+			do pm "$receiverName" i have added all, finalize the deal
 			pause 2
 			do deal
 		} else {
@@ -441,14 +485,14 @@ automacro inDeal_completed {
 	ConfigKey passToReceiver_step inDeal
 	exclusive 1
 	call {
-		do conf -f passToReceiver_step passeiOsItens
+		do conf -f passToReceiver_step passedTheItens
 	}
 }
 
 automacro dealCompleted_checkingMoreItens {
 	CheckOnAI auto,manual
 	ConfigKey onDeliveryItemsProcess true
-	ConfigKey passToReceiver_step passeiOsItens
+	ConfigKey passToReceiver_step passedTheItens
 	exclusive 1
 	call {
 		release ReceiverNear
@@ -462,8 +506,8 @@ automacro dealCompleted_checkingMoreItens {
 		}
 
 		# this if checks if it has more itens to delivery after deal end
-		# (it happens if you want to pass more than 10 itens)
-		if ($amountOfItemsOnDeal >= 10 && @itens > 10 ) {
+		# (it happens if you want to pass more than 8 itens)
+		if ($amountOfItemsOnDeal >= 8 && @itens > 8 ) {
 			log it has more items to delivery
 			do pm "$receiverName" i have more items to delivery to you
 			do conf -f passToReceiver_step goToReceiver
@@ -526,7 +570,7 @@ automacro acabou {
 	}
 }
 
-automacro estouPassandoItens {
+automacro ImPassingItens {
 	ConfigKeyNot passToReceiver_step autosell
 	ConfigKeyNot passToReceiver_step none
 	ConfigKey onDeliveryItemsProcess true
@@ -537,7 +581,7 @@ automacro estouPassandoItens {
 	}
 }
 
-automacro ErroAoTentarNegociar {
+automacro deal_error {
 	SimpleHookEvent error_deal
 	CheckOnAI manual
 	PlayerNotNear /$receiverName/
@@ -545,15 +589,15 @@ automacro ErroAoTentarNegociar {
 	call {
 		[
 		log ===============================================
-		log tentamos negociar mas o mercador não está por perto
-		log movendo-se pra o local especificado denovo: ($meetPoint)
+		log tried to deal with receiver, but it is too far
+		log moving to the local specified on meetPoint: [$meetPoint]
 		log ===============================================
-		do move $meetPoint
 		]
+		if ($.map $.pos != $meetPoint) do move $meetPoint
 	}
 }
 
-automacro ErroAoTentarNegociar2 {
+automacro deal_error2 {
 	SimpleHookEvent error_deal
 	ConfigKey onDeliveryItemsProcess true
 	CheckOnAI auto,manual
@@ -639,6 +683,23 @@ sub getNameById {
 		"it accepts only numbers (the ID of item)\n";
 		return -1;
 	}
+}
+
+sub getCards {
+	use utf8;
+    my @itemList;
+	open(ITEMS, '<encoding(UTF-8)', "tables/kRO/Zero/items.txt");
+	my @tableItems = <ITEMS>;
+	close (ITEMS);
+	
+    foreach my $line (@tableItems) {
+    	if( $line =~ /(\d+)#.+?카드$/ ) {
+        	my ($id,$name) = $1, $2;
+            push (@itemList, $id);
+        }
+    }
+    my $eventMacro = $eventMacro::Data::eventMacro;
+    $eventMacro->set_full_('cardsIDs', \@ItemList);
 }
 
 sub checkIfIsInDeal {

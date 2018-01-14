@@ -1,0 +1,69 @@
+automacro amIFree {
+    PrivMsg /i want delivery/i
+    exclusive 1
+    ConfigKey freeToReceive true
+    call {
+        log I'm Free #'
+        do pm "$.PrivMsgLastName" come here at $.map $.pos
+        do conf -f currentBot $.PrivMsgLastName
+        $currentBot = &config(currentBot)
+        do conf freeToReceive false
+    }
+}
+
+automacro ConfigKeyNotExist {
+    ConfigKeyNotExist freeToReceive
+    exclusive 1
+    call {
+        do conf -f freeToReceive true
+    }
+}
+
+automacro acceptDeal {
+    PlayerNear /$currentBot/
+    PrivMsg /accept deal please/i
+    exclusive 1
+    call {
+        pause 1
+        do deal
+    }
+}
+
+automacro finalizeDeal {
+    PlayerNear /$currentBot/
+    PrivMsg /finalize the deal/i
+    exclusive 1
+    call {
+        pause 1
+        do deal
+        pause 2
+        do deal
+    }
+}
+
+automacro deal_complete {
+    PlayerNear /$currentBot/
+    SimpleHookEvent complete_deal
+    exclusive 1
+    call {
+        [
+        log ===================================
+        log = now i need to do autostorage and autosell
+        log ===================================
+        ]
+    }
+}
+
+automacro receivedEveryThing {
+    PrivMsg /it is over/
+    PlayerNear /$currentBot/
+    exclusive 1
+    call {
+        do pm "$currentBot" okay
+        do conf freeToReceive true
+        do conf currentBot none
+        $currentBot = undef
+        do autostorage
+    }
+}
+
