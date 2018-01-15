@@ -201,19 +201,21 @@ automacro completedTheAutoSell {
 }
 
 automacro kafra_goToNpc {
-	NpcNotNear /Kafra Employee/ #TODO get kafra in korean
+	NpcNotNear /카프라 직원/ 
 	exclusive 1
 	ConfigKey passToReceiver_step goToStorage
 	ConfigKey onDeliveryItemsProcess true
 	CheckOnAI auto,manual
 	call {
+		do pm "$receiverName" pausing for 15 seconds
+		pause 15
 		do pm "$receiverName" already sold, i will get items from storage now
 		do move $kafraCoords &rand(3,8)
 	}
 }
 
 automacro kafra_nearNpc {
-	NpcNear /Kafra Employee/ #TODO get kafra in korean
+	NpcNear /카프라 직원/ 
 	ConfigKey passToReceiver_step goToStorage
 	ConfigKey onDeliveryItemsProcess true
 	CheckOnAI auto,manual
