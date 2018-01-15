@@ -36,22 +36,7 @@ automacro receiverName {
 		################################################################
 
 		if (&config(receiverName) =~ /\w+/)  { #if there is any number or letter, it means it exist
-			if (&config(receiverName) =~ /name of receiver/i) { 
-				#if this trigger, it means it's wrong
-				# is unecceptable
-				[
-				log ================================
-				log =You forgot to configure the receiver name
-				log =to configure is just go to config.txt
-				log =and insert on a black link
-				log =receiverName nameOfHim
-				log =EXAMPLE: receiverName nipodemos
-				log =Interrupting
-				log ================================
-				]
-				do eval Misc::offlineMode();
-				stop
-			}
+			#good
 		} else { #se chegar aqui é porque nao existe no config.txt
 			do conf -f receiverName name of receiver THAT RECEIVE THE ITEMS
 		}
@@ -687,19 +672,18 @@ sub getNameById {
 
 sub getCards {
 	use utf8;
-    my @itemList;
-	open(ITEMS, '<encoding(UTF-8)', "tables/kRO/Zero/items.txt");
+    my @ItemList;
+	open(ITEMS, '<:encoding(UTF-8)', "tables/kRO/Zero/items.txt") or die "could not find items file of kro zero\n";
 	my @tableItems = <ITEMS>;
 	close (ITEMS);
-	
     foreach my $line (@tableItems) {
-    	if( $line =~ /(\d+)#.+?카드$/ ) {
-        	my ($id,$name) = $1, $2;
-            push (@itemList, $id);
+    	if( $line =~ /^(\d+)\#.+?카드/ ) {
+            push (@ItemList, $1);
         }
     }
+	return if !@ItemList;
     my $eventMacro = $eventMacro::Data::eventMacro;
-    $eventMacro->set_full_('cardsIDs', \@ItemList);
+    $eventMacro->set_full_array('cardsIDs', \@ItemList);
 }
 
 sub checkIfIsInDeal {
