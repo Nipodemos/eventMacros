@@ -4,11 +4,21 @@ automacro amIFree {
     ConfigKey freeToReceive true
     call {
         log I'm Free #'
-        do pm "$.PrivMsgLastName" come here at $.map $.pos
+        do pm "$.PrivMsgLastName" come here
         do conf -f currentBot $.PrivMsgLastName
-        $currentBot = &config(currentBot)
         do conf freeToReceive false
     }
+}
+
+automacro inProcess {
+	run-once 1
+	exclusive 1
+	ConfigKey freeToReceive false
+	ConfigKeyNot currentBot none
+	priority -5
+	call {
+		$currentBot = &config(currentBot)
+	}
 }
 
 automacro ConfigKeyNotExist {
@@ -64,6 +74,7 @@ automacro receivedEveryThing {
         do conf currentBot none
         $currentBot = undef
         do autostorage
+		release inProcess
     }
 }
 
