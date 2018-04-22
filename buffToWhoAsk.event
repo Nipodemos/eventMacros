@@ -1,0 +1,73 @@
+############CURA##############
+
+automacro cura {
+	PubMsg /cura|heal/i
+	exclusive 1
+	call giveHimWhatHeWant "28"  #cura
+}
+
+automacro agi {
+	PubMsg /agi/i
+	exclusive 1
+	call giveHimWhatHeWant "29"  #agi
+}
+
+automacro bless {
+	PubMsg /ben[çc]|bles/i
+	exclusive 1
+	call giveHimWhatHeWant "34"  #bless
+}
+
+automacro buffs {
+	PubMsg /buf/i
+	exclusive 1
+	call giveHimWhatHeWant "all" #all buffs
+}
+
+macro giveHimWhatHeWant {
+    $id = getIDofPlayer("$.PubMsgLastName")
+#	$timesAsked{$id}++
+#	log times he asked: $timesAsked{$id}
+	pause 2
+    
+#	if ($timesAsked{$id} = 1) {
+#		do pm $id &random ("ok","ta","aqui")
+#	} elsif ($timesAsked{$id} = 2) {
+#		do pm $id &random ("ta...","hmm")
+#	} elsif ($timesAsked{$id} = 3) {
+#		do pm $id &random ("denovo?","mais?","que isso")
+#	} elsif ($timesAsked{$id} = 4) {
+#		do pm $id &random ("ultima vez","é a ultima to vazando","só mais essa e tchau")
+#	} elsif ($timesAsked{$id} >= 5) {
+#		do pm $id &random ("nao vai rolar....","ah neeeeem","mals ae","agora nao desculpe","5 vezes é demais")
+#		$timesAsked{$id} ++
+#		stop
+#	}
+	do stand
+    
+	if ($.param[0] != all) {
+        do sp $.param[0] &player($.PubMsgLastName)
+    } else {
+        do sp 34 "$.PrivMsgLastName" #bless
+		do sp 29 "$.PrivMsgLastName" #agi
+		pause 2
+		do sp 66 "$.PrivMsgLastName" #impositio
+		pause 3
+		do sp 73 "$.PrivMsgLastName" #kyrie
+		pause 2
+    }
+    
+    do pm "$.PrivMsgLastName" de nada
+}
+
+sub getIDofPlayer {
+    my ($name) = @_;
+    my Actor::Player $player = Match::player($name) if ($playersList);
+    
+    if (!$player) {
+		error TF("Player \"%s\" does not exist.\n", $args);
+		return;
+	}
+
+	return $player->{nameID};
+}

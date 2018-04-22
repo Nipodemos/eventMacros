@@ -1,0 +1,149 @@
+automacro tentandoDesbugar {
+    ConfigKeyNot status livre
+    CheckOnAI auto
+    exclusive 1
+    call {
+        log isso é provavelmente um bug
+        log então eu vou voltar pro status livre mesmo e fodas
+        do conf -f status livre
+    }
+}
+
+automacro criandoAConfig {
+    ConfigKeyNotExist status
+    exclusive 1
+    priority -5 #maior prioridade
+    call {
+        do conf -f status livre
+    }
+}
+
+automacro estouCom30kk_mandando pm {
+    Zeny > 30000000 #30kk
+    exclusive 1
+    timeout 30
+    ConfigKey status livre
+    call {
+        [
+        log ===================================
+        log = estou com 30kk, mandando pm pro NOMEDOSHOPPER
+        log = essa msg vai se repetir a cada 30s se ele não responder
+        log ===================================
+        ]
+        do pm "NOMEDOSHOPPER" vem aqui, to com seu zeny...
+        #quando o shopper responder, automaticamente vai entrar no status "em troca"
+    }
+}
+
+automacro recebendoPM {
+    PrivMsgName /to indo/ /NOMEDOSHOPPER/
+    exclusive 1
+    ConfigKeyNot status esperando shopper chegar
+    CheckOnAI auto,manual
+    call {
+        do pm "NOMEDOSHOPPER" vai me extorquir denovo? por favor eu não tenho mais zeny nenhum!
+        [
+        log ===================================
+        log = NOMEDOSHOPPER respondeu, agora vou me preparar pra
+        log = passar os zeny extoquido e receber os itens roubados
+        log ===================================
+        ]
+        do ai manual
+        do conf -f status esperando shopper chegar
+
+    }
+}
+
+automacro ShopperChegou {
+    PlayerNear /NOMEDOSHOPPER/
+    timeout 10
+    ConfigKey status esperando shopper chegar
+    CheckOnAI manual
+    call {
+        [
+        log ===================================
+        log = NOMEDOSHOPPER está perto
+        ]
+        #assim que o shopper está perto o suficiente pra negociar
+        #aí é mandado a negociação e vc espera ele aceitar
+        #espera 10 segundos e tenta denovo
+        if ($.PlayerNearLastDist < 3) {
+            do closeshop
+            do deal $.PlayerNearLastBinId
+            [
+            log = fechando shop e negociando com ele
+            log ===================================
+            ]
+        } else {
+            [
+            log = mas está longe pra negociar
+            log = vou tentar negociar denovo em 10 segundos
+            log ===================================
+            ]
+        }
+    }
+}
+
+automacro ShopperChegou_negociacaoComecou {
+    exclusive 1
+    SimpleHookEvent engaged_deal
+    ConfigKey status esperando shopper chegar
+    CheckOnAI manual
+    macro_delay 0.3
+    call {
+        #essa automacro rola quando a negociação acabou de começar
+        #o mercador adiciona os zenys bem rápido, e finaliza
+        do conf -f status em troca
+        $zenymenos5k = &eval($.zeny - 5000)
+        [
+        log ===================================
+        log = vou passar $zenymenos5k de zeny pro NOMEDOSHOPPER
+        log ===================================
+        ]
+        do pm "NOMEDOSHOPPER" toma ta aqui!! T_T toma o restinho que eu tenho, só não me mata
+        do deal add z $zenymenos5k if ($zenymenos5k > 0) # só adiciona zeny se for maior que 0 o valor
+        do deal
+    }
+}
+
+automacro estouCom30kk_ShopperFinalizouNegociacao {
+    SimpleHookEvent finalized_deal
+    ConfigKey status em troca
+    CheckOnAI manual
+    call {
+        [
+        log ===================================
+        log = NOMEDOSHOPPER finalizou, vou terminar a negociação
+        log ===================================
+        ]
+        do deal
+    }
+}
+
+automacro negociacaoCompleta {
+    SimpleHookEvent complete_deal
+    exclusive 1
+    ConfigKey status em troca
+    CheckOnAI manual
+    call {
+        [
+        log =================================
+        log = oh céus, ele levou todo meu zeny T_T
+        log = mas pelo menos eu to vivo
+        log = agradeço a deus/lucifer/ogum/oxalá/Jeová
+        log =================================
+        ]
+        do conf -f status livre
+        do ai on
+    }
+}
+
+automacro guardar malha {
+    exclusive 1
+    InInventory "Malha das Asas da Luz [1]" >= 1 
+    call {
+        pause 2
+        do cart add "Malha das Asas da Luz [1]"
+    }
+
+}

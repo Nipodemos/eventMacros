@@ -1,0 +1,161 @@
+automacro tentandoDesbugar {
+    ConfigKeyNot status livre
+    CheckOnAI auto
+    exclusive 1
+    call {
+        log isso é provavelmente um bug
+        log então eu vou voltar pro status livre mesmo e fodas
+        do conf -f status livre
+    }
+}
+
+automacro criandoAConfig {
+    ConfigKeyNotExist status
+    exclusive 1
+    priority -5 #maior prioridade
+    call {
+        do conf -f status livre
+    }
+}
+
+automacro checarSeTemItemsComprados {
+    timeout 1500
+    exclusive 1
+    BaseLevel > 0
+    macro_delay 0.3
+    ConfigKey status livre
+    call {
+        #cria a array @itensComprados
+        pegarItensComprados()
+        
+        $i = 0
+        while ($i < @itemsComprados) {
+            if (&invamount($itemsComprados[$i]) > 0) {
+                [
+                log ===================================
+                log = tenho item pra entregar!
+                log = mandando pm pro NOMEDOMERCADOR
+                log ===================================
+                ]
+                do pm "NOMEDOMERCADOR" to indo entregar item, vê se vende senão te mato
+                do ai manual
+                do conf -f status indo entregar item
+                $i = @itemsComprados
+            }
+            $i++
+        }
+    }
+}
+
+automacro respondendoAoMercador {
+    PrivMsgName /vem aqui/ /NOMEDOMERCADOR/
+    ConfigKey status livre
+    exclusive 1
+    call {
+        do ai manual
+        do conf -f status indo entregar item
+        do pm "NOMEDOMERCADOR" to indo entregar item, vê se vende senão te mato
+    }
+}
+
+automacro movendoAteoMercador {
+    ConfigKey status indo entregar item
+    CheckOnAI manual
+    timeout 30
+    call {
+        do move CIDADE COORDENADA &rand(1,2)
+    }
+}
+
+automacro estouPerto_aceitandoNegociacao {
+    CheckOnAI manual
+    SimpleHookEvent incoming_deal
+    ConfigKey status indo entregar item
+    call {
+        pause 2
+        do deal
+    }
+}
+
+automacro dentroDaNegociacao {
+    CheckOnAI manual
+    SimpleHookEvent engaged_deal
+    ConfigKey status indo entregar item
+    macro_delay 0.3
+    exclusive 1
+    call {
+        do conf -f status em troca
+        do pm "NOMEDOMERCADOR" me passa o zeny!!! seu inútil
+        #cria a array @itensComprados
+        pegarItensComprados()
+        
+        [
+        log ===================================
+        log = calculando quais items devem ser passados...
+        log ===================================
+        ]
+        @parentes = ( sua mãe, sua filha, sua tia, sua avó, seu pai, seu filho, seu sobrinho, seu neto )
+        $i = 0
+        $capacidadeNegociacao = 0
+        while ($i < @itemsComprados && $capacidadeNegociacao < 10) {
+            if (&invamount($itemsComprados[$i]) > 0) {
+                log = vende $itemsComprados[$i] pra mim que aí eu não faço nada com $parentes[&rand(0,7)]
+                do deal add &inventory($itemsComprados[$i])
+            }
+            $i++
+        }
+        
+        [
+        log ===================================
+        log = todos os items possíveis estão no trade!
+        log = finalizando negociação!
+        log ===================================
+        ]
+        pause 4
+        log clicando em OK no trade
+        do deal
+        set exclusive 0
+        pause 2
+        log clicando em finalizar no trade
+        do deal
+    }
+}
+
+automacro negociacaoCompleta {
+    SimpleHookEvent complete_deal
+    exclusive 1
+    ConfigKey status em troca
+    CheckOnAI manual
+    call {
+
+        log ===========================
+        log = terminei de trocar!!!
+        log = otário fracote tá facil ganhar zeny hoje
+        log = só roubar desse noob
+        log ===========================
+        do conf -f status livre
+        do ai on
+    }
+}
+
+sub pegarItensComprados {
+    open (BETTERSHOPPERLOG, '<:encoding(UTF-8)', 'logs/Shopper.txt');
+    my @lines = <BETTERSHOPPERLOG>;
+    close(FILE);
+    chomp @lines;
+
+    my @items;
+
+    foreach my $linha (@lines) {
+        if ($linha =~ /Found item (.+) with good price/) {
+            push @items, $1;
+        }
+    }
+
+    if (@items) {
+        my $eventMacro = $eventMacro::Data::eventMacro;
+        $eventMacro->set_full_array('itemsComprados', \@items);
+    } else {
+        error "erro ao conseguir os dados do log do BetterShopper!\n";
+    }
+}

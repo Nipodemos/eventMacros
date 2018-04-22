@@ -1,0 +1,56 @@
+automacro comprarLimao {
+    CharCurrentWeight < 89%
+    InMap ayothaya
+    Zeny >= 10000
+    macro_delay 0.1
+    exclusive 1
+    call {
+        do move ayothaya 119 237
+        pause 2
+        do talknpc 121 240 r2 r0
+        pause 2
+        do cart add Limão
+    }
+}
+
+automacro guardarNoArmazen {
+    CharCurrentWeight >= 89%
+    macro_delay 2
+    InMap ayothaya
+    exclusive 1
+    call {
+        do move 213 179
+        do talknpc 212 169 r1
+        do storage add Limão
+        do storage addfromcart Limão
+        do storage close
+    }
+}
+
+automacro estouSemZeny {
+    Zeny < 10000
+    exclusive 1
+    InMap ayothaya
+    timeout 60
+    macro_delay 0.3
+    call {
+        log ====================
+        log ACABOU O ZENY MANO
+        log MUITA TRETA VISH
+        log ====================
+    }
+}
+
+automacro naoEstouEmAyotaya {
+    NotInMap ayothaya
+    exclusive 1
+    timeout 60
+    macro_delay 0.3
+    call {
+        log ==========================
+        log NÃO ESTOU EM AYOTHAYA
+        log ESSA MACRO NÃO FAZ A QUEST
+        log MOVA MANUALMENTE PRA LA
+        log ==========================
+    }
+}

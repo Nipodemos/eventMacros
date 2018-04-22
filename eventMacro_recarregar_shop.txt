@@ -1,0 +1,116 @@
+﻿#Pré-Requisitos antes de utilizar essa eventMacro:
+#TODOS os seus items no seu shop.txt tem que ter uma quantidade máxima definida
+#se não houver quantidade máxima, o item será ignorado e não será reestocado
+#exemplo: 
+#Tecido	4,000	50
+#Gelo	1,650	50
+#Erva Azul	1,400	50
+
+#(nos exemplos, 50 é a quantidade)
+
+#Rcomendação:
+#É altamente recomendado que vc defina um lockMap_x e um lockMap_y para seu mercador, assim ele sempre vai
+#voltar pro lugar certinho antes de abrir a loja, e essa macro se baseia nisso
+
+automacro reestocar_irNaKafra {
+	SimpleHookEvent in_game, shop_closed
+    timeout 120
+	exclusive 1
+	call {
+		if (&eval($::shopstarted ? 1 : 0) == 1) do closeshop
+        do ai manual
+		call irNaKafra_e_AbrirArmazén
+		do reload shop.txt
+	}
+}
+
+macro irNaKafra_e_AbrirArmazén {
+	if (&eval( $::storage{opened} ? 1 : 0 ) == 1) stop
+    
+    if (&config(storageAuto_npc) =~ /\w+/) {
+        $kafraStorageAuto = &config(storageAuto_npc)
+        do move $kafraStorageAuto
+        do talknpc &arg("$kafraStorageAuto", 2) &arg("$kafraStorageAuto", 3) r1
+    } else {
+        do move prontera 146 90 # movendo para perto da Kafra
+        do talknpc 146 89 r1 # Kafra de prontera troque para seu npc a gosto
+	}
+	pause 2
+}
+
+automacro ArmazenAberto_pegarItens {
+    StorageOpened 1
+    exclusive 1
+    CheckOnAI manual
+    macro_delay 0.3
+    call {
+        #esse sub cria o array @listaDeItens
+        #que contem o nome e a quantidade dos items que estão no seu shop.txt
+        storage_choose_shop_items()
+        
+        while ($listaDeItens[0] != END) {
+            $nomeDoItem = $listaDeItens[0]
+            if ( $nomeDoItem != END ) {
+                &shift(@listaDeItens)
+                $quantidade = $listaDeItens[0]
+                &shift(@listaDeItens)
+                log nome é $nomeDoItem, quantidade é $quantidade
+                if (&storamount($nomeDoItem) > 0) {
+                    log pegando $nomeDoItem do storage
+                    do storage gettocart &storage($nomeDoItem) $quantidade 
+                } 
+            }
+        }
+		do storage close
+        do ai on
+		do reload shop.txt
+    }
+}
+
+sub storage_choose_shop_items {
+    my ( $to_inventory, $multiplier ) = @_; 
+
+    $multiplier ||= 1;
+
+    # Get a list of all items we want from shops.txt.
+    my $items = {};
+    foreach ( @{ $shop{items} } ) {
+        my $item = $items->{ $_->{name} } ||= { name => $_->{name}, vend_amount => 0, vend_count => 0 };
+        $item->{vend_amount} += $_->{amount} * $multiplier;
+        $item->{vend_count}++;
+    }
+
+    # Subtract how much we already have in cart (or in inventory if defined).
+    if ( $to_inventory ) {
+        foreach ( @{ $char->inventory->getItems } ) {
+            next if !$_ || !%$_;
+            my $item = $items->{ $_->{name} };
+            next if !$item;
+            $item->{cart_amount} += $_->{amount};
+        }
+    } else {
+        foreach ( @{ $cart{inventory} } ) { 
+            next if !$_ || !%$_;
+            my $item = $items->{ $_->{name} };
+            next if !$item;
+            $item->{cart_amount} += $_->{amount};
+        }
+    }
+
+    # List items to get from storage with amount.
+    my @get;
+    foreach my $item ( sort { $a->{name} cmp $b->{name} } values %$items ) {
+        my $amount = $item->{vend_amount} - $item->{cart_amount};
+        next if $amount <= 0;
+        if ( $item->{vend_count} > 1 ) {
+            push @get, $item->{name}, 1 foreach 1 .. $amount;
+        } else {
+            push @get, $item->{name}, $amount;
+        }
+    }
+    push @get, 'END';
+    
+    #creates an eventMAcro array with the items to get from storage with amount
+	my $eventMacro = $eventMacro::Data::eventMacro;
+	$eventMacro->set_full_array('listaDeItens', \@get);
+}

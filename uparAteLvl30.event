@@ -1,0 +1,31 @@
+automacro comeco {
+    JobID 1
+    exclusive 1
+    ConfigKeyNot lockMap LOCKMAPDESEJADO
+    BaseLevel < 30
+    call {
+        do conf storageAuto 1
+        do conf storageAuto_npc NPC_KAFRA_ALBERTA
+        do conf sellAuto 1
+        do conf sellAuto_npc NPC_VENDA_ALBERTA
+        do conf saveMap alberta
+        do conf lockMap LOCKMAPDESEJADO
+    }
+}
+
+automacro lvl30Trocando {
+    BaseLevel >= 30
+    exclusive 1
+    call {
+        $slot = &config(char)
+        $proximoChar = &eval($slot + 1)
+        if ($proximoChar > 12) {
+            log UPEI TODOS POWWW
+            do eval Misc::offlineMode()
+            stop
+        } else {
+            do conf char $proximoChar
+            do relog
+        }
+    }
+}
