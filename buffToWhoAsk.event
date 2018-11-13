@@ -1,73 +1,58 @@
 ############CURA##############
 
 automacro cura {
-	PubMsg /cura|heal/i
-	exclusive 1
-	call giveHimWhatHeWant "28"  #cura
+    PubMsg /cura|heal/i
+    exclusive 1
+    call darPraEleOQueEleQuer "28"  #cura
 }
 
 automacro agi {
-	PubMsg /agi/i
-	exclusive 1
-	call giveHimWhatHeWant "29"  #agi
+    PubMsg /agi/i
+    exclusive 1
+    call darPraEleOQueEleQuer "29"  #agi
 }
 
-automacro bless {
-	PubMsg /ben[çc]|bles/i
-	exclusive 1
-	call giveHimWhatHeWant "34"  #bless
+automacro bencao {
+    PubMsg /ben[çc]|bles/i
+    exclusive 1
+    call darPraEleOQueEleQuer "34"  #benção
 }
 
 automacro buffs {
-	PubMsg /buf/i
-	exclusive 1
-	call giveHimWhatHeWant "all" #all buffs
+    PubMsg /buf/i
+    exclusive 1
+    call darPraEleOQueEleQuer "all" #all buffs
 }
 
-macro giveHimWhatHeWant {
-    $id = getIDofPlayer("$.PubMsgLastName")
-#	$timesAsked{$id}++
-#	log times he asked: $timesAsked{$id}
-	pause 2
+macro darPraEleOQueEleQuer {
+    pause 2
+    do stand
     
-#	if ($timesAsked{$id} = 1) {
-#		do pm $id &random ("ok","ta","aqui")
-#	} elsif ($timesAsked{$id} = 2) {
-#		do pm $id &random ("ta...","hmm")
-#	} elsif ($timesAsked{$id} = 3) {
-#		do pm $id &random ("denovo?","mais?","que isso")
-#	} elsif ($timesAsked{$id} = 4) {
-#		do pm $id &random ("ultima vez","é a ultima to vazando","só mais essa e tchau")
-#	} elsif ($timesAsked{$id} >= 5) {
-#		do pm $id &random ("nao vai rolar....","ah neeeeem","mals ae","agora nao desculpe","5 vezes é demais")
-#		$timesAsked{$id} ++
-#		stop
-#	}
-	do stand
-    
-	if ($.param[0] != all) {
+    if ($.param[0] != all) {
         do sp $.param[0] &player($.PubMsgLastName)
     } else {
-        do sp 34 "$.PrivMsgLastName" #bless
-		do sp 29 "$.PrivMsgLastName" #agi
-		pause 2
-		do sp 66 "$.PrivMsgLastName" #impositio
-		pause 3
-		do sp 73 "$.PrivMsgLastName" #kyrie
-		pause 2
+        do sp 34 &player($.PubMsgLastName) #bless
+        do sp 29 &player($.PubMsgLastName) #agi
+        pause 2
+        do sp 66 &player($.PubMsgLastName) #impositio
+        pause 3
+        do sp 73 &player($.PubMsgLastName) #kyrie
+        pause 2
     }
     
-    do pm "$.PrivMsgLastName" de nada
+    do pm "$.PubMsgLastName" &random("de nada", "sempre um prazer", "fique vivo e bem", "vai upar logo")
 }
 
+#esse sub servia pra uma função que pensei de buffar a mesma pessoa só uma certa
+#quantidade de vezes, mas depois eu desisti da ideia... Porém o sub é legal :D
 sub getIDofPlayer {
     my ($name) = @_;
     my Actor::Player $player = Match::player($name) if ($playersList);
     
     if (!$player) {
-		error TF("Player \"%s\" does not exist.\n", $args);
-		return;
-	}
+        error TF("Player \"%s\" does not exist.\n", $args);
+        return;
+    }
 
-	return $player->{nameID};
+    return $player->{nameID};
 }

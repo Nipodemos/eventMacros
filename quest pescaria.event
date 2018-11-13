@@ -1,33 +1,31 @@
 automacro movingTowardsMe {
 	NpcMsg /towards me/
 	call {
-	do talk resp /reel/
+		do talk resp /reel/
 	}
 }
 
 automacro holdingSteady {
 	NpcMsg /holding steady/
 	call {
-	do talk resp /Hold/
+		do talk resp /Hold/
 	}
 }
 
 automacro pullingAway {
 	NpcMsg /pulling away/
 	call {
-	do talk resp /Play out/
+		do talk resp /Play out/
 	}
 }
 
 automacro terminouDePescar {
 	NpcMsg /You reeled in/
 	call {
-	if ( &config(StepFish) = none) do conf -f StepFish 1
-	$pescaria = &config(StepFish)
-	$pescaria++
-	if ($pescaria >= 12) do conf StepFish 1
-	do conf -f StepFish $pescaria
-	release configurar
+		if ( !&config(StepFish) || $pescaria >= 12) do conf -f StepFish 1
+		$pescaria = &config(StepFish)
+		$pescaria++
+		release configurar
 	}
 }
 
@@ -36,9 +34,9 @@ automacro confStepFishNaoExiste {
 	exclusive 1
 	priority -5
 	call {
-	log a config StepFish ainda nao existe
-	log mudando isso
-	do conf -f StepFish none
+		log a config StepFish ainda nao existe
+		log mudando isso
+		do conf -f StepFish none
 	}
 }
 
@@ -48,72 +46,72 @@ automacro configurar {
 	InInventory "Meat" > 0
 	call {
 		if (&config(statsAddAuto) == 1 || &config (skillsAddAuto) == 1 {			
-		do ai auto
-		do conf attackAuto 1
-		do conf lockMap none
-		do conf route_randomWalk 0
-		do conf sellAuto 0
-		do conf storageAuto 0
-		do conf sitAuto_idle 0
-		do conf sitAuto_hp_lower 10
-		do conf sitAuto_hp_upper 70
-		do conf statsAddAuto 0
-		do conf skillsAddAuto 0
-		do conf autoTalkCont 1
+			do ai auto
+			do conf attackAuto 1
+			do conf lockMap none
+			do conf route_randomWalk 0
+			do conf sellAuto 0
+			do conf storageAuto 0
+			do conf sitAuto_idle 0
+			do conf sitAuto_hp_lower 10
+			do conf sitAuto_hp_upper 70
+			do conf statsAddAuto 0
+			do conf skillsAddAuto 0
+			do conf autoTalkCont 1
 		}
-	call definirLocal
+		call definirLocal
 	}
 }
 
 macro definirLocal {
-	switch (&config ) {
+	switch ( &config(StepFish) ) {
 		case ( = 1 ) {
-		$local = izlu2dun
-		$coordenada = 157 163	
+			$local = izlu2dun
+			$coordenada = 157 163	
 		}
 		case ( = 2 ) {
-		$local = izlu2dun
-		$coordenada = 165 164
+			$local = izlu2dun
+			$coordenada = 165 164
 		}
 		case ( = 3 ) {
-		$local = izlu2dun 
-		$coordenada = 115 189
+			$local = izlu2dun 
+			$coordenada = 115 189
 		}
 		case ( = 4 ) {
-		$local = izlude
-		$coordenada = 117 224
+			$local = izlude
+			$coordenada = 117 224
 		}
 		case ( = 5 ) {
-		$local = izlude
-		$coordenada = 142 230
+			$local = izlude
+			$coordenada = 142 230
 		}
 		case ( = 6 ) {
-		$local = prt_fild08	
-		$coordenada = 321 307
+			$local = prt_fild08	
+			$coordenada = 321 307
 		}
 		case ( = 7 ) {
-		$local = prt_fild08
-		$coordenada = 326 295
+			$local = prt_fild08
+			$coordenada = 326 295
 		}
 		case ( = 8 ) {
-		$local = prt_fild08
-		$coordenada = 373 264
+			$local = prt_fild08
+			$coordenada = 373 264
 		}
 		case ( = 9 ) {
-		$local = alberta
-		$coordenada = 246 23
+			$local = alberta
+			$coordenada = 246 23
 		}
 		case ( = 10 ) {
-		$local = alberta
-		$coordenada = 252 46
+			$local = alberta
+			$coordenada = 252 46
 		}
 		case ( = 11 ) {
-		$local = alberta
-		$coordenada = 247 122
+			$local = alberta
+			$coordenada = 247 122
 		}
 		else {
-		log a ConfigKey StepFish está errada
-		log o valor dela é &config(StepFish)
+			log a ConfigKey StepFish está errada
+			log o valor dela é &config(StepFish)
 		}
 	}
 	call comecarAPescar
