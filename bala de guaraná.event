@@ -1,94 +1,196 @@
-automacro nãoEstaEmBrasilis {
-	NotInMap brasilis
-	exclusive 1
-	timeout 120
-	call {
-		[
-		log ==============================================
-		log não estou em brasilis
-		log essa macro não vai pra brasilis automaticamente
-		log você, usuário tem que ir manualmente
-		log ===============================================
-		]
-	}
+automacro habilitarAutoTalkCont {
+    exclusive 1
+    ConfigKeyNot autoTalkCont 1
+    priority -9999
+    call {
+        [
+        log ===================================
+        log = autoTalkCont não está habilitado
+        log = ele é necessário para funcionar corretamente
+        log = habilitando
+        log ===================================
+        ]
+        do conf -f autoTalkCont 1
+    }
 }
 
-automacro compra {
-	Zeny >= 5000
-	CharCurrentWeight < 90%
-	InMap brasilis
-	InInventoryID 12414 < 2000 #bala de guaraná
-	NpcNear /Doceira/
-	exclusive 1
-	call {
-		while ($.weightpercent < 90 || &invamount(Bala de Guaraná) < 2000) {
-			do talk &npc(187 162)
-			do talk resp 0
-			log Tenho &invamount(Bala de Guaraná) balas
-		}
-		
-		if ($.weightpercent >= 90 || &invamount(Bala de Guaraná) >= 2000) call irProNpcDoStorage
-	}
+automacro definirVariáveis {
+    exclusive 1
+    BaseLevel > 0
+    priority -999
+    call {
+        $quantidadeGuarana = 2000
+        do iconf 12414 0 1 0 1 0 #Bala de Guaraná
+    }
 }
 
-automacro irGuardar_tenho2milBalas {
-	InInventoryID 12414 > 1999 #bala de guaraná
-	InMap brasilis
-	exclusive 1
-	call irProNpcDoStorage
+#################################################
+# Você está em prontera e seus guaraná acabaram
+# automacros para irem para brasilis
+#################################################
+automacro PronteraParaAlberta {
+    InMap prontera
+    ShopOpened 0
+    InCart "Guarana Candy" < 1
+    timeout 30
+    exclusive 1
+    call {
+        if (&cartamount(GuaranaCandy) > 0) {
+            [
+            warning ===================================
+            warning = Erro denovo ao checar a qtd de guaraná
+            warning = tenho &cartamount(GuaranaCandy guarana)
+            warning = mas essa automacro acho que eu tenho 0
+            warning = interrompendo
+            warning ===================================
+            ]
+            stop
+        } else {
+            do move prontera 145 87
+            do talknpc 146 89 r2 r4 #teleporte para alberta
+            pause 1
+        }
+  }
+}
+ 
+automacro AlbertaParaBrasilis {
+    InMap alberta
+    ShopOpened 0
+    InCart "Guarana Candy" < 1
+    Zeny > 10000
+    timeout 30
+    exclusive 1
+    call {
+        if (&cartamount(GuaranaCandy) > 0) {
+            [
+            warning ===================================
+            warning = Erro denovo ao checar a qtd de guaraná
+            warning = tenho &cartamount(GuaranaCandy guarana)
+            warning = mas essa automacro acho que eu tenho 0
+            warning = interrompendo
+            warning ===================================
+            ]
+            stop
+        } else {
+            do move alberta 240 80
+            do talknpc 245 82 r0 #teleporte para brasilis
+        }
+    }
 }
 
-automacro irGuardar_passouDoPeso {
-	CharCurrentWeight >= 90%
-	InMap brasilis
-	Zeny >= 5000
-	exclusive 1
-	call irProNpcDoStorage
+automacro comprarGuarana_longeDoNpc {
+    exclusive 1
+    Zeny >= 5000
+    InMap brasilis
+    InInventoryID 12414 < $quantidadeGuarana #bala de guaraná
+    NpcNotNear /Doceira/
+    timeout 30
+    exclusive 1
+    call {
+        do move brasilis 185 158
+    }
 }
 
-macro irProNpcDoStorage {
-	do move brasilis 197 218
-	do talknpc 197 221 c r1
+automacro comprarGuarana_pertoDoNpc {
+    Zeny >= 5000
+    CharCurrentWeight < 90%
+    InMap brasilis
+    InCart "Guarana Candy" 12414 < $quantidadeGuarana #bala de guaraná
+    NpcNear /Doceira/
+    exclusive 1
+    call {
+        while (&cartamount(Bala de Guaraná) < $quantidadeGuarana && $.zeny >= 500) {
+            do talk &npc(187 162)
+            do talk resp 0
+            log Tenho &invamount(Bala de Guaraná) balas
+            pause 1
+        }
+    }
 }
 
-automacro guardarGuaraná {
-	StorageOpened 1
-	InMap brasilis
-	priority -50 #prioridade alta
-	InInventoryID 12414 > 1 #bala de guaraná
-	exclusive 1
-	call {
-		do storage add Bala de Guaraná
-		do storage addfromcart Bala de Guaraná if (&cartamount(Bala de Guaraná) > 0)
-		do storage close
-		[
-		log ======================================
-		log Tenho &storamount(Bala de Guaraná) balas no armazém
-		log ======================================
-		]
-		do move brasilis 189 160
-	}
+##################################################
+# Você moveu tudo para dentro do carrinho
+# Partiu ir pra prontera vender tudo!
+#################################################
+automacro BrasilisParaProntera {
+    InMap brasilis
+    InCart "Guarana Candy" >= $quantidadeGuarana
+    exclusive 1
+    call {
+        do move prontera 142 102
+    }
+}
+ 
+automacro AlbertaParaProntera {
+    InMap alberta
+    InCart "Guarana Candy" >= $quantidadeGuarana
+    ShopOpened 0
+    exclusive 1
+    call {
+        do move prontera
+	    do move prontera 118 59
+        do openshop
+    }
+}
+
+##############################################
+# Você está em prontera
+# Abra a lojinha e espere o dinheiro vir
+##############################################
+automacro OpenShop {
+    ShopOpened 0
+    IsInMapAndCoordinate prontera 116 72
+    InCart "Guarana Candy" >= 1
+    exclusive 1
+    call {
+        if (&cartamount(Guarana Candy) < 1) {
+            [
+            warning ===================================
+            warning = Bugado denovo, automacro acho que tem mais de 1
+            warning = bala, mas na verdade não tem nenhuma
+            warning = interrompendo
+            warning ===================================
+            ]
+            stop
+        }
+	    do move prontera 142 102
+        do openshop
+    }
+}
+
+automacro OpenShop_bugado {
+    InMap prontera
+    ShopOpened 0
+    InCart "Guarana Candy" >= 1
+    exclusive 1
+    call {
+        if (&cartamount(Guarana Candy) < 1) {
+            [
+            warning ===================================
+            warning = Bugado denovo, automacro acho que tem mais de 1
+            warning = bala, mas na verdade não tem nenhuma
+            warning = interrompendo
+            warning ===================================
+            ]
+            stop
+        }
+	    do move prontera 142 102
+        do openshop
+    }
 }
 
 automacro quit_SemZeny {
-	exclusive 1
-	Zeny < 5000
-	run-once 1
-	call modoOffLine "ACABOU O ZENY"
+    exclusive 1
+    Zeny < 10500
+    run-once 1
+    call modoOffLine "ACABOU O ZENY"
 }
-
-automacro quit_MaxBalas {
-	exclusive 1
-	InStorageID 12414 >= 28000 #bala de guaraná
-	run-once 1
-	call modoOffLine "ARMAZÉM CHEIO"
-}
-
+   
 macro modoOffLine {
-	[
-	log =========================================
-	log $.param[0], ENTRANDO NO MODO OFFLINE
-	log =========================================
-	]
-	do eval Misc::offlineMode();
+    [
+    log =========================================
+    log $.param[0], ENTRANDO NO MODO OFFLINE
+    log =========================================
+    ]
+    do eval Misc::offlineMode();
 }
